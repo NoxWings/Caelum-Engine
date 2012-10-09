@@ -1,0 +1,16 @@
+/home/noxwings/Games-dev/NAGE/cmake/FindPkgConfig.cmake
+/home/noxwings/Games-dev/NAGE/config/plugins.cfg
+/home/noxwings/Games-dev/NAGE/config/resources.cfg
+/home/noxwings/Games-dev/NAGE/config/video.cfg
+/home/noxwings/Games-dev/NAGE/src/core/subsystem.hpp
+/home/noxwings/Games-dev/NAGE/src/input/inputmanager.cpp
+/home/noxwings/Games-dev/NAGE/src/input/inputmanager.hpp
+/home/noxwings/Games-dev/NAGE/src/input/keylistener.cpp
+/home/noxwings/Games-dev/NAGE/src/input/keylistener.hpp
+/home/noxwings/Games-dev/NAGE/src/input/mouselistener.cpp
+/home/noxwings/Games-dev/NAGE/src/input/mouselistener.hpp
+/home/noxwings/Games-dev/NAGE/src/patterns/Singleton.hpp
+/home/noxwings/Games-dev/NAGE/src/CMakeLists.txt
+/home/noxwings/Games-dev/NAGE/src/libPrerequisites.hpp
+/home/noxwings/Games-dev/NAGE/src/main.cpp
+/home/noxwings/Games-dev/NAGE/CMakeLists.txt
