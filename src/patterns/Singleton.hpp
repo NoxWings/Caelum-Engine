@@ -44,11 +44,8 @@ member variable.
 */
 template <typename T> class Singleton {
 private:
-    /** Explicit private copy constructor. This is a forbidden operation.*/
-    Singleton(const Singleton<T> &);
-
-    /** Private operator= . This is a forbidden operation. */
-    Singleton& operator=(const Singleton<T> &);
+    /// Explicit private constructor and operator=. These are forbidden operations*/
+    DISALLOW_COPY_AND_ASSIGN(Singleton<T>);
 
 protected:
     static T* ms_Singleton;
