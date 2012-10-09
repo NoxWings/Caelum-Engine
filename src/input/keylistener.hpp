@@ -13,11 +13,9 @@
 
 #include <OIS/OISKeyboard.h>
 
-namespace NAGE
-{
+namespace NAGE {
 
-class KeyListener : public OIS::KeyListener
-{
+class KeyListener : public OIS::KeyListener {
 public:
     KeyListener();
 

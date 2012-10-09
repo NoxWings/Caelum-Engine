@@ -13,12 +13,10 @@
 
 using namespace NAGE;
 
-KeyListener::KeyListener()
-{
+KeyListener::KeyListener() {
 }
 
-void KeyListener::startListeningKey()
-{
+void KeyListener::startListeningKey() {
     InputManager* iMan = InputManager::getSingletonPtr();
     iMan->addKeyListener(this);
 }

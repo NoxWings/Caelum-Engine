@@ -13,12 +13,10 @@
 
 using namespace NAGE;
 
-MouseListener::MouseListener()
-{
+MouseListener::MouseListener() {
 }
 
-void MouseListener::startListeningMouse()
-{
+void MouseListener::startListeningMouse() {
     InputManager* iMan = InputManager::getSingletonPtr();
     iMan->addMouseListener(this);
 }

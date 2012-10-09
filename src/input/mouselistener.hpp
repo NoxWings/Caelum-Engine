@@ -13,8 +13,7 @@
 
 #include <OIS/OISMouse.h>
 
-namespace NAGE
-{
+namespace NAGE {
 
 /** Mouse Class
     Intermediate class between OIS Mouse Listener and Game Own listeners
@@ -22,8 +21,7 @@ namespace NAGE
     extra flexibility for other devices such as joysticks used as mouse.
   */
 
-class MouseListener : public OIS::MouseListener
-{
+class MouseListener : public OIS::MouseListener {
 public:
     MouseListener();
 
