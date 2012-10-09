@@ -1,6 +1,12 @@
 set (
   SRC
-  #main
+  main.cpp
+  libPrerequisites.hpp
+  core/subsystem.hpp
+  input/inputmanager.cpp
+  input/mouselistener.cpp
+  input/keylistener.cpp
+  patterns/Singleton.hpp
   )
 
 add_executable(NAGE ${SRC})
@@ -10,7 +16,7 @@ target_link_libraries(
   ${OGRE_LIBRARIES}
   #${PG_LIBRARIES}
   #${SKYX_LIBRARIES}
-  #${OIS_LIBRARIES}
+  ${OIS_LIBRARIES}
   #${MYGUI_LIBRARIES}
   #${ENET_LIBRARIES}
   #${BULLET_LIBRARIES}

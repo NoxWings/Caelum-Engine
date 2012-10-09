@@ -36,9 +36,7 @@ member variable.
 #define SINGLETON_HPP
 
 //#define NDEBUG
-#include <libPrerequisites.hpp>
-#include <assert.h>
-
+#include "libPrerequisites.hpp"
 
 /** Template class for creating single-instance global classes.
 */

@@ -11,11 +11,18 @@
 #ifndef LIBPREREQUISITES_HPP
 #define LIBPREREQUISITES_HPP
 
-//---------------------
+//--------COMMON-DEFINES---------------------------
 
 //#define RELEASE_MODE
 
-//---------------------
+
+//-------------------------------------------------
+//--------COMMON-INCLUDES--------------------------
+
+#include <assert.h>
+
+//-------------------------------------------------
+//--------LIB-DEFINES------------------------------
 
 /// LIBRARY EXPORT DEFINITION
 #	if defined(NAGE_STATIC_LIB)
@@ -32,10 +39,15 @@
 #       define NDEGUB
 #   endif
 
+//-------------------------------------------------
+//--------MACROS-----------------------------------
 
 /// USEFUL MACROS
 #define DISALLOW_COPY_AND_ASSIGN(TypeName) \
   TypeName(const TypeName&);   \
   void operator=(const TypeName&)
+
+//-------------------------------------------------
+
 
 #endif // LIBPREREQUISITES_HPP
