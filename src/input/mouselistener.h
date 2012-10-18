@@ -7,8 +7,8 @@
  *  This file is part of NAGE.
  */
 
-#ifndef INPUT_MOUSE_H_
-#define INPUT_MOUSE_H_
+#ifndef SRC_INPUT_MOUSELISTENER_H_
+#define SRC_INPUT_MOUSELISTENER_H_
 
 #include <OIS/OISMouse.h>
 
@@ -21,7 +21,7 @@ namespace NAGE {
   */
 
 class MouseListener : public OIS::MouseListener {
-public:
+  public:
     MouseListener();
 
     /** Start Listening
@@ -37,9 +37,8 @@ public:
     virtual bool mouseReleased (const OIS::MouseEvent& evt, OIS::MouseButtonID id) { return true;}
     virtual bool mouseClick    (const OIS::MouseEvent& evt, OIS::MouseButtonID id) { return true;}
 
-private:
+  private:
 };
-
 }
 
-#endif  // INPUT_MOUSE_H_
+#endif  // SRC_INPUT_MOUSELISTENER_H_

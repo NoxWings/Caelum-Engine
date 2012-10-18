@@ -7,12 +7,12 @@
  *  This file is part of NAGE.
  */
 
-#ifndef NAGEPREREQUISITES_HPP
-#define NAGEREREQUISITES_HPP
+#ifndef SRC_NAGEPREREQUISITES_H_
+#define SRC_NAGEPREREQUISITES_H_
 
 //--------COMMON-DEFINES---------------------------
 
-//#define RELEASE_MODE
+// #define RELEASE_MODE
 
 
 //-------------------------------------------------
@@ -24,12 +24,13 @@
 //--------LIB-DEFINES------------------------------
 
 /// LIBRARY EXPORT DEFINITION
-#if defined(NAGE_DYNAMIC_LIB)
-    // Export definition
-#   define _NAGEExport __declspec( dllexport )
-#else
-// Import definition
-#   define _NAGEExport __declspec( dllimport )
+
+#if defined(NAGE_STATIC_LIB)   // NAGE STATIC LIBRARY (COMPILE & LINK)
+    #define _NAGEExport
+#elif defined(NAGE_DYNAMIC_LIB)  // NAGE DYNAMIC LIBRARY (COMPILE)
+    #define _NAGEExport __declspec(dllexport)
+#else                          // NAGE DYNAMIC LIBRARY (LINK)
+    #define _NAGEExport __declspec(dllimport)
 #endif
 
 /// COMPILATION MODE
@@ -49,4 +50,4 @@
 //-------------------------------------------------
 
 
-#endif // NAGEPREREQUISITES_HPP
+#endif  // SRC_NAGEPREREQUISITES_H_

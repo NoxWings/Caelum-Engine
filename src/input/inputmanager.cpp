@@ -12,6 +12,10 @@
 // Ogre
 #include <OGRE/OgreWindowEventUtilities.h>
 
+#include <list>
+#include <string>
+
+
 using namespace NAGE;
 
 // Constructor
@@ -34,7 +38,7 @@ InputManager::~InputManager() {
 void InputManager::setup() {
     // 1. Window
     mWindow = Ogre::Root::getSingletonPtr()->getAutoCreatedWindow();
-    // TODO    (check that this window is effectively created)
+    // TODO  (check that this window is effectively created)
     assert(mWindow);
 
     // 2. Input Manager
@@ -45,22 +49,22 @@ void InputManager::setup() {
     windowHndStr << windowHnd;
     pl.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
 
-    mInputManager = OIS::InputManager::createInputSystem( pl );
+    mInputManager = OIS::InputManager::createInputSystem(pl);
 
     // 3. Devices        (Mouse, Keyboard, Joystick)
     bool bufferedKeys, bufferedMouse, bufferedJoy;
     bufferedKeys = bufferedMouse = bufferedJoy = true;
     mKeyboard = static_cast<OIS::Keyboard*>(
-                mInputManager->createInputObject( OIS::OISKeyboard, bufferedKeys )); // keyboard
+                mInputManager->createInputObject(OIS::OISKeyboard, bufferedKeys));  // keyboard
     mMouse = static_cast<OIS::Mouse*>(
-                mInputManager->createInputObject( OIS::OISMouse, bufferedMouse )); // mouse
+                mInputManager->createInputObject(OIS::OISMouse, bufferedMouse));  // mouse
     try {
         mJoy = static_cast<OIS::JoyStick*>(
-                    mInputManager->createInputObject( OIS::OISJoyStick, bufferedJoy )); // joystick
+                mInputManager->createInputObject(OIS::OISJoyStick, bufferedJoy));  // joystick
     } catch(...) {
         mJoy = 0;
     }
-    windowResized(mWindow); // Set initial mouse clipping size
+    windowResized(mWindow);  // Set initial mouse clipping size
 
     // 4. Initialize timers
     for (int i = 0; i < NUM_MOUSE_BUTTONS; i++) {
@@ -68,8 +72,8 @@ void InputManager::setup() {
     }
 
     // 5. LISTENERS & Callbacks
-    Ogre::WindowEventUtilities::addWindowEventListener(mWindow, this); //Window listener
-    Ogre::Root::getSingletonPtr()->addFrameListener(this); // FrameListener
+    Ogre::WindowEventUtilities::addWindowEventListener(mWindow, this);  // Window listener
+    Ogre::Root::getSingletonPtr()->addFrameListener(this);  // FrameListener
     if (mKeyboard) mKeyboard->setEventCallback(this);
     if (mMouse) mMouse->setEventCallback(this);
     if (mJoy) mJoy->setEventCallback(this);
@@ -85,7 +89,7 @@ void InputManager::shutdown() {
 
         // 5. Unregister own listeners
         Ogre::Root *mRoot = Ogre::Root::getSingletonPtr();
-        mRoot->removeFrameListener(this); // remove as a frame listener
+        mRoot->removeFrameListener(this);  // remove as a frame listener
         if (mWindow)
             Ogre::WindowEventUtilities::removeWindowEventListener(mWindow, this);
 
@@ -144,7 +148,7 @@ void InputManager::windowClosed(Ogre::RenderWindow* rw) {
 
 bool InputManager::frameStarted(const Ogre::FrameEvent &evt) {
     // TODO  (check this! dont think the next line is actually necessary)
-    if (mWindow->isClosed()) return false; // Shutdown Every Render
+    if (mWindow->isClosed()) return false;  // Shutdown Every Render
     update();
     return true;
 }
@@ -175,7 +179,7 @@ bool InputManager::mousePressed(const OIS::MouseEvent &arg,
     // Populate Event
     std::list<OIS::MouseListener*>::iterator iter = mMouseListeners.begin();
     while (iter != mMouseListeners.end()) {
-        (*iter)->mousePressed(arg,id);
+        (*iter)->mousePressed(arg, id);
         iter++;
     }
     return true;
@@ -186,7 +190,7 @@ bool InputManager::mouseReleased(const OIS::MouseEvent &arg,
     // Populate Event
     std::list<OIS::MouseListener*>::iterator iter = mMouseListeners.begin();
     while (iter != mMouseListeners.end()) {
-        (*iter)->mouseReleased(arg,id);
+        (*iter)->mouseReleased(arg, id);
         iter++;
     }
 
@@ -215,8 +219,7 @@ bool InputManager::mouseDoubleClick(const OIS::MouseEvent &arg,
 bool InputManager::keyPressed(const OIS::KeyEvent &arg) {
     // Populate Event
     std::list<OIS::KeyListener*>::iterator iter = mKeyListeners.begin();
-    while (iter != mKeyListeners.end())
-    {
+    while (iter != mKeyListeners.end()) {
         (*iter)->keyPressed(arg);
         iter++;
     }

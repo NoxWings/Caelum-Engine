@@ -30,8 +30,8 @@ member variable.
 
 ----------------------------------------------------------------------*/
 
-#ifndef PATTERNS_SINGLETON_H_
-#define PATTERNS_SINGLETON_H_
+#ifndef SRC_PATTERNS_SINGLETON_H_
+#define SRC_PATTERNS_SINGLETON_H_
 
 // #define NDEBUG
 #include <NagePrerequisites.h>
@@ -39,39 +39,40 @@ member variable.
 /** Template class for creating single-instance global classes.
 */
 template <typename T> class Singleton {
-private:
-    /// Explicit private constructor and operator=. These are forbidden operations*/
-    DISALLOW_COPY_AND_ASSIGN(Singleton<T>);
-
-protected:
+  protected:
     static T* ms_Singleton;
 
-public:
-    Singleton( void ) {
-        assert( !ms_Singleton );
+  public:
+    Singleton(void) {
+        assert(!ms_Singleton);
         #if defined( _MSC_VER ) && _MSC_VER < 1200
             int offset = (int)(T*)1 - (int)(Singleton <T>*)(T*)1;
             msSingleton = (T*)((int)this + offset);
         #else
-            ms_Singleton = static_cast< T* >( this );
+            ms_Singleton = static_cast<T*>(this);
         #endif
      }
 
-    ~Singleton( void ){
-        assert( ms_Singleton );
+    ~Singleton(void) {
+        assert(ms_Singleton);
         ms_Singleton = 0;
     }
 
-    static T& getSingleton( void ) {
-        assert( ms_Singleton );
-        return ( *ms_Singleton );
+    static T& getSingleton(void) {
+        assert(ms_Singleton);
+        return (*ms_Singleton);
     }
 
-    static T* getSingletonPtr( void ){
+    static T* getSingletonPtr(void) {
         return ms_Singleton;
     }
+
+  private:
+    /** Explicit private constructor and operator=.
+     *  These are forbidden operations */
+    DISALLOW_COPY_AND_ASSIGN(Singleton<T>);
 };
 
 template <typename T> T* Singleton<T>::ms_Singleton = 0;
 
-#endif  // PATTERNS_SINGLETON_H_
+#endif  // SRC_PATTERNS_SINGLETON_H_

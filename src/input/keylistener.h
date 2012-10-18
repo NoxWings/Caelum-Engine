@@ -7,15 +7,15 @@
  *  This file is part of NAGE.
  */
 
-#ifndef INPUT_KEYLISTENER_H_
-#define INPUT_KEYLISTENER_H_
+#ifndef SRC_INPUT_KEYLISTENER_H_
+#define SRC_INPUT_KEYLISTENER_H_
 
 #include <OIS/OISKeyboard.h>
 
 namespace NAGE {
 
 class KeyListener : public OIS::KeyListener {
-public:
+  public:
     KeyListener();
 
     /** Start Listening
@@ -30,6 +30,5 @@ public:
     virtual bool keyReleased (const OIS::KeyEvent &arg) {return true;}
     virtual bool keyTap      (const OIS::KeyEvent &arg) {return true;}
 };
-
 }
-#endif // INPUT_KEYBOARD_H_
+#endif  // SRC_INPUT_KEYLISTENER_H_
