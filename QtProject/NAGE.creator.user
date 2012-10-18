@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by Qt Creator 2.5.0, 2012-10-18T19:09:41. -->
+<!-- Written by Qt Creator 2.5.0, 2012-10-18T20:23:56. -->
 <qtcreator>
  <data>
   <variable>GenericProjectManager.GenericProject.Toolchain</variable>
@@ -81,7 +81,7 @@
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
       <value type="QString" key="ProjectExplorer.ProcessStep.Arguments"></value>
       <value type="QString" key="ProjectExplorer.ProcessStep.Command">/home/noxwings/Games-dev/NAGE/tools/checkStyle.sh</value>
-      <value type="QString" key="ProjectExplorer.ProcessStep.WorkingDirectory">/home/noxwings/Games-dev/NAGE/src</value>
+      <value type="QString" key="ProjectExplorer.ProcessStep.WorkingDirectory">/home/noxwings/Games-dev/NAGE/tools</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Custom Process Step</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.ProcessStep</value>

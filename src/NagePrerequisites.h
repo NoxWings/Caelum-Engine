@@ -25,11 +25,11 @@
 
 /// LIBRARY EXPORT DEFINITION
 
-#if defined(NAGE_STATIC_LIB)   // NAGE STATIC LIBRARY (COMPILE & LINK)
+#if defined(NAGE_STATIC_LIB)     // NAGE STATIC LIBRARY (COMPILE & LINK)
     #define _NAGEExport
 #elif defined(NAGE_DYNAMIC_LIB)  // NAGE DYNAMIC LIBRARY (COMPILE)
     #define _NAGEExport __declspec(dllexport)
-#else                          // NAGE DYNAMIC LIBRARY (LINK)
+#else                            // NAGE DYNAMIC LIBRARY (LINK)
     #define _NAGEExport __declspec(dllimport)
 #endif
 
