@@ -1,15 +1,14 @@
-/*
+/*  Copyright (c) 20012-2013 David G. Miguel <noxwings@gmail.com>
+ *  All rights reserved
+ *
  *  NAGE (Not Another Game Engine)
  *  (name of the project could be changed in future revisions)
- *
- *  Copyright (c) 20012-2013 David G. Miguel <noxwings@gmail.com>
- *  All rights reserved
  *
  *  This file is part of NAGE.
  */
 
-#ifndef INPUT_MANAGER_HPP
-#define INPUT_MANAGER_HPP
+#ifndef INPUT_MANAGER_H_
+#define INPUT_MANAGER_H_
 
 // OIS
 //Use this define to signify OIS will be used as a DLL (so that dll import/export macros are in effect)
@@ -17,10 +16,10 @@
 #include <OIS.h>
 
 // Lib
-#include "libPrerequisites.hpp"
+#include <NagePrerequisites.h>
 
 // Patterns
-#include "patterns/Singleton.hpp"
+#include "patterns/Singleton.h"
 
 // Ogre
 #include <OGRE/Ogre.h>
@@ -74,18 +73,18 @@ protected:
     virtual bool frameEnded(const Ogre::FrameEvent &evt);
 
     /// OIS Listeners
-    virtual bool keyPressed  (const OIS::KeyEvent &arg); // basic OIS
-    virtual bool keyReleased (const OIS::KeyEvent &arg); // basic OIS
-
-    virtual bool keyTap       (const OIS::KeyEvent &arg); // extended OIS
-    virtual bool keyDoubleTap (const OIS::KeyEvent &arg); // extended OIS
-
     virtual bool mouseMoved    (const OIS::MouseEvent &arg); // basic OIS
     virtual bool mousePressed  (const OIS::MouseEvent &arg, OIS::MouseButtonID id); // basic OIS
     virtual bool mouseReleased (const OIS::MouseEvent &arg, OIS::MouseButtonID id); // basic OIS
 
     virtual bool mouseClick       (const OIS::MouseEvent &arg, OIS::MouseButtonID id); // extended OIS
     virtual bool mouseDoubleClick (const OIS::MouseEvent &arg, OIS::MouseButtonID id); // extended OIS
+
+    virtual bool keyPressed  (const OIS::KeyEvent &arg); // basic OIS
+    virtual bool keyReleased (const OIS::KeyEvent &arg); // basic OIS
+
+    virtual bool keyTap       (const OIS::KeyEvent &arg); // extended OIS
+    virtual bool keyDoubleTap (const OIS::KeyEvent &arg); // extended OIS
 
     virtual bool buttonPressed  (const OIS::JoyStickEvent &arg, int button) {return true;}
     virtual bool buttonReleased (const OIS::JoyStickEvent &arg, int button) {return true;}
@@ -101,8 +100,16 @@ protected:
 
     std::list<OIS::KeyListener*> mKeyListeners;
     std::list<OIS::MouseListener*> mMouseListeners;
+
+    enum MouseButtonID
+    {
+        MB_Left = 0, MB_Right, MB_Middle,
+        MB_Button3, MB_Button4,	MB_Button5, MB_Button6,	MB_Button7,
+        NUM_MOUSE_BUTTONS
+    };
+    Ogre::Timer *mMouseTimer[NUM_MOUSE_BUTTONS];
 };
 
 }
 
-#endif // INPUT_MANAGER_HPP
+#endif  // INPUT_MANAGER_H_

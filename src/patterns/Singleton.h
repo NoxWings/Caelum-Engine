@@ -1,9 +1,8 @@
-/*
+/*  Copyright (c) 20012-2013 David G. Miguel <noxwings@gmail.com>
+ *  All rights reserved
+ *
  *  NAGE (Not Another Game Engine)
  *  (name of the project could be changed in future revisions)
- *
- *  Copyright (c) 20012-2013 David G. Miguel <noxwings@gmail.com>
- *  All rights reserved
  *
  *  This file is part of NAGE.
  */
@@ -16,7 +15,6 @@
  * below is included in the resulting source code, for example:
  * "Portions Copyright (C) Scott Bilas, 2000"
  */
-
 
 /* ---------------  EXPLANATION  ----------------------------------
 
@@ -32,11 +30,11 @@ member variable.
 
 ----------------------------------------------------------------------*/
 
-#ifndef SINGLETON_HPP
-#define SINGLETON_HPP
+#ifndef PATTERNS_SINGLETON_H_
+#define PATTERNS_SINGLETON_H_
 
-//#define NDEBUG
-#include "libPrerequisites.hpp"
+// #define NDEBUG
+#include <NagePrerequisites.h>
 
 /** Template class for creating single-instance global classes.
 */
@@ -76,4 +74,4 @@ public:
 
 template <typename T> T* Singleton<T>::ms_Singleton = 0;
 
-#endif // SINGLETON_HPP
+#endif  // PATTERNS_SINGLETON_H_

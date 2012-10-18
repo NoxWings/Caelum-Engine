@@ -1,15 +1,14 @@
-/*
+/*  Copyright (c) 20012-2013 David G. Miguel <noxwings@gmail.com>
+ *  All rights reserved
+ *
  *  NAGE (Not Another Game Engine)
  *  (name of the project could be changed in future revisions)
- *
- *  Copyright (c) 20012-2013 David G. Miguel <noxwings@gmail.com>
- *  All rights reserved
  *
  *  This file is part of NAGE.
  */
 
-#ifndef LIBPREREQUISITES_HPP
-#define LIBPREREQUISITES_HPP
+#ifndef NAGEPREREQUISITES_HPP
+#define NAGEREREQUISITES_HPP
 
 //--------COMMON-DEFINES---------------------------
 
@@ -25,13 +24,13 @@
 //--------LIB-DEFINES------------------------------
 
 /// LIBRARY EXPORT DEFINITION
-#	if defined(NAGE_STATIC_LIB)
-        // Import definition
-#		define _NAGEExport __declspec( dllimport )
-#	else
-        // Export definition
-#		define _NAGEExport __declspec( dllexport )
-#	endif
+#if defined(NAGE_DYNAMIC_LIB)
+    // Export definition
+#   define _NAGEExport __declspec( dllexport )
+#else
+// Import definition
+#   define _NAGEExport __declspec( dllimport )
+#endif
 
 /// COMPILATION MODE
 #   if defined(RELEASE_MODE)
@@ -50,4 +49,4 @@
 //-------------------------------------------------
 
 
-#endif // LIBPREREQUISITES_HPP
+#endif // NAGEPREREQUISITES_HPP

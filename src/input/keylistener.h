@@ -1,15 +1,14 @@
-/*
+/*  Copyright (c) 20012-2013 David G. Miguel <noxwings@gmail.com>
+ *  All rights reserved
+ *
  *  NAGE (Not Another Game Engine)
  *  (name of the project could be changed in future revisions)
- *
- *  Copyright (c) 20012-2013 David G. Miguel <noxwings@gmail.com>
- *  All rights reserved
  *
  *  This file is part of NAGE.
  */
 
-#ifndef INPUT_KEYBOARD_HPP
-#define INPUT_KEYBOARD_HPP
+#ifndef INPUT_KEYLISTENER_H_
+#define INPUT_KEYLISTENER_H_
 
 #include <OIS/OISKeyboard.h>
 
@@ -33,4 +32,4 @@ public:
 };
 
 }
-#endif // INPUT_KEYBOARD_HPP
+#endif // INPUT_KEYBOARD_H_

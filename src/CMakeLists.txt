@@ -1,12 +1,12 @@
 set (
   SRC
   main.cpp
-  libPrerequisites.hpp
-  core/subsystem.hpp
+  NagePrerequisites.h
+  core/subsystem.h
   input/inputmanager.cpp
   input/mouselistener.cpp
   input/keylistener.cpp
-  patterns/Singleton.hpp
+  patterns/Singleton.h
   )
 
 add_executable(NAGE ${SRC})

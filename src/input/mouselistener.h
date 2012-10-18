@@ -1,15 +1,14 @@
-/*
+/*  Copyright (c) 20012-2013 David G. Miguel <noxwings@gmail.com>
+ *  All rights reserved
+ *
  *  NAGE (Not Another Game Engine)
  *  (name of the project could be changed in future revisions)
- *
- *  Copyright (c) 20012-2013 David G. Miguel <noxwings@gmail.com>
- *  All rights reserved
  *
  *  This file is part of NAGE.
  */
 
-#ifndef INPUT_MOUSE_HPP
-#define INPUT_MOUSE_HPP
+#ifndef INPUT_MOUSE_H_
+#define INPUT_MOUSE_H_
 
 #include <OIS/OISMouse.h>
 
@@ -43,4 +42,4 @@ private:
 
 }
 
-#endif // INPUT_MOUSE_HPP
+#endif  // INPUT_MOUSE_H_
