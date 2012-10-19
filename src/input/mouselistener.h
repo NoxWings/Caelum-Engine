@@ -10,6 +10,7 @@
 #ifndef SRC_INPUT_MOUSELISTENER_H_
 #define SRC_INPUT_MOUSELISTENER_H_
 
+#include "NagePrerequisites.h"
 #include <OIS/OISMouse.h>
 
 namespace NAGE {
@@ -39,6 +40,6 @@ class MouseListener : public OIS::MouseListener {
 
   private:
 };
-}
+}  // namespace NAGE
 
 #endif  // SRC_INPUT_MOUSELISTENER_H_

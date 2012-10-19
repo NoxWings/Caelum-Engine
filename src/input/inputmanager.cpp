@@ -99,9 +99,9 @@ void InputManager::shutdown() {
         }
 
         // 3. Remove the OIS devices
-        if (mMouse) mInputManager->destroyInputObject( mMouse );
-        if (mKeyboard) mInputManager->destroyInputObject( mKeyboard );
-        if (mJoy) mInputManager->destroyInputObject( mJoy );
+        if (mMouse) mInputManager->destroyInputObject(mMouse);
+        if (mKeyboard) mInputManager->destroyInputObject(mKeyboard);
+        if (mJoy) mInputManager->destroyInputObject(mJoy);
 
         // 2. Destroy OIS InputManager
         OIS::InputManager::destroyInputSystem(mInputManager);

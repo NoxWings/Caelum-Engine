@@ -2,11 +2,19 @@ set (
   SRC
   main.cpp
   NagePrerequisites.h
-  core/subsystem.h
   input/inputmanager.cpp
-  input/mouselistener.cpp
+  input/inputmanager.h
   input/keylistener.cpp
+  input/keylistener.h
+  input/motioncontroller.cpp
+  input/motioncontroller.h
+  input/motioncontrollerfactory.cpp
+  input/motioncontrollerfactory.h
+  input/mouselistener.cpp
+  input/mouselistener.h
+  patterns/AbstractFactory.h
   patterns/Singleton.h
+
   )
 
 add_executable(NAGE ${SRC})

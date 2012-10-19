@@ -47,9 +47,8 @@ class InputManager : public Singleton<InputManager>,  // Inheritance
     InputManager();
     ~InputManager();
 
-    void addKeyListener   (OIS::KeyListener *keyListener)     {mKeyListeners.push_back(keyListener);}
-    void addMouseListener (OIS::MouseListener *mouseListener) {mMouseListeners.push_back(mouseListener);}
-
+    void addKeyListener      (OIS::KeyListener *keyListener)     {mKeyListeners.push_back(keyListener);}
+    void addMouseListener    (OIS::MouseListener *mouseListener) {mMouseListeners.push_back(mouseListener);}
     void removeKeyListener   (OIS::KeyListener *keyListener)     {mKeyListeners.remove(keyListener);}
     void removeMouseListener (OIS::MouseListener *mouseListener) {mMouseListeners.remove(mouseListener);}
 
@@ -74,22 +73,20 @@ class InputManager : public Singleton<InputManager>,  // Inheritance
     virtual bool frameEnded(const Ogre::FrameEvent &evt);
 
     /// OIS Listeners
-    virtual bool mouseMoved    (const OIS::MouseEvent &arg);  // basic OIS
-    virtual bool mousePressed  (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // basic OIS
-    virtual bool mouseReleased (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // basic OIS
-
+    virtual bool mouseMoved       (const OIS::MouseEvent &arg);  // basic OIS
+    virtual bool mousePressed     (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // basic OIS
+    virtual bool mouseReleased    (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // basic OIS
     virtual bool mouseClick       (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // extended OIS
     virtual bool mouseDoubleClick (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // extended OIS
 
-    virtual bool keyPressed  (const OIS::KeyEvent &arg);  // basic OIS
-    virtual bool keyReleased (const OIS::KeyEvent &arg);  // basic OIS
-
+    virtual bool keyPressed   (const OIS::KeyEvent &arg);  // basic OIS
+    virtual bool keyReleased  (const OIS::KeyEvent &arg);  // basic OIS
     virtual bool keyTap       (const OIS::KeyEvent &arg);  // extended OIS
     virtual bool keyDoubleTap (const OIS::KeyEvent &arg);  // extended OIS
 
     virtual bool buttonPressed  (const OIS::JoyStickEvent &arg, int button) {return true;}
     virtual bool buttonReleased (const OIS::JoyStickEvent &arg, int button) {return true;}
-    virtual bool axisMoved      (const OIS::JoyStickEvent &arg, int axis) {return true;}
+    virtual bool axisMoved      (const OIS::JoyStickEvent &arg, int axis)   {return true;}
 
 
     Ogre::RenderWindow *mWindow;
@@ -109,6 +106,6 @@ class InputManager : public Singleton<InputManager>,  // Inheritance
     };
     Ogre::Timer *mMouseTimer[NUM_MOUSE_BUTTONS];
 };
-}
+}  // namespace NAGE
 
 #endif  // SRC_INPUT_INPUTMANAGER_H_

@@ -10,6 +10,7 @@
 #ifndef SRC_INPUT_KEYLISTENER_H_
 #define SRC_INPUT_KEYLISTENER_H_
 
+#include "NagePrerequisites.h"
 #include <OIS/OISKeyboard.h>
 
 namespace NAGE {
@@ -30,5 +31,6 @@ class KeyListener : public OIS::KeyListener {
     virtual bool keyReleased (const OIS::KeyEvent &arg) {return true;}
     virtual bool keyTap      (const OIS::KeyEvent &arg) {return true;}
 };
-}
+}  // namespace NAGE
+
 #endif  // SRC_INPUT_KEYLISTENER_H_
