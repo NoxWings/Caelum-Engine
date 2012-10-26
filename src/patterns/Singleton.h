@@ -1,10 +1,10 @@
 /*  Copyright (c) 20012-2013 David G. Miguel <noxwings@gmail.com>
  *  All rights reserved
  *
- *  NAGE (Not Another Game Engine)
+ *  Project-Caelum
  *  (name of the project could be changed in future revisions)
  *
- *  This file is part of NAGE.
+ *  This file is part of Project-Caelum.
  */
 /* Original version Copyright (C) Scott Bilas, 2000.
  * All rights reserved worldwide.
@@ -34,7 +34,7 @@ member variable.
 #define SRC_PATTERNS_SINGLETON_H_
 
 // #define NDEBUG
-#include <NagePrerequisites.h>
+#include "EnginePrerequisites.h"
 
 /** Template class for creating single-instance global classes.
 */

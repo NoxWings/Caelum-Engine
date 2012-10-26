@@ -1,4 +1,4 @@
-project(NAGE)
+project(Project-Caelum)
 cmake_minimum_required(VERSION 2.6)
 
 # CMAKE MODULES

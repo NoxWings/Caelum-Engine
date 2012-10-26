@@ -7,11 +7,7 @@
  *  This file is part of Project-Caelum.
  */
 
+#include "input/motioncontroller.h"
 
-#include "input/motioncontrollerfactory.h"
-
-using namespace Caelum;
-
-int main() {
-    return 0;
+Caelum::MotionController::MotionController() {
 }

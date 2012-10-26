@@ -1,19 +1,19 @@
 /*  Copyright (c) 20012-2013 David G. Miguel <noxwings@gmail.com>
  *  All rights reserved
  *
- *  NAGE (Not Another Game Engine)
+ *  Project-Caelum
  *  (name of the project could be changed in future revisions)
  *
- *  This file is part of NAGE.
+ *  This file is part of Project-Caelum.
  */
 
 #ifndef SRC_INPUT_MOUSELISTENER_H_
 #define SRC_INPUT_MOUSELISTENER_H_
 
-#include "NagePrerequisites.h"
+#include "EnginePrerequisites.h"
 #include <OIS/OISMouse.h>
 
-namespace NAGE {
+namespace Caelum {
 
 /** Mouse Class
     Intermediate class between OIS Mouse Listener and Game Own listeners

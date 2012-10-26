@@ -1,7 +1,7 @@
 set (
   SRC
   main.cpp
-  NagePrerequisites.h
+  EnginePrerequisites.h
   input/inputmanager.cpp
   input/inputmanager.h
   input/keylistener.cpp
@@ -14,13 +14,12 @@ set (
   input/mouselistener.h
   patterns/AbstractFactory.h
   patterns/Singleton.h
-
   )
 
-add_executable(NAGE ${SRC})
-set_target_properties(NAGE PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
+add_executable(Caelum ${SRC})
+set_target_properties(Caelum PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 target_link_libraries(
-  NAGE
+  Caelum
   ${OGRE_LIBRARIES}
   #${PG_LIBRARIES}
   #${SKYX_LIBRARIES}

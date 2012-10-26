@@ -1,10 +1,10 @@
 /*  Copyright (c) 20012-2013 David G. Miguel <noxwings@gmail.com>
  *  All rights reserved
  *
- *  NAGE (Not Another Game Engine)
+ *  Project-Caelum
  *  (name of the project could be changed in future revisions)
  *
- *  This file is part of NAGE.
+ *  This file is part of Project-Caelum.
  */
 
 // Input Header
@@ -16,7 +16,7 @@
 #include <string>
 
 
-using namespace NAGE;
+using namespace Caelum;
 
 // Constructor
 InputManager::InputManager()

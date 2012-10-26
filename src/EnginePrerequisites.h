@@ -1,14 +1,14 @@
 /*  Copyright (c) 20012-2013 David G. Miguel <noxwings@gmail.com>
  *  All rights reserved
  *
- *  NAGE (Not Another Game Engine)
+ *  Project-Caelum
  *  (name of the project could be changed in future revisions)
  *
- *  This file is part of NAGE.
+ *  This file is part of Project-Caelum.
  */
 
-#ifndef SRC_NAGEPREREQUISITES_H_
-#define SRC_NAGEPREREQUISITES_H_
+#ifndef SRC_ENGINEPREREQUISITES_H_
+#define SRC_ENGINEPREREQUISITES_H_
 
 //--------COMMON-DEFINES---------------------------
 
@@ -26,18 +26,20 @@
 
 /// LIBRARY EXPORT DEFINITION
 
-#if defined(NAGE_STATIC_LIB)     // NAGE STATIC LIBRARY (COMPILE & LINK)
-    #define _NAGEExport
-#elif defined(NAGE_DYNAMIC_LIB)  // NAGE DYNAMIC LIBRARY (COMPILE)
-    #define _NAGEExport __declspec(dllexport)
-#else                            // NAGE DYNAMIC LIBRARY (LINK)
-    #define _NAGEExport __declspec(dllimport)
+#if defined(ENGINE_STATIC_LIB)     // Project Caelum Engine STATIC LIBRARY (COMPILE & LINK)
+    #define _ADDExport
+#elif defined(ENGINE_DYNAMIC_LIB)  // Project Caelum Engine DYNAMIC LIBRARY (COMPILE)
+    #define _ADDExport __declspec(dllexport)
+#else                              // Project Caelum Engine DYNAMIC LIBRARY (LINK)
+    #define _ADDExport __declspec(dllimport)
 #endif
 
 /// COMPILATION MODE
-#   if defined(RELEASE_MODE)
+#if defined(RELEASE_MODE)
         // Define release mode for asserts
-#       define NDEGUB
+    #define NDEGUB
+#else
+    #include <stdio.h>
 #   endif
 
 //-------------------------------------------------
@@ -50,5 +52,4 @@
 
 //-------------------------------------------------
 
-
-#endif  // SRC_NAGEPREREQUISITES_H_
+#endif  // SRC_ENGINEPREREQUISITES_H_
