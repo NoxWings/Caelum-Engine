@@ -14,10 +14,11 @@
 ../src/EnginePrerequisites.h
 ../src/main.cpp
 ../CMakeLists.txt
-../src/input/motioncontrollerfactory.h
-../src/input/motioncontrollerfactory.cpp
 ../src/patterns/AbstractFactory.h
-../src/input/motioncontroller.h
-../src/input/motioncontroller.cpp
 ../src/input/psmovecontroller.h
 ../src/input/psmovecontroller.cpp
+../src/input/psmovecontrollerfactory.h
+../src/input/psmovecontrollerfactory.cpp
+
+
+../src/examples/example.c

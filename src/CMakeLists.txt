@@ -6,10 +6,10 @@ set (
   input/inputmanager.h
   input/keylistener.cpp
   input/keylistener.h
-  input/motioncontroller.cpp
-  input/motioncontroller.h
-  input/motioncontrollerfactory.cpp
-  input/motioncontrollerfactory.h
+  input/psmovecontroller.cpp
+  input/psmovecontroller.h
+  input/psmovecontrollerfactory.cpp
+  input/psmovecontrollerfactory.h
   input/mouselistener.cpp
   input/mouselistener.h
   patterns/AbstractFactory.h
@@ -24,6 +24,7 @@ target_link_libraries(
   #${PG_LIBRARIES}
   #${SKYX_LIBRARIES}
   ${OIS_LIBRARIES}
+  ${PSMOVE_LIBRARIES}
   #${MYGUI_LIBRARIES}
   #${ENET_LIBRARIES}
   #${BULLET_LIBRARIES}

@@ -31,8 +31,10 @@
 #include <list>
 #include <map>
 
-#define MAX_TAP_TIME           300   // Time in miliseconds
-#define MAX_DOUBLETAP_INTERVAL 250   // Time in miliseconds
+#define DEFAULT_CLICK_INTERVAL       250
+#define DEFAULT_DOUBLECLICK_INTERVAL 300
+#define DEFAULT_TAP_INTERVAL         250  // Time in miliseconds
+#define DEFAULT_DOUBLETAP_INTERVAL   300  // Time in miliseconds
 
 
 namespace Caelum {
@@ -53,51 +55,64 @@ class InputManager : public Singleton<InputManager>,  // Inheritance
     void removeMouseListener (OIS::MouseListener *mouseListener) {mMouseListeners.remove(mouseListener);}
 
   protected:
-    /// OIS
+    /// SETUP & SHUTDOWN
     void setup();
     void shutdown();
     // fallback emergency method
-    static void _emergency_shutdown() {
-        if (ms_Singleton) InputManager::getSingletonPtr()->shutdown();
-    }
+    static inline void _emergency_shutdown();
+
+    /// Utility
+    Ogre::RenderWindow* getDefaultWindow();
+    void registerRenderListeners();
+    void unregisterRenderListeners();
+
+    /// Input system
+    OIS::InputManager* createInputSystem();
+    OIS::Mouse*    createMouse   (bool buffered);
+    OIS::Keyboard* createKeyboard(bool buffered);
+    OIS::JoyStick* createJoyStick(bool buffered);
+    void destroyInputSystem();
+    void destroyMouse();
+    void destroyKeyBoard();
+    void destroyJoyStick();
 
     /// Update
     virtual void update();
 
     /// Window Event Listener
     virtual void windowResized(Ogre::RenderWindow *rw);
-    virtual void windowClosed(Ogre::RenderWindow *rw);
+    virtual void windowClosed (Ogre::RenderWindow *rw);
 
-    /// Ogre Listeners
+    /// Render Listeners
     virtual bool frameStarted(const Ogre::FrameEvent &evt);
-    virtual bool frameEnded(const Ogre::FrameEvent &evt);
+    virtual bool frameEnded  (const Ogre::FrameEvent &evt);
 
-    /// OIS Listeners
-    virtual bool mouseMoved       (const OIS::MouseEvent &arg);  // basic OIS
-    virtual bool mousePressed     (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // basic OIS
-    virtual bool mouseReleased    (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // basic OIS
-    virtual bool mouseClick       (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // extended OIS
-    virtual bool mouseDoubleClick (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // extended OIS
+    /// Input Listeners
+    virtual bool mouseMoved       (const OIS::MouseEvent &arg);  // basic
+    virtual bool mousePressed     (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // basic
+    virtual bool mouseReleased    (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // basic
+    virtual bool mouseClick       (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // extended
+    virtual bool mouseDoubleClick (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // extended
 
-    virtual bool keyPressed   (const OIS::KeyEvent &arg);  // basic OIS
-    virtual bool keyReleased  (const OIS::KeyEvent &arg);  // basic OIS
-    virtual bool keyTap       (const OIS::KeyEvent &arg);  // extended OIS
-    virtual bool keyDoubleTap (const OIS::KeyEvent &arg);  // extended OIS
+    virtual bool keyPressed   (const OIS::KeyEvent &arg);  // basic
+    virtual bool keyReleased  (const OIS::KeyEvent &arg);  // basic
+    virtual bool keyTap       (const OIS::KeyEvent &arg);  // extended
+    virtual bool keyDoubleTap (const OIS::KeyEvent &arg);  // extended
 
-    virtual bool buttonPressed  (const OIS::JoyStickEvent &arg, int button) {return true;}
-    virtual bool buttonReleased (const OIS::JoyStickEvent &arg, int button) {return true;}
-    virtual bool axisMoved      (const OIS::JoyStickEvent &arg, int axis)   {return true;}
+    virtual bool buttonPressed  (const OIS::JoyStickEvent &arg, int button);  // basic
+    virtual bool buttonReleased (const OIS::JoyStickEvent &arg, int button);  // basic
+    virtual bool axisMoved      (const OIS::JoyStickEvent &arg, int axis);    // basic
 
 
     Ogre::RenderWindow *mWindow;
-
     OIS::InputManager *mInputManager;
-    OIS::Mouse *mMouse;
+    OIS::Mouse    *mMouse;
     OIS::Keyboard *mKeyboard;
-    OIS::JoyStick* mJoy;
+    OIS::JoyStick *mJoy;
 
     std::list<OIS::KeyListener*> mKeyListeners;
     std::list<OIS::MouseListener*> mMouseListeners;
+    std::list<OIS::JoyStickListener*> mJoyListeners;
 
     enum MouseButtonID {
         MB_Left = 0, MB_Right, MB_Middle,

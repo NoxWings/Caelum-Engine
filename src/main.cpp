@@ -8,10 +8,6 @@
  */
 
 
-#include "input/motioncontrollerfactory.h"
-
-using namespace Caelum;
-
 int main() {
     return 0;
 }

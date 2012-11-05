@@ -12,23 +12,23 @@
 
 #include "EnginePrerequisites.h"
 
-#include "motioncontroller.h"
+#include "psmovecontroller.h"
 #include "patterns/AbstractFactory.h"
 #include <list>
 
 
 namespace Caelum {
 
-class MotionControllerFactory : public AbstractFactory<MotionController> {
+class PSMoveControllerFactory : public AbstractFactory<PSMoveController> {
   public:
-    MotionControllerFactory();
-    ~MotionControllerFactory();
+    PSMoveControllerFactory();
+    ~PSMoveControllerFactory();
 
-    virtual MotionController* createInstance(const std::string& name);
-    virtual void destroyInstance(MotionController* instance);
+    virtual PSMoveController* createInstance(const std::string& name);
+    virtual void destroyInstance(PSMoveController* instance);
 
   private:
-    std::list<MotionController*> controllers;
+    std::list<PSMoveController*> controllers;
 };
 
 }  // namespace NAGE

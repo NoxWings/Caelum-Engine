@@ -7,24 +7,24 @@
  *  This file is part of Project-Caelum.
  */
 
-#include "input/motioncontrollerfactory.h"
+#include "input/psmovecontrollerfactory.h"
 
 using namespace Caelum;
 
-MotionControllerFactory::MotionControllerFactory() {
+PSMoveControllerFactory::PSMoveControllerFactory() {
 }
 
-MotionControllerFactory::~MotionControllerFactory() {
+PSMoveControllerFactory::~PSMoveControllerFactory() {
     controllers.clear();
 }
 
-MotionController*
-MotionControllerFactory::createInstance(const std::string& name) {
+PSMoveController*
+PSMoveControllerFactory::createInstance(const std::string& name) {
     // TODO
     return NULL;
 }
 
 void
-MotionControllerFactory::destroyInstance(MotionController *instance) {
+PSMoveControllerFactory::destroyInstance(PSMoveController *instance) {
     // TODO
 }

@@ -13,6 +13,7 @@ PKG_CHECK_MODULES(OGRE    OGRE>=1.7)
 #set(PG_LIBRARIES PagedGeometry)
 #set(SKYX_LIBRARIES SkyX_01)
 PKG_CHECK_MODULES(OIS     OIS)
+PKG_CHECK_MODULES(PSMOVE  psmoveapi)
 #PKG_CHECK_MODULES(MYGUI   MYGUI)
 #PKG_CHECK_MODULES(ENET    libenet)
 #PKG_CHECK_MODULES(BULLET  bullet>=2.7)
@@ -29,6 +30,7 @@ include_directories (
   #${PROJECT_SOURCE_DIR}/include/PagedGeometry
   #${PROJECT_SOURCE_DIR}/include/SkyX
   ${OIS_INCLUDE_DIRS}
+  ${PSMOVE_INCLUDE_DIRS}
   #${MYGUI_INCLUDE_DIRS}
   #${ENET_INCLUDE_DIRS}
   #${BULLET_INCLUDE_DIRS}
@@ -39,7 +41,7 @@ include_directories (
   )
 
 link_directories (
-  ${PROJECT_SOURCE_DIR}/lib
+  ${PROJECT_SOURCE_DIR}/external/lib/
   )
 
 set(CMAKE_CXX_FLAGS "-g -Wall")
