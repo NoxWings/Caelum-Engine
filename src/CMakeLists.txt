@@ -6,12 +6,12 @@ set (
   input/inputmanager.h
   input/keylistener.cpp
   input/keylistener.h
-  input/psmovecontroller.cpp
-  input/psmovecontroller.h
-  input/psmovecontrollerfactory.cpp
-  input/psmovecontrollerfactory.h
   input/mouselistener.cpp
   input/mouselistener.h
+  input/psmove/psmovecontroller.cpp
+  input/psmove/psmovecontroller.h
+  input/psmove/psmovefactory.cpp
+  input/psmove/psmovefactory.h
   patterns/AbstractFactory.h
   patterns/Singleton.h
   )

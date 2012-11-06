@@ -15,10 +15,10 @@
 ../src/main.cpp
 ../CMakeLists.txt
 ../src/patterns/AbstractFactory.h
-../src/input/psmovecontroller.h
-../src/input/psmovecontroller.cpp
-../src/input/psmovecontrollerfactory.h
-../src/input/psmovecontrollerfactory.cpp
+../src/input/psmove/psmovecontroller.h
+../src/input/psmove/psmovecontroller.cpp
+../src/input/psmove/psmovefactory.h
+../src/input/psmove/psmovefactory.cpp
 
 
 ../src/examples/example.c
