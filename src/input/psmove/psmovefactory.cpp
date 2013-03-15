@@ -82,7 +82,7 @@ OIS::Object* PSMoveFactory::createObject(OIS::InputManager *creator,
         mFreePSMoves.pop_front();
 
         // Create the psmove controller
-        PSMoveController* move = new PSMoveController(); // TODO complete call
+        PSMoveController* move = new PSMoveController();  // TODO complete call
 
         // Add the new PSMove for polling
         mInUsePSMoves.push_back(move);
@@ -90,8 +90,6 @@ OIS::Object* PSMoveFactory::createObject(OIS::InputManager *creator,
         return move;
     } else
         OIS_EXCEPT(OIS::E_InputDeviceNonExistant, "No device found which, matches description!");
-
-
 }
 
 void PSMoveFactory::destroyObject(OIS::Object *obj) {
@@ -109,8 +107,10 @@ void PSMoveFactory::destroyObject(OIS::Object *obj) {
     // Recover ID from unused move
     int moveID = obj->getID();
 
-    // Erase psmove from the list
+    // Erase psmove from the active list
     mInUsePSMoves.erase(it);
+
+    // Delete object
     delete obj;
 
     // Return unused controller to pool

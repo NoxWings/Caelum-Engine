@@ -12,14 +12,31 @@
 
 #include "EnginePrerequisites.h"
 
+#include <OIS/OISJoyStick.h>
 #include <psmoveapi/psmove.h>
 
 namespace Caelum {
 
-class PSMoveController {
+// Fordward declaration
+class PSMoveFactory;
+
+//Number of ring buffer events. should be nice sized (the structure is not very big)
+//Will be rounded up to power of two automatically
+#define OIS_PSMOVE_EVENT_BUFFER 32
+
+class PSMoveController : public OIS::JoyStick {
   public:
-    PSMoveController();
+    PSMoveController(OIS::InputManager* creator,  int id, bool buffered,
+                     PSMoveFactory* local_creator);
     ~PSMoveController();
+
+    /// Joystick Interface
+    void setBuffered(bool buffered);
+    void capture();
+
+    OIS::Interface* queryInterface(OIS::Interface::IType type);
+    void _initialize();
+
 
     bool connect();
     void disconnect();
@@ -35,3 +52,40 @@ class PSMoveController {
 }  // namespace Caelum
 
 #endif  // SRC_INPUT_PSMOVECONTROLLER_H_
+
+
+
+            void _threadUpdate();
+
+      protected:
+            void _doButtonCheck(bool new_state, int ois_button, unsigned int &pushed, unsigned int &released);
+            bool _doPOVCheck(const cWiiMote::tButtonStatus &bState, unsigned int &newPosition);
+
+            //! The creator who created us
+            WiiMoteFactoryCreator *mWiiCreator;
+
+            //! Actual WiiMote HID device
+            cWiiMote mWiiMote;
+
+            //! Used to signal thread that remote is ready
+            volatile bool mtInitialized;
+
+            //! Ringbuffer is used to store events from thread and be read from capture
+            WiiMoteRingBuffer mRingBuffer;
+
+            //Following variables are used entirely within threaded context
+            int mtLastButtonStates;
+            unsigned int mtLastPOVState;
+            float mtLastX, mtLastY, mtLastZ;
+            float mtLastNunChuckX, mtLastNunChuckY, mtLastNunChuckZ;
+            int mLastNunChuckXAxis, mLastNunChuckYAxis;
+
+            //Small workaround for slow calibration of wiimote data
+            int _mWiiMoteMotionDelay;
+
+            //Simple rumble force
+            WiiMoteForceFeedback *mRumble;
+      };
+}
+#endif //OIS_WiiMote_H
+#endif

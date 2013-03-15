@@ -11,35 +11,38 @@
 #define SRC_INPUT_MOUSELISTENER_H_
 
 #include "EnginePrerequisites.h"
-#include <OIS/OISMouse.h>
 
 namespace Caelum {
 
-/** Mouse Class
-    Intermediate class between OIS Mouse Listener and Game Own listeners
-    provide the same interface as MouseListener for compatibility, but offers an
-    extra flexibility for other devices such as joysticks used as mouse.
-  */
+//! Button ID for mouse devices
+enum MouseButtonID {
+    MB_Left = 0, MB_Right, MB_Middle,
+    MB_Button3, MB_Button4,	MB_Button5, MB_Button6,	MB_Button7
+};
 
-class MouseListener : public OIS::MouseListener {
+/** Mouse Events */
+class MouseEvent {
   public:
-    MouseListener();
+    MouseEvent() {}
+    virtual ~MouseEvent() {}
+};
 
-    /** Start Listening
-        Adds the currrent object to OIS listener list and starts receiving events
-        @remarks use this only if you want to receive events all the time. Instead
-        you can receive
-      */
-    void startListeningMouse();
+/** MouseListener Class
+    Interface for mouse event reception. In order to recieve mouse events
+    you must implement this interface and register it into the input manager.
+  */
+class MouseListener {
+  public:
+    MouseListener() {}
+    virtual ~MouseListener() {}
 
     /// OIS MouseListeners
-    virtual bool mouseMoved    (const OIS::MouseEvent& evt) { return true;}
-    virtual bool mousePressed  (const OIS::MouseEvent& evt, OIS::MouseButtonID id) { return true;}
-    virtual bool mouseReleased (const OIS::MouseEvent& evt, OIS::MouseButtonID id) { return true;}
-    virtual bool mouseClick    (const OIS::MouseEvent& evt, OIS::MouseButtonID id) { return true;}
-
-  private:
+    virtual bool mouseMoved    (const MouseEvent& evt) = 0;
+    virtual bool mousePressed  (const MouseEvent& evt, MouseButtonID id) = 0;
+    virtual bool mouseReleased (const MouseEvent& evt, MouseButtonID id) = 0;
+    virtual bool mouseClicked  (const MouseEvent& evt, MouseButtonID id) = 0;
 };
-}  // namespace NAGE
+
+}  // namespace Caelum
 
 #endif  // SRC_INPUT_MOUSELISTENER_H_

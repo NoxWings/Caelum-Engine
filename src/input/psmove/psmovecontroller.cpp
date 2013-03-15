@@ -7,17 +7,23 @@
  *  This file is part of Project-Caelum.
  */
 
-#include "psmovecontroller.h"
+#include "input/psmove/psmovecontroller.h"
 
 using namespace Caelum;
 
-PSMoveController::PSMoveController() {
-    mCtype = Conn_Unknown;
+PSMoveController::PSMoveController(OIS::InputManager *creator,
+                                   int id,
+                                   bool buffered,
+                                   PSMoveFactory *local_creator) {
 }
 
 PSMoveController::~PSMoveController() {
     this->disconnect();
 }
+
+
+
+
 
 bool PSMoveController::connect() {
     return false;

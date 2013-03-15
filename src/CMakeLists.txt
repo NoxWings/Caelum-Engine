@@ -2,18 +2,33 @@ set (
   SRC
   main.cpp
   EnginePrerequisites.h
-  input/inputmanager.cpp
-  input/inputmanager.h
-  input/keylistener.cpp
-  input/keylistener.h
-  input/mouselistener.cpp
-  input/mouselistener.h
-  input/psmove/psmovecontroller.cpp
-  input/psmove/psmovecontroller.h
-  input/psmove/psmovefactory.cpp
-  input/psmove/psmovefactory.h
+
+  core/gameengine.cpp
+  core/gameengine.h
+  core/gamestate.cpp
+  core/gamestate.h
+  core/resourcemanager.cpp
+  core/resourcemanager.h
+
+  core/log.h
+  core/logmanager.cpp
+  core/logmanager.h
+  core/ogre/ogrelog.cpp
+  core/ogre/ogrelog.h
+  core/ogre/ogrelogmanager.cpp
+  core/ogre/ogrelogmanager.h
+
+  core/pluginmanager.cpp
+  core/pluginmanager.h
+  core/pluginloader.h
+
+  render/rendermanager.cpp
+  render/rendermanager.h
+  render/renderlistener.h
+
   patterns/AbstractFactory.h
   patterns/Singleton.h
+
   )
 
 add_executable(Caelum ${SRC})

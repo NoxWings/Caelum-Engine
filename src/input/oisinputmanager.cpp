@@ -8,7 +8,7 @@
  */
 
 // Input Header
-#include "input/inputmanager.h"
+#include "input/oisinputmanager.h"
 // Ogre
 #include <OGRE/OgreWindowEventUtilities.h>
 
@@ -19,19 +19,32 @@
 using namespace Caelum;
 
 // Constructor
-InputManager::InputManager()
+OISInputManager::OISInputManager()
     : mWindow(0), mInputManager(0), mMouse(0), mKeyboard(0), mJoy(0) {
     setup();
 
     /* Note: Emergency shutdown of OIS just in case the destructor of this object
      * cannot be deactivated due to any crash of the game */
-    atexit(InputManager::_emergency_shutdown);
+    atexit(OISInputManager::_emergency_shutdown);
 }
 
 // Destructor
-InputManager::~InputManager() {
+OISInputManager::~InputManager() {
     shutdown();
 }
+
+
+/***********************************************
+     UPDATE
+************************************************/
+
+void OISInputManager::update() {
+    // Capturing Devices
+    if (mMouse)    mMouse->capture();
+    if (mKeyboard) mKeyboard->capture();
+    if (mJoy)      mJoy->capture();
+}
+
 
 
 /***********************************************
@@ -39,7 +52,7 @@ InputManager::~InputManager() {
 ************************************************/
 
 // Initialization Method
-void InputManager::setup() {
+void OISInputManager::setup() {
     // 1. Window
     mWindow = getDefaultWindow();
     assert(mWindow);  // This windows must have been created
@@ -58,7 +71,7 @@ void InputManager::setup() {
 }
 
 // Shutdown Method
-void InputManager::shutdown() {
+void OISInputManager::shutdown() {
     if (mInputManager) {
         // 4. Remove listeners
         unregisterRenderListeners();
@@ -76,24 +89,24 @@ void InputManager::shutdown() {
     }
 }
 
-void InputManager::_emergency_shutdown() {
-    if (ms_Singleton) InputManager::getSingletonPtr()->shutdown();
+void OISInputManager::_emergency_shutdown() {
+    if (ms_Singleton) OISInputManager::getSingletonPtr()->shutdown();
 }
 
 /***********************************************
      UTILITY
 ************************************************/
 
-Ogre::RenderWindow* InputManager::getDefaultWindow() {
+Ogre::RenderWindow* OISInputManager::getDefaultWindow() {
     return Ogre::Root::getSingletonPtr()->getAutoCreatedWindow();
 }
 
-void InputManager::registerRenderListeners() {
+void OISInputManager::registerRenderListeners() {
     Ogre::WindowEventUtilities::addWindowEventListener(mWindow, this);  // Window listener
     Ogre::Root::getSingletonPtr()->addFrameListener(this);  // FrameListener
 }
 
-void InputManager::unregisterRenderListeners() {
+void OISInputManager::unregisterRenderListeners() {
     Ogre::Root::getSingletonPtr()->removeFrameListener(this);
     Ogre::WindowEventUtilities::removeWindowEventListener(mWindow, this);
 }
@@ -102,7 +115,7 @@ void InputManager::unregisterRenderListeners() {
      INPUT SYSTEM
 ************************************************/
 
-OIS::InputManager* InputManager::createInputSystem() {
+OIS::InputManager* OISInputManager::createInputSystem() {
     if (!mInputManager) {
         size_t windowHnd = 0;
         std::ostringstream windowHndStr;
@@ -115,7 +128,7 @@ OIS::InputManager* InputManager::createInputSystem() {
     return mInputManager;
 }
 
-OIS::Mouse* InputManager::createMouse(bool buffered) {
+OIS::Mouse* OISInputManager::createMouse(bool buffered) {
     if (!mMouse) {
         try {
             // 1. Create device
@@ -138,7 +151,7 @@ OIS::Mouse* InputManager::createMouse(bool buffered) {
     return mMouse;
 }
 
-OIS::Keyboard* InputManager::createKeyboard(bool buffered) {
+OIS::Keyboard* OISInputManager::createKeyboard(bool buffered) {
     if (!mKeyboard) {
         try {
             // 1. Create device
@@ -154,7 +167,7 @@ OIS::Keyboard* InputManager::createKeyboard(bool buffered) {
     return mKeyboard;
 }
 
-OIS::JoyStick* InputManager::createJoyStick(bool buffered) {
+OIS::JoyStick* OISInputManager::createJoyStick(bool buffered) {
     if (!mJoy) {
         try {
             // 1. Create device
@@ -170,12 +183,12 @@ OIS::JoyStick* InputManager::createJoyStick(bool buffered) {
     return mJoy;
 }
 
-void InputManager::destroyInputSystem() {
+void OISInputManager::destroyInputSystem() {
     OIS::InputManager::destroyInputSystem(mInputManager);
     mInputManager = NULL;
 }
 
-void InputManager::destroyMouse() {
+void OISInputManager::destroyMouse() {
     if (mMouse) {
         mMouseListeners.clear();
         mInputManager->destroyInputObject(mMouse);
@@ -188,7 +201,7 @@ void InputManager::destroyMouse() {
     mMouse = NULL;
 }
 
-void InputManager::destroyKeyBoard() {
+void OISInputManager::destroyKeyBoard() {
     if (mKeyboard) {
         mKeyListeners.clear();
         mInputManager->destroyInputObject(mKeyboard);
@@ -196,7 +209,7 @@ void InputManager::destroyKeyBoard() {
     mKeyboard = NULL;
 }
 
-void InputManager::destroyJoyStick() {
+void OISInputManager::destroyJoyStick() {
     if (mJoy) {
         mJoyListeners.clear();
         mInputManager->destroyInputObject(mJoy);
@@ -206,22 +219,10 @@ void InputManager::destroyJoyStick() {
 
 
 /***********************************************
-     UPDATE
-************************************************/
-
-void InputManager::update() {
-    // Capturing Devices
-    if (mMouse)    mMouse->capture();
-    if (mKeyboard) mKeyboard->capture();
-    if (mJoy)      mJoy->capture();
-}
-
-
-/***********************************************
      WINDOW LISTENERS
 ************************************************/
 
-void InputManager::windowResized(Ogre::RenderWindow* rw) {
+void OISInputManager::windowResized(Ogre::RenderWindow* rw) {
     unsigned int width, height, depth;
     int left, top;
     rw->getMetrics(width, height, depth, left, top);
@@ -232,7 +233,7 @@ void InputManager::windowResized(Ogre::RenderWindow* rw) {
 }
 
 // Destroy OIS before window shutdown (very important under Linux)
-void InputManager::windowClosed(Ogre::RenderWindow* rw) {
+void OISInputManager::windowClosed(Ogre::RenderWindow* rw) {
     if (rw == mWindow)
         shutdown();
 }
@@ -242,14 +243,14 @@ void InputManager::windowClosed(Ogre::RenderWindow* rw) {
      RENDERING LISTENERS
 ************************************************/
 
-bool InputManager::frameStarted(const Ogre::FrameEvent &evt) {
+bool OISInputManager::frameStarted(const Ogre::FrameEvent &evt) {
     // TODO  (check this! dont think the next line is actually necessary)
     if (mWindow->isClosed()) return false;  // Shutdown Every Render
     update();
     return true;
 }
 
-bool InputManager::frameEnded(const Ogre::FrameEvent &evt) {
+bool OISInputManager::frameEnded(const Ogre::FrameEvent &evt) {
     return true;
 }
 
@@ -258,7 +259,7 @@ bool InputManager::frameEnded(const Ogre::FrameEvent &evt) {
      MOUSE LISTENERS
 ************************************************/
 
-bool InputManager::mouseMoved(const OIS::MouseEvent &arg) {
+bool OISInputManager::mouseMoved(const OIS::MouseEvent &arg) {
     // Populate Event
     std::list<OIS::MouseListener*>::iterator iter = mMouseListeners.begin();
     while (iter != mMouseListeners.end()) {
@@ -268,7 +269,7 @@ bool InputManager::mouseMoved(const OIS::MouseEvent &arg) {
     return true;
 }
 
-bool InputManager::mousePressed(const OIS::MouseEvent &arg,
+bool OISInputManager::mousePressed(const OIS::MouseEvent &arg,
                                 OIS::MouseButtonID id) {
     // Reset the specific timer id
     mMouseTimer[id]->reset();
@@ -282,7 +283,7 @@ bool InputManager::mousePressed(const OIS::MouseEvent &arg,
     return true;
 }
 
-bool InputManager::mouseReleased(const OIS::MouseEvent &arg,
+bool OISInputManager::mouseReleased(const OIS::MouseEvent &arg,
                                  OIS::MouseButtonID id) {
     // Populate Event
     std::list<OIS::MouseListener*>::iterator iter = mMouseListeners.begin();
@@ -295,14 +296,14 @@ bool InputManager::mouseReleased(const OIS::MouseEvent &arg,
     return true;
 }
 
-bool InputManager::mouseClick(const OIS::MouseEvent &arg,
+bool OISInputManager::mouseClick(const OIS::MouseEvent &arg,
                               OIS::MouseButtonID id) {
     // TODO
     /* not implemented yet */
     return true;
 }
 
-bool InputManager::mouseDoubleClick(const OIS::MouseEvent &arg,
+bool OISInputManager::mouseDoubleClick(const OIS::MouseEvent &arg,
                                     OIS::MouseButtonID id) {
     // TODO
     /* not implemented yet */
@@ -314,7 +315,7 @@ bool InputManager::mouseDoubleClick(const OIS::MouseEvent &arg,
      KEYBOARD LISTENERS
 ************************************************/
 
-bool InputManager::keyPressed(const OIS::KeyEvent &arg) {
+bool OISInputManager::keyPressed(const OIS::KeyEvent &arg) {
     // Populate Event
     std::list<OIS::KeyListener*>::iterator iter = mKeyListeners.begin();
     while (iter != mKeyListeners.end()) {
@@ -324,7 +325,7 @@ bool InputManager::keyPressed(const OIS::KeyEvent &arg) {
     return true;
 }
 
-bool InputManager::keyReleased(const OIS::KeyEvent &arg) {
+bool OISInputManager::keyReleased(const OIS::KeyEvent &arg) {
     // Populate Event
     std::list<OIS::KeyListener*>::iterator iter = mKeyListeners.begin();
     while (iter != mKeyListeners.end()) {
@@ -334,13 +335,13 @@ bool InputManager::keyReleased(const OIS::KeyEvent &arg) {
     return true;
 }
 
-bool InputManager::keyTap(const OIS::KeyEvent &arg) {
+bool OISInputManager::keyTap(const OIS::KeyEvent &arg) {
     // TODO
     /* not implemented yet */
     return true;
 }
 
-bool InputManager::keyDoubleTap(const OIS::KeyEvent &arg) {
+bool OISInputManager::keyDoubleTap(const OIS::KeyEvent &arg) {
     // TODO
     /* not implemented yet */
     return true;
@@ -351,19 +352,19 @@ bool InputManager::keyDoubleTap(const OIS::KeyEvent &arg) {
      JOYSTICK LISTENERS
 ************************************************/
 
-bool InputManager::buttonPressed(const OIS::JoyStickEvent &arg, int button) {
+bool OISInputManager::buttonPressed(const OIS::JoyStickEvent &arg, int button) {
     // TODO
     /* not implemented yet */
     return true;
 }
 
-bool InputManager::buttonReleased(const OIS::JoyStickEvent &arg, int button) {
+bool OISInputManager::buttonReleased(const OIS::JoyStickEvent &arg, int button) {
     // TODO
     /* not implemented yet */
     return true;
 }
 
-bool InputManager::axisMoved(const OIS::JoyStickEvent &arg, int axis) {
+bool OISInputManager::axisMoved(const OIS::JoyStickEvent &arg, int axis) {
     // TODO
     /* not implemented yet */
     return true;

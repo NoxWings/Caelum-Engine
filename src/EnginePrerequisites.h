@@ -22,6 +22,13 @@
 #include <string>
 
 //-------------------------------------------------
+//--------COMMON-TYPEDEF--------------------------
+
+namespace Caelum {
+  typedef std::string String;
+}
+
+//-------------------------------------------------
 //--------LIB-DEFINES------------------------------
 
 /// LIBRARY EXPORT DEFINITION

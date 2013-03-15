@@ -12,6 +12,9 @@
 
 #include "EnginePrerequisites.h"
 
+
+/** Template Abstract Factory class
+ */
 template<typename T> class AbstractFactory {
   public:
     virtual ~AbstractFactory() {}
