@@ -34,17 +34,18 @@ GameEngine::~GameEngine() {
     destroyLogManager();
 }
 
-void GameEngine::setup(bool initialiseResources) {
+
+void GameEngine::setup() {
     createResourceManager();
+    createPreferenceManager();
     createRenderManager();
     createInputManager();
-    if (initialiseResources)
-        mResourceMan->initialiseAllResources();
 }
 
 void GameEngine::shutdown() {
     destroyInputManager();
     destroyRenderManager();
+    destroyPreferenceManager();
     destroyResourceManager();
 }
 
@@ -64,7 +65,7 @@ void GameEngine::createPluginManager() {
 void GameEngine::createMainSystem() {
     // Create Ogre without loading any default config nor plugins
     new Ogre::Root("","","");
-    mLogManager->createDefaultLog("Caelum.log");
+    mLogManager->createDefaultLog("caelum.log");
     mLogManager->logMessage("******************************");
     mLogManager->logMessage("*** Starting CAELUM-ENGINE ***");
     mLogManager->logMessage("******************************");
@@ -74,10 +75,12 @@ void GameEngine::createResourceManager() {
     mResourceMan = new ResourceManager("../config/resources.cfg");
 }
 
+void GameEngine::createPreferenceManager() {
+    mPreferenceMan = new PreferenceManager("../config/caelum.cfg");
+}
+
 void GameEngine::createRenderManager() {
     mRenderMan = new RenderManager();
-    // register rendering engine as a plugin loader
-    mPluginMan->registerPluginLoader("Render", mRenderMan);
 }
 
 void GameEngine::createInputManager() {
@@ -112,6 +115,11 @@ void GameEngine::destroyMainSystem() {
 void GameEngine::destroyResourceManager() {
     delete mResourceMan;
     mResourceMan = 0;
+}
+
+void GameEngine::destroyPreferenceManager() {
+    delete mPreferenceMan;
+    mPreferenceMan = 0;
 }
 
 void GameEngine::destroyRenderManager() {

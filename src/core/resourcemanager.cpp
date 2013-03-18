@@ -24,7 +24,6 @@ ResourceManager::ResourceManager() {
 ResourceManager::ResourceManager(const String &resourcesFileName) {
     mLog = LogManager::getSingletonPtr()->getDefaultLog();
     setupResources(resourcesFileName);
-
 }
 
 ResourceManager::~ResourceManager() {

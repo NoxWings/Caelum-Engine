@@ -48,7 +48,13 @@
 
 
 ../src/examples/example.c
-../src/util/stringvector.h
+../src/util/stringutils.h
 ../src/core/pluginloader.h
 ../src/util/platformutils.h
 ../src/util/platformutils.cpp
+../src/core/preferencemanager.h
+../src/core/preferencemanager.cpp
+../src/core/configfile.h
+../src/core/configfile.cpp
+../src/render/renderwindow.h
+../src/render/renderwindow.cpp

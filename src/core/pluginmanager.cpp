@@ -33,11 +33,10 @@ bool PluginManager::registerPluginLoader(const String& groupName, PluginLoader* 
                         groupName.c_str(),
                         loader));
         // look for queued plugins
-        PluginQueue::iterator it = mPluginQueue.find(groupName);
-        while (it != mPluginQueue.end()) {
+        for(PluginQueue::iterator it = mPluginQueue.find(groupName);
+            (it != mPluginQueue.end()) && (it->first == groupName);
+            ++it) {
             loader->loadPlugin(it->second);
-            mPluginQueue.erase(it);
-            it = mPluginQueue.find(groupName);
         }
         return true;
     } else {
@@ -46,10 +45,9 @@ bool PluginManager::registerPluginLoader(const String& groupName, PluginLoader* 
 }
 
 bool PluginManager::unregisterPluginLoader(const String &groupName) {
-    PluginLoader *plugin = getPluginLoader(groupName);
-    if ( plugin ) {
-        // if pluginloader found delete the plugin and the map row
-        delete plugin;
+    PluginLoader *loader = getPluginLoader(groupName);
+    if ( loader ) {
+        loader->unloadAllPlugins();
         mPluginLoaders.erase(groupName);
         return true;
     } else {
@@ -71,8 +69,7 @@ bool PluginManager::unregisterPluginLoader(PluginLoader *loader) {
           it != mPluginLoaders.end();
           ++it ) {
         if (it->second == loader) {
-            // plugin found
-            delete it->second;
+            loader->unloadAllPlugins();
             mPluginLoaders.erase(it);
             return true;
         }

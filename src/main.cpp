@@ -12,11 +12,19 @@
 
 int main() {
     Caelum::GameEngine* ce = new Caelum::GameEngine();
+
+    // You can set manual resources here through resourcemanager
+
     // initialise engine
-    ce->setup(false);
+    ce->setup();
+
+    // create manual window if it is not selected to be created automatically
+    // initialize resources manually
+
 
     // shutdown engine
     ce->shutdown();
+
     delete ce;
     return 0;
 }

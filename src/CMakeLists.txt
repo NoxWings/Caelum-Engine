@@ -9,7 +9,13 @@ set (
   core/gamestate.h
   core/resourcemanager.cpp
   core/resourcemanager.h
-
+  core/pluginmanager.cpp
+  core/pluginmanager.h
+  core/pluginloader.h
+  core/configfile.cpp
+  core/configfile.h
+  core/preferencemanager.cpp
+  core/preferencemanager.h
   core/log.h
   core/logmanager.cpp
   core/logmanager.h
@@ -18,9 +24,8 @@ set (
   core/ogre/ogrelogmanager.cpp
   core/ogre/ogrelogmanager.h
 
-  core/pluginmanager.cpp
-  core/pluginmanager.h
-  core/pluginloader.h
+
+
 
   render/rendermanager.cpp
   render/rendermanager.h

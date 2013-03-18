@@ -7,7 +7,6 @@
 #include "core/pluginloader.h"
 #include "core/log.h"
 
-
 namespace Caelum {
 
 /** Forward declarations **/
@@ -18,11 +17,21 @@ class RenderManager : public Singleton<RenderManager>, public PluginLoader {
     RenderManager();
     ~RenderManager();
 
+    /// Render
+    bool setRenderSystem(const String& renderSystem);
+
+    /// Window Events
+    void registerWindowEventListener();
+    void unregisterWindowEventListener();
+
+    /// PluginLoader interface
     void loadPlugin(const String& pluginPath);
     void unloadPlugin(const String& pluginPath);
-    bool isPluginLoaded(const String &pluginPath);
 
   private:
+    void createRenderWindow();
+    void destroyRenderWindow();
+
     GameEngine* mEngine;
     Log* mLog;
 };
