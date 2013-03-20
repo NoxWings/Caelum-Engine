@@ -24,14 +24,17 @@ set (
   core/ogre/ogrelogmanager.cpp
   core/ogre/ogrelogmanager.h
 
-
-
-
   render/rendermanager.cpp
   render/rendermanager.h
   render/renderlistener.h
+  render/renderwindow.cpp
+  render/renderwindow.h
+  render/windowlistener.h
+  render/ogre/ogrerenderwindow.cpp
+  render/ogre/ogrerenderwindow.h
 
   patterns/AbstractFactory.h
+  patterns/ListenerRegistrant.h
   patterns/Singleton.h
 
   )

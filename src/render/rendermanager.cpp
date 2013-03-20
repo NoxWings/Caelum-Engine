@@ -2,6 +2,7 @@
 
 #include <OGRE/Ogre.h>
 #include "core/gameengine.h"
+#include "render/ogre/ogrerenderwindow.h"
 
 using namespace Caelum;
 
@@ -22,11 +23,13 @@ RenderManager::RenderManager() {
     if ( !setRenderSystem(pm->getRenderSystem()) ) {
         mLog->logMessage("ERROR: The selected render system could not be loaded!!");
     }
+    // Create the render window with its asociated event dispatcher
     createRenderWindow();
 }
 
 RenderManager::~RenderManager() {
     mLog->logMessage("*RENDER: Rendering Engine Shutdown");
+    // Destroy the render window
     destroyRenderWindow();
 
     // Shutdown the render system
@@ -56,12 +59,12 @@ bool RenderManager::setRenderSystem(const String &renderSystem) {
     return true;
 }
 
-void RenderManager::registerWindowEventListener() {
-    Ogre::WindowEventUtilities::addWindowEventListener();
+void RenderManager::addWindowEventListener(WindowListener *listener) {
+    mWindow->addListener(listener);
 }
 
-void RenderManager::unregisterWindowEventListener() {
-    Ogre::WindowEventUtilities::removeWindowEventListener();
+void RenderManager::removeWindowEventListener(WindowListener *listener) {
+    mWindow->removeListener(listener);
 }
 
 void RenderManager::loadPlugin(const String &pluginPath) {
@@ -78,26 +81,15 @@ void RenderManager::unloadPlugin(const String &pluginPath) {
 
 void RenderManager::createRenderWindow() {
     mLog->logMessage("*RENDER: Creating Render Window");
-    Ogre::Root *root = Ogre::Root::getSingletonPtr();
-
     PreferenceManager* pm = mEngine->getPreferenceManager();
-    PreferenceManager::VideoOptions *vo = pm->getVideoOptions();
-    Ogre::NameValuePairList nvp;
-    for (PreferenceManager::VideoOptions::iterator it = vo->begin();
-         it != vo->end();
-         ++it) {
-        nvp.insert(Ogre::NameValuePairList::value_type(it->first, it->second));
-    }
-
-    Ogre::RenderWindow* rw = root->createRenderWindow( pm->getWindowName(),
-                                                       pm->getResolutionWidth(),
-                                                       pm->getResolutionHeight(),
-                                                       pm->getFullScreen(),
-                                                       &nvp );
+    mWindow = new OgreRenderWindow(pm->getWindowName(),
+                                   pm->getResolutionWidth(),
+                                   pm->getResolutionHeight(),
+                                   pm->getFullScreen(),
+                                   pm->getVideoOptions());
 }
 
 void RenderManager::destroyRenderWindow() {
     mLog->logMessage("*RENDER: Destroying Render Window");
-    Ogre::Root *root = Ogre::Root::getSingletonPtr();
-    root->destroyRenderTarget(mEngine->getPreferenceManager()->getWindowName());
+    delete mWindow;
 }

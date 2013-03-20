@@ -4,6 +4,8 @@
 #include "EnginePrerequisites.h"
 #include "patterns/Singleton.h"
 #include "core/configfile.h"
+#include "render/renderwindow.h"
+
 
 namespace Caelum {
 
@@ -25,7 +27,6 @@ class PreferenceManager : public Singleton<PreferenceManager> {
     const unsigned int getResolutionWidth()  { return mResolutionW;}
     const unsigned int getResolutionHeight() { return mResoulutionH;}
     const bool getFullScreen()      { return mFullScreen;}
-    typedef std::map<String, String> VideoOptions;
     VideoOptions* getVideoOptions() { return &mVideoOptions;}
 
 

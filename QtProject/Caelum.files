@@ -46,7 +46,6 @@
 ../src/ai/fstate.h
 ../src/ai/fstate.cpp
 
-
 ../src/examples/example.c
 ../src/util/stringutils.h
 ../src/core/pluginloader.h
@@ -58,3 +57,9 @@
 ../src/core/configfile.cpp
 ../src/render/renderwindow.h
 ../src/render/renderwindow.cpp
+../src/render/ogre/ogrerenderwindow.h
+../src/render/ogre/ogrerenderwindow.cpp
+../src/patterns/ListenerRegistrant.h
+../src/render/windowlistener.h
+../src/game/gameobject.h
+../src/game/gameobject.cpp
