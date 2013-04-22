@@ -1,6 +1,16 @@
+/*  Copyright (c) 20012-2013 David G. Miguel <noxwings@gmail.com>
+ *  All rights reserved
+ *
+ *  Project-Caelum
+ *  (name of the project could be changed in future revisions)
+ *
+ *  This file is part of Project-Caelum.
+ */
+
 #ifndef RENDERLISTENER_H
 #define RENDERLISTENER_H
 
+#include "EnginePrerequisites.h"
 
 namespace Caelum {
 
@@ -14,14 +24,14 @@ struct RenderEvent
             This may not be the elapsed time but the average
             elapsed time between recently fired events.
     */
-    float timeSinceLastEvent;
+    Real timeSinceLastEvent;
     /** Elapsed time in seconds since the last event of the same type,
         i.e. time for a complete frame.
         @remarks
             This may not be the elapsed time but the average
             elapsed time between recently fired events of the same type.
     */
-    float timeSinceLastRender;
+    Real timeSinceLastRender;
 };
 
 class RenderListener {

@@ -8,23 +8,25 @@
 
 
 #include "core/gameengine.h"
-#include "core/log.h"
+#include "teststate.h"
+#include "core/logmanager.h"
+
+#include "math/math.h"
+
+using namespace Caelum;
 
 int main() {
-    Caelum::GameEngine* ce = new Caelum::GameEngine();
+    GameEngine *ce = new GameEngine();
+    TestState *testState = new TestState();
 
     // You can set manual resources here through resourcemanager
-
-    // initialise engine
     ce->setup();
-
-    // create manual window if it is not selected to be created automatically
-    // initialize resources manually
-
-
-    // shutdown engine
+    // Initialize custom resources manually
+    ce->getGameManager()->addState("TestState", testState, true);
+    ce->getGameManager()->start();
     ce->shutdown();
 
+    delete testState;
     delete ce;
     return 0;
 }

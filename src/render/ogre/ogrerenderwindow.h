@@ -9,7 +9,7 @@
 
 namespace Caelum {
 
-class OgreRenderWindow : public Ogre::WindowEventListener, public RenderWindow {
+class OgreRenderWindow : public RenderWindow, public Ogre::WindowEventListener {
   public:
     OgreRenderWindow(const String& windowName,
                      unsigned int resolutionW,

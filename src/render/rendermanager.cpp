@@ -1,3 +1,12 @@
+/*  Copyright (c) 20012-2013 David G. Miguel <noxwings@gmail.com>
+ *  All rights reserved
+ *
+ *  Project-Caelum
+ *  (name of the project could be changed in future revisions)
+ *
+ *  This file is part of Project-Caelum.
+ */
+
 #include "render/rendermanager.h"
 
 #include <OGRE/Ogre.h>
@@ -7,7 +16,8 @@
 using namespace Caelum;
 
 
-RenderManager::RenderManager() {
+RenderManager::RenderManager()
+    : mIsRenderLoopActive(false) {
     mEngine = GameEngine::getSingletonPtr();
     // Create Own Log Manager
     mLog = mEngine->getLogManager()->createLog("rendering.log");
@@ -59,6 +69,14 @@ bool RenderManager::setRenderSystem(const String &renderSystem) {
     return true;
 }
 
+void RenderManager::addRenderListener(RenderListener *listener) {
+    this->addItem(listener);
+}
+
+void RenderManager::removeRenderListener(RenderListener *listener) {
+    this->removeItem(listener);
+}
+
 void RenderManager::addWindowEventListener(WindowListener *listener) {
     mWindow->addListener(listener);
 }
@@ -77,6 +95,17 @@ void RenderManager::unloadPlugin(const String &pluginPath) {
     Ogre::Root::getSingletonPtr()->unloadPlugin(pluginPath);
     unregisterSelfPlugin(pluginPath);
     mLog->logMessage("Plugin Unloaded \""+pluginPath+"\"");
+}
+
+GameLayer* RenderManager::createLayer(const String &name, const String &typeName) {
+    GameLayer *layer = new RenderLayer(name, typeName); // create a render layer
+    // help function from LayerManager
+    this->addLayer(layer);
+    return layer;
+}
+
+RenderLayer* RenderManager::createRenderLayer(const String &name, const String &typeName) {
+    return static_cast<RenderLayer*>(this->createLayer(name, typeName));
 }
 
 void RenderManager::createRenderWindow() {

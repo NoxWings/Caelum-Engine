@@ -1,3 +1,12 @@
+/*  Copyright (c) 20012-2013 David G. Miguel <noxwings@gmail.com>
+ *  All rights reserved
+ *
+ *  Project-Caelum
+ *  (name of the project could be changed in future revisions)
+ *
+ *  This file is part of Project-Caelum.
+ */
+
 #ifndef SRC_RENDER_WINDOWLISTENER_H
 #define SRC_RENDER_WINDOWLISTENER_H
 
@@ -9,7 +18,7 @@ namespace Caelum {
 
 class WindowListener {
   public:
-    virtual ~WindowListener();
+    virtual ~WindowListener() {}
 
     /**
     @remarks

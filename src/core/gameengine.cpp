@@ -11,6 +11,7 @@
 
 #include <OGRE/Ogre.h>
 #include "core/ogre/ogrelogmanager.h"
+#include "render/ogre/ogrerendermanager.h"
 
 using namespace Caelum;
 
@@ -40,9 +41,13 @@ void GameEngine::setup() {
     createPreferenceManager();
     createRenderManager();
     createInputManager();
+
+    createGameManager();
 }
 
 void GameEngine::shutdown() {
+    destroyGameManager();
+
     destroyInputManager();
     destroyRenderManager();
     destroyPreferenceManager();
@@ -80,7 +85,7 @@ void GameEngine::createPreferenceManager() {
 }
 
 void GameEngine::createRenderManager() {
-    mRenderMan = new RenderManager();
+    mRenderMan = new OgreRenderManager();
 }
 
 void GameEngine::createInputManager() {
@@ -90,6 +95,9 @@ void GameEngine::createInputManager() {
     mInputMan->addMouseListener(this);*/
 }
 
+void GameEngine::createGameManager() {
+    mGameMan = new GameManager(this);
+}
 
 /// **************************************
 /// DESTRUCTION
@@ -131,4 +139,9 @@ void GameEngine::destroyInputManager() {
     /*mInputMan->removeMouseListener(this);
     mInputMan->removeKeyListener(this);
     delete mInputMan;*/
+}
+
+void GameEngine::destroyGameManager() {
+    delete mGameMan;
+    mGameMan = 0;
 }

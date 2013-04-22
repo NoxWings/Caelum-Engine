@@ -25,6 +25,11 @@
 //--------COMMON-TYPEDEF--------------------------
 
 namespace Caelum {
+#ifdef CAELUM_USE_DOUBLE
+  typedef float Real;
+#else
+  typedef double Real;
+#endif
   typedef std::string String;
 }
 

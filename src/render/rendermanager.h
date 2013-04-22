@@ -1,3 +1,12 @@
+/*  Copyright (c) 20012-2013 David G. Miguel <noxwings@gmail.com>
+ *  All rights reserved
+ *
+ *  Project-Caelum
+ *  (name of the project could be changed in future revisions)
+ *
+ *  This file is part of Project-Caelum.
+ */
+
 #ifndef SRC_RENDER_RENDERMANAGER_H_
 #define SRC_RENDER_RENDERMANAGER_H_
 
@@ -9,19 +18,35 @@
 
 #include "render/renderwindow.h"
 #include "render/windowlistener.h"
+#include "render/renderlistener.h"
+#include "game/layermanager.h"
+#include "render/renderlayer.h"
+#include "patterns/SimpleCollection.h"
 
 namespace Caelum {
 
 /** Forward declarations **/
 class GameEngine;
 
-class RenderManager : public Singleton<RenderManager>, public PluginLoader {
+class RenderManager :
+        public Singleton<RenderManager>,
+        public PluginLoader,
+        public LayerManager,
+        public SimpleCollection<RenderListener*> {
   public:
     RenderManager();
-    ~RenderManager();
+    virtual ~RenderManager();
 
     /// Render
     bool setRenderSystem(const String& renderSystem);
+
+    /// Rendering Loop & Events
+    virtual void startRendering() = 0;
+
+    void addRenderListener(RenderListener* listener);
+    void removeRenderListener(RenderListener* listener);
+
+    bool isRenderLoopActive() { return mIsRenderLoopActive;}
 
     /// Window Events
     void addWindowEventListener(WindowListener* listener);
@@ -31,13 +56,18 @@ class RenderManager : public Singleton<RenderManager>, public PluginLoader {
     void loadPlugin(const String& pluginPath);
     void unloadPlugin(const String& pluginPath);
 
-  private:
+    /// Render Layer Manager
+    GameLayer* createLayer(const String& name, const String& typeName);
+    RenderLayer* createRenderLayer(const String& name, const String& typeName);
+
+  protected:
     void createRenderWindow();
     void destroyRenderWindow();
 
     GameEngine* mEngine;
     Log* mLog;
     RenderWindow* mWindow;
+    bool mIsRenderLoopActive;
 };
 
 }

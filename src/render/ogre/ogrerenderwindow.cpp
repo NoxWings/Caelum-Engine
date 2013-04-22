@@ -50,8 +50,8 @@ void OgreRenderWindow::addViewPort() {
 
 void OgreRenderWindow::windowMoved(Ogre::RenderWindow *rw) {
     if (mRenderWindow == rw) {
-        for (ListenerList::iterator it = mListeners.begin();
-             it != mListeners.end();
+        for (ItemList::iterator it = mItems.begin();
+             it != mItems.end();
              ++it) {
             // here goes the dispatch
             WindowListener* listener = (*it);
@@ -62,8 +62,8 @@ void OgreRenderWindow::windowMoved(Ogre::RenderWindow *rw) {
 
 void OgreRenderWindow::windowResized(Ogre::RenderWindow *rw) {
     if (mRenderWindow == rw) {
-        for (ListenerList::iterator it = mListeners.begin();
-             it != mListeners.end();
+        for (ItemList::iterator it = mItems.begin();
+             it != mItems.end();
              ++it) {
             // here goes the dispatch
             WindowListener* listener = (*it);
@@ -75,8 +75,8 @@ void OgreRenderWindow::windowResized(Ogre::RenderWindow *rw) {
 bool OgreRenderWindow::windowClosing(Ogre::RenderWindow *rw) {
     bool res = false;
     if (mRenderWindow == rw) {
-        for (ListenerList::iterator it = mListeners.begin();
-             it != mListeners.end();
+        for (ItemList::iterator it = mItems.begin();
+             it != mItems.end();
              ++it) {
             // here goes the dispatch
             WindowListener* listener = (*it);
@@ -88,8 +88,8 @@ bool OgreRenderWindow::windowClosing(Ogre::RenderWindow *rw) {
 
 void OgreRenderWindow::windowClosed(Ogre::RenderWindow *rw) {
     if (mRenderWindow == rw) {
-        for (ListenerList::iterator it = mListeners.begin();
-             it != mListeners.end();
+        for (ItemList::iterator it = mItems.begin();
+             it != mItems.end();
              ++it) {
             // here goes the dispatch
             WindowListener* listener = (*it);
@@ -100,8 +100,8 @@ void OgreRenderWindow::windowClosed(Ogre::RenderWindow *rw) {
 
 void OgreRenderWindow::windowFocusChange(Ogre::RenderWindow *rw) {
     if (mRenderWindow == rw) {
-        for (ListenerList::iterator it = mListeners.begin();
-             it != mListeners.end();
+        for (ItemList::iterator it = mItems.begin();
+             it != mItems.end();
              ++it) {
             // here goes the dispatch
             WindowListener* listener = (*it);
