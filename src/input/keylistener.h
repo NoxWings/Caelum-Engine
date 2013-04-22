@@ -11,7 +11,6 @@
 #define SRC_INPUT_KEYLISTENER_H_
 
 #include "EnginePrerequisites.h"
-#include <OIS/OISKeyboard.h>
 
 namespace Caelum {
 

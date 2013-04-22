@@ -24,7 +24,7 @@ class GameLayer {
     const String& getName() {return mName;}
     const String& getTypeName() {return mTypeName;}
 
-    virtual Component* createComponentByTypeName(const String& name, const String& typeName) = 0;
+    //virtual Component* createComponentByTypeName(const String& name, const String& typeName) = 0;
     void destroyComponent(const String& name);
     void destroyComponent(Component *component);
 

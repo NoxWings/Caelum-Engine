@@ -17,7 +17,8 @@ namespace Caelum {
 //! Button ID for mouse devices
 enum MouseButtonID {
     MB_Left = 0, MB_Right, MB_Middle,
-    MB_Button3, MB_Button4,	MB_Button5, MB_Button6,	MB_Button7
+    MB_Button3, MB_Button4,	MB_Button5, MB_Button6,	MB_Button7,
+    NUM_MOUSE_BUTTONS // THIS ONE IS EXTRA ADDED FOR TIMER ALLOC COUNT
 };
 
 /** Mouse Events */
