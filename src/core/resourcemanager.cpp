@@ -17,6 +17,10 @@
 
 using namespace Caelum;
 
+String ResourceManager::DEFAULT_RESOURCE_GROUP_NAME = "General";
+String ResourceManager::INTERNAL_RESOURCE_GROUP_NAME = "Internal";
+String ResourceManager::AUTODETECT_RESOURCE_GROUP_NAME = "Autodetect";
+
 ResourceManager::ResourceManager() {
     mLog = LogManager::getSingletonPtr()->getDefaultLog();
 }

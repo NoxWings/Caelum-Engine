@@ -2,9 +2,8 @@
 
 using namespace Caelum;
 
-FixedComponent::FixedComponent() {
+FixedComponent::FixedComponent(const String& name) : Component(name) {
 }
 
 FixedComponent::~FixedComponent() {
-
 }

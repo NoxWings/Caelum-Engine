@@ -48,7 +48,8 @@ class RenderManager :
 
     bool isRenderLoopActive() { return mIsRenderLoopActive;}
 
-    /// Window Events
+    /// Window & Events
+    RenderWindow* getRenderWindow() {return mWindow;}
     void addWindowEventListener(WindowListener* listener);
     void removeWindowEventListener(WindowListener* listener);
 

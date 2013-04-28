@@ -43,6 +43,8 @@ void GameEngine::setup() {
     createInputManager();
 
     createGameManager();
+    // TODO remove the following line
+    mResourceMan->initialiseAllResources();
 }
 
 void GameEngine::shutdown() {

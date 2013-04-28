@@ -97,3 +97,7 @@
 ../src/math/matrix3.h
 ../src/math/matrix3.cpp
 ../src/math/unitconversor.h
+../src/render/rendercomponent.h
+../src/render/rendercomponent.cpp
+../src/render/entity.h
+../src/render/entity.cpp

@@ -15,6 +15,7 @@
 #include "math/quaternion.h"
 #include "math/vector3.h"
 #include <map>
+#include <vector>
 
 // Forward declaration of ogrescenemanager
 namespace Ogre {
@@ -22,6 +23,9 @@ class SceneNode;
 }
 
 namespace Caelum {
+
+/// Fordward declarations
+class MovableComponent;
 
 class GameObject {
   public:
@@ -31,6 +35,7 @@ class GameObject {
         TS_WORLD
     };
     typedef std::map<String, GameObject*> ObjectMap;
+    typedef std::vector<MovableComponent*> ComponentVector;
 
   public:
     GameObject(const String& name, GameObject *parentObject,
@@ -61,6 +66,7 @@ class GameObject {
     void setOrientation(const Quaternion &q); // TS_PARENT
     void setOrientation(Real w, Real x, Real y, Real z); // TS_PARENT
     void setDerivedOrientation(const Quaternion &q); // TS_WORLD
+    void resetOrientation();
 
     void roll(const Radian &angle, TransformSpace ts = TS_LOCAL);
     void pitch(const Radian &angle, TransformSpace ts = TS_LOCAL);
@@ -75,6 +81,7 @@ class GameObject {
     void setPosition(const Vector3 &pos); // relative to TS_PARENT
     void setPosition(Real x, Real y, Real z); // relative to TS_PARENT
     void setDerivedPosition(const Vector3 &pos); // relative to TS_WORLD
+    void resetPosition();
 
     void move(const Vector3& mov, TransformSpace ts = TS_PARENT);
     void move(Real x, Real y, Real z, TransformSpace ts = TS_PARENT);
@@ -87,14 +94,27 @@ class GameObject {
     void setScale(const Vector3 &scale); // relative to TS_PARENT
     void setScale(Real x, Real y, Real z); // relative to TS_PARENT
 
+    void scale(Real x, Real y, Real z);
+
+    // Component link
+    void attachComponent(MovableComponent *comp);
+    void detachComponent(MovableComponent *comp);
+    void notifyPosition();
+    void notifyOrientation();
+    void notifyScale();
+    Ogre::SceneNode* getNode() {return _mNode;}
+
   protected:
     String mName;
     Vector3 mPosition, mScale, mDerivedPos, mDerivedScale;
     Quaternion mOrientation, mDerivedOri;
 
+    // GameObject hierarchy
     GameObject *mParentObject;
     ObjectMap   mChildObjects;
 
+    // Component container
+    ComponentVector mComponents;
   private:
     Ogre::SceneNode *_mNode;
 
@@ -103,3 +123,4 @@ class GameObject {
 }
 
 #endif // GAMEOBJECT_H
+

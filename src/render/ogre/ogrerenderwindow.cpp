@@ -2,6 +2,7 @@
 
 #include <OGRE/Ogre.h>
 #include "render/windowlistener.h"
+#include "render/cameracomponent.h"
 
 using namespace Caelum;
 
@@ -25,6 +26,8 @@ OgreRenderWindow::OgreRenderWindow(const String& windowName,
                                              resolutionW, resolutionH,
                                              fullscreen,
                                              &nvp );
+    // Viewport
+    mViewport = NULL;
 
     // Add this as a window listener
     // later we will be dispatching every event to our own listeners
@@ -40,8 +43,12 @@ OgreRenderWindow::~OgreRenderWindow() {
     root->destroyRenderTarget(mRenderWindow);
 }
 
-void OgreRenderWindow::addViewPort() {
-    //mRenderWindow->addViewport();
+void OgreRenderWindow::setViewportCamera(CameraComponent *camera) {
+    if (!mViewport) {
+        mViewport = mRenderWindow->addViewport(camera->_getCamera());
+    } else {
+        mViewport->setCamera(camera->_getCamera());
+    }
 }
 
 // ************************************

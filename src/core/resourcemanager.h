@@ -17,6 +17,10 @@ namespace  Caelum {
 
 class ResourceManager {
   public:
+    static String DEFAULT_RESOURCE_GROUP_NAME;
+    static String INTERNAL_RESOURCE_GROUP_NAME;
+    static String AUTODETECT_RESOURCE_GROUP_NAME;
+
     ResourceManager();
     ResourceManager(const String &resourcesFileName);
     ~ResourceManager();

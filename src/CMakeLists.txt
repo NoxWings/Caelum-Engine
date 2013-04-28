@@ -66,6 +66,12 @@ set (
   render/ogre/ogrerendermanager.h
   render/ogre/ogrerenderwindow.cpp
   render/ogre/ogrerenderwindow.h
+  render/cameracomponent.cpp
+  render/cameracomponent.h
+  render/entity.cpp
+  render/entity.h
+  render/rendercomponent.cpp
+  render/rendercomponent.h
   render/renderlayer.cpp
   render/renderlayer.h
   render/renderlistener.h

@@ -11,6 +11,7 @@
 
 #include <OGRE/OgreSceneNode.h>
 #include "math/unitconversor.h"
+#include "game/movablecomponent.h"
 
 using namespace Caelum;
 
@@ -22,6 +23,8 @@ GameObject::GameObject(const String& name, GameObject *parentObject,
     _mNode = parentObject->_mNode->createChildSceneNode(name);
     this->move(position);
     this->rotate(orientation);
+    // Optimization: pre-reserve 6 components space (4 native + 2 for custom);
+    mComponents.reserve(6);
 }
 
 GameObject::GameObject(Ogre::SceneNode *node) {
@@ -139,6 +142,10 @@ void GameObject::setDerivedOrientation(const Quaternion &q) {
     _mNode->_setDerivedOrientation(oq);
 }
 
+void GameObject::resetOrientation() {
+    _mNode->resetOrientation();
+}
+
 void GameObject::roll(const Radian &angle, TransformSpace ts) {
     static Ogre::Radian ograd;
     UnitConversor::RadianToOgreRadian(angle, ograd);
@@ -199,6 +206,10 @@ void GameObject::setDerivedPosition(const Vector3 &pos) {
     _mNode->_setDerivedPosition(ov3);
 }
 
+void GameObject::resetPosition() {
+    _mNode->setPosition(Ogre::Vector3::ZERO);
+}
+
 void GameObject::move(const Vector3& mov, TransformSpace ts) {
     _mNode->translate(mov.x, mov.y, mov.z, Ogre::Node::TransformSpace(ts));
 }
@@ -229,3 +240,55 @@ void GameObject::setScale(Real x, Real y, Real z) {
     _mNode->setScale(x, y, z);
 }
 
+void GameObject::scale(Real x, Real y, Real z) {
+    _mNode->scale(x, y, z);
+}
+
+void GameObject::attachComponent(MovableComponent *comp) {
+    if (comp->isAttached()) {
+        comp->detachFromGameObject();
+    }
+    mComponents.push_back(comp);
+    comp->_setGameObject(this);
+}
+
+void GameObject::detachComponent(MovableComponent *comp) {
+    if (comp->getGameObject() == this) {
+        for (ComponentVector::iterator it = mComponents.begin();
+             it != mComponents.end(); it++) {
+            // Look for the same component
+            if ((*it) == comp) {
+                mComponents.erase(it);
+                break;
+            }
+        }
+        comp->_setGameObject(NULL);
+    }
+}
+
+void GameObject::notifyPosition() {
+    this->getDerivedPosition();  // update mDerivedPos
+    for(ComponentVector::iterator it = mComponents.begin();
+        it != mComponents.end();
+        ++it) {
+        (*it)->updatePosition(mDerivedPos);
+    }
+}
+
+void GameObject::notifyOrientation() {
+    this->getDerivedOrientation();  // update mDerivedOri
+    for(ComponentVector::iterator it = mComponents.begin();
+        it != mComponents.end();
+        ++it) {
+        (*it)->updateOrientation(mDerivedOri);
+    }
+}
+
+void GameObject::notifyScale() {
+    this->getDerivedScale();  // update mDerivedScale
+    for(ComponentVector::iterator it = mComponents.begin();
+        it != mComponents.end();
+        ++it) {
+        (*it)->updateScale(mDerivedScale);
+    }
+}

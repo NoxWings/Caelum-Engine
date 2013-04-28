@@ -14,7 +14,6 @@
 
 namespace Caelum {
 
-
 struct RenderEvent
 {
     /** Elapsed time in seconds since the last event.

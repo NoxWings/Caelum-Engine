@@ -3,15 +3,36 @@
 
 #include "EnginePrerequisites.h"
 
-#include "game/movablecomponent.h"
+#include "render/rendercomponent.h"
+
+namespace Ogre {
+class Camera;
+}
 
 namespace Caelum {
 
-class CameraComponent : public MovableComponent {
+class CameraComponent : public RenderComponent {
   public:
-    CameraComponent();
-  private:
+    CameraComponent(const String& name, RenderLayer* renderlayer);
+    virtual ~CameraComponent();
 
+    const Radian& getFOVy();
+    void setFOVy(const Radian &fov);
+
+    void setPerspectiveProjection();
+    void setOrtographicProjection();
+
+    void setNearClipDistance(Real near);
+    void setFarClipDistance(Real far);
+
+    void setAsActiveCamera();
+
+    friend class OgreRenderWindow;
+  private:
+    Ogre::MovableObject* _getMovableObject();
+    Ogre::Camera* _getCamera();
+
+    Ogre::Camera *mCam;
 };
 
 }

@@ -5,7 +5,9 @@
 
 #include "render/renderwindow.h"
 #include <OGRE/OgreRenderWindow.h>
+#include <OGRE/OgreViewport.h>
 #include <OGRE/OgreWindowEventUtilities.h>
+
 
 namespace Caelum {
 
@@ -18,7 +20,7 @@ class OgreRenderWindow : public RenderWindow, public Ogre::WindowEventListener {
                      VideoOptions* videoOpts);
     virtual ~OgreRenderWindow();
 
-    virtual void addViewPort();
+    virtual void setViewportCamera(CameraComponent *camera);
 
     // ************************************
     // Ogre Window Event Listener Interface
@@ -56,8 +58,11 @@ class OgreRenderWindow : public RenderWindow, public Ogre::WindowEventListener {
     */
     virtual void windowFocusChange(Ogre::RenderWindow* rw);
 
+    Ogre::RenderWindow* getActualWindow() {return mRenderWindow;}
+
   private:
     Ogre::RenderWindow* mRenderWindow;
+    Ogre::Viewport* mViewport;
 };
 
 }

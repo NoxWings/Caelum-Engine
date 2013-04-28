@@ -35,6 +35,8 @@ class Scene {
     //void getPhysicsLayer();
     //void getNetWorkLayer();
 
+    Ogre::SceneManager* getSceneMgr() {return _mScene;}
+
   protected:
     String mName;
     String mTypeName;

@@ -4,6 +4,9 @@
 #include "EnginePrerequisites.h"
 
 #include "game/gamelayer.h"
+#include "render/cameracomponent.h"
+#include "render/entity.h"
+#include "core/resourcemanager.h"
 
 // Forward declaration of ogrescenemanager
 namespace Ogre {
@@ -21,17 +24,22 @@ class RenderLayer : public GameLayer {
 
     /// MOVABLE COMPONENTS
     // TODO
-    // createCamera
+    CameraComponent* createCamera(const String& name);
     // createLight
-    // createEntity
+    Entity* createEntity(const String& name, const String& mesh);
 
     /// FIXED COMPONENTS
     // TODO
     // createTerrain
     // createSkySimulator
-    // createSkyBox
-    // createSkyDome
-    // createSkyPlane
+    void setSkyBox(bool enable, const String& materialName, Real distance=5000,
+                   bool drawFirst=true, const Quaternion &orientation=Quaternion::IDENTITY,
+                   const String& groupName=ResourceManager::DEFAULT_RESOURCE_GROUP_NAME);
+    void setSkyDome(bool enable, const String& materialName, Real curvature = 10,
+                    Real tiling = 8, Real distance = 4000, bool drawFirst = true,
+                    const Quaternion& orientation = Quaternion::IDENTITY,
+                    int xsegments = 16, int ysegments = 16, int ysegments_keep = -1,
+                    const String& groupName = ResourceManager::DEFAULT_RESOURCE_GROUP_NAME);
     // createOceanSimulator
     // createSimpleWater // for pools etc
 

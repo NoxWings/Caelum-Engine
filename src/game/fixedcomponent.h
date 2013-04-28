@@ -9,7 +9,7 @@ namespace Caelum {
 
 class FixedComponent : public Component {
   public:
-    FixedComponent();
+    FixedComponent(const String& name);
     virtual ~FixedComponent();
 };
 

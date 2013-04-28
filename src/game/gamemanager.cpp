@@ -58,8 +58,6 @@ GameManager::~GameManager() {
 }
 
 void GameManager::addState(const String &name, GameState *state, bool initialState) {
-    mLog->logMessage("HOLAA");
-
     // set the gamemanager into the state so it can work
     state->_setGameManager(this);
 
@@ -77,6 +75,8 @@ void GameManager::addState(const String &name, GameState *state, bool initialSta
 
 void GameManager::start() {
     if (mCurrentState) {
+        // Setup the current state
+        mCurrentState->enter();
         mEngine->getRenderManager()->startRendering();
     } else {
         mLog->logMessage("GAMEMANAGER: couldn't' start the main loop because there is no initial state!");
