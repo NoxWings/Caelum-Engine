@@ -12,6 +12,7 @@
 #include <OGRE/Ogre.h>
 #include "core/ogre/ogrelogmanager.h"
 #include "render/ogre/ogrerendermanager.h"
+#include "input/oisinputmanager.h"
 
 using namespace Caelum;
 
@@ -92,9 +93,7 @@ void GameEngine::createRenderManager() {
 
 void GameEngine::createInputManager() {
     // Create and register Input Manager
-    /*mInputMan = new OISInputManager();
-    mInputMan->addKeyListener(this);
-    mInputMan->addMouseListener(this);*/
+    mInputMan = new OISInputManager();
 }
 
 void GameEngine::createGameManager() {
@@ -138,9 +137,7 @@ void GameEngine::destroyRenderManager() {
 }
 
 void GameEngine::destroyInputManager() {
-    /*mInputMan->removeMouseListener(this);
-    mInputMan->removeKeyListener(this);
-    delete mInputMan;*/
+    delete mInputMan;
 }
 
 void GameEngine::destroyGameManager() {

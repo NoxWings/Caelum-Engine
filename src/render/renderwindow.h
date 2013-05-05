@@ -12,6 +12,7 @@
 
 #include "EnginePrerequisites.h"
 
+#include "render/windowlistener.h"
 #include "patterns/SimpleCollection.h"
 
 #include <map>
@@ -23,7 +24,6 @@ class RenderWindow;
 namespace Caelum {
 
 /** Fordward declaration **/
-class WindowListener;
 class CameraComponent;
 typedef std::map<String, String> VideoOptions;
 

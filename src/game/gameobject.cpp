@@ -142,6 +142,36 @@ void GameObject::setDerivedOrientation(const Quaternion &q) {
     _mNode->_setDerivedOrientation(oq);
 }
 
+void GameObject::setDirection(Real x, Real y, Real z, TransformSpace ts, const Vector3 &localDirectionVector) {
+    static Ogre::Vector3 ogreDirectionVector;
+    UnitConversor::Vector3ToOgreVector3(localDirectionVector, ogreDirectionVector);
+    _mNode->setDirection(x,y,z, Ogre::Node::TransformSpace(ts), ogreDirectionVector);
+}
+
+void GameObject::setDirection(const Vector3 &vec, TransformSpace ts, const Vector3 &localDirectionVector) {
+    this->setDirection(vec.x, vec.y, vec.z, ts, localDirectionVector);
+}
+
+void GameObject::lookAt(const Vector3 &point, TransformSpace ts, const Vector3 &localDirectionVector) {
+    Vector3 origin;
+    switch (ts) {
+    case TS_LOCAL:
+        origin = Vector3::ZERO;
+        break;
+    case TS_PARENT:
+        origin = this->getPosition();
+        break;
+    case TS_WORLD:
+        origin = this->getDerivedPosition();
+        break;
+    }
+    this->setDirection(point - origin, ts, localDirectionVector);
+}
+
+void GameObject::lookAt(GameObject *object, const Vector3 &localDirectionVector) {
+    this->lookAt(object->getDerivedPosition(), TS_WORLD, localDirectionVector);
+}
+
 void GameObject::resetOrientation() {
     _mNode->resetOrientation();
 }

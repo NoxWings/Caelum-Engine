@@ -32,8 +32,8 @@ Log* LogManager::createDefaultLog(const String &name,
     // Assign default log
     mainLog = log;
     // Add the log to the maps
-    logs.insert(std::pair<const char*, Log*>(
-                    log->getName().c_str(),
+    logs.insert(std::pair<String, Log*>(
+                    log->getName(),
                     log));
     return log;
 }
@@ -48,8 +48,8 @@ Log* LogManager::createLog(const String& name,
                                  pushToDefaultLog,
                                  fileOutput);
     // Add the log to the maps
-    logs.insert(std::pair<const char*, Log*>(
-                    log->getName().c_str(),
+    logs.insert(std::pair<String, Log*>(
+                    log->getName(),
                     log));
     return log;
 }
@@ -58,7 +58,7 @@ void LogManager::destroyLog(Log* log) {
     // Dereference mainLog
     if (log == mainLog) mainLog = 0;
     // Delete the map position
-    logs.erase(log->getName().c_str());
+    logs.erase(log->getName());
     // Delete the log
     deleteConcreteLog( log );
 }
@@ -72,7 +72,7 @@ Log* LogManager::getDefaultLog() {
 }
 
 Log* LogManager::getLog(const String &name) {
-    LogMap::iterator it = logs.find(name.c_str());
+    LogMap::iterator it = logs.find(name);
     Log* temp = NULL;
     if (it != logs.end()) {
         temp = it->second;

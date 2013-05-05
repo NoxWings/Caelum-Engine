@@ -31,6 +31,14 @@ namespace Caelum {
   typedef double Real;
 #endif
   typedef std::string String;
+
+// Integer formats of fixed bit width
+typedef unsigned int uint32;
+typedef unsigned short uint16;
+typedef unsigned char uint8;
+typedef int int32;
+typedef short int16;
+typedef char int8;
 }
 
 //-------------------------------------------------
@@ -53,6 +61,11 @@ namespace Caelum {
 #else
     #include <stdio.h>
 #   endif
+
+/// ENDIAN DEFINES
+#define CAELUM_ENDIAN_LITTLE 1
+#define CAELUM_ENDIAN_BIG 2
+#define CAELUM_ENDIAN CAELUM_ENDIAN_BIG
 
 //-------------------------------------------------
 //--------MACROS-----------------------------------

@@ -13,40 +13,39 @@
 #include "EnginePrerequisites.h"
 
 #include "patterns/Singleton.h"
+
+#include "core/logmanager.h"
+#include "render/renderwindow.h"
 #include "input/keylistener.h"
 #include "input/mouselistener.h"
 
 namespace Caelum {
 
-class InputManager : public Singleton<InputManager>,
-        public KeyListener, public MouseListener {
+class InputManager : public Singleton<InputManager>, public WindowListener {
   public:
-    InputManager() {}
-    virtual ~InputManager() {}
+    InputManager() { mLog = LogManager::getSingletonPtr()->createLog("input.log");}
+    virtual ~InputManager() { LogManager::getSingletonPtr()->destroyLog(mLog);}
 
     // Add Listener
-    virtual void addKeyListener         (KeyListener*   keyListener) = 0;
-    virtual void addMouseListener       (MouseListener* mouseListener) = 0;
+    virtual void addKeyListener         (Caelum::KeyListener*   keyListener) = 0;
+    virtual void addMouseListener       (Caelum::MouseListener* mouseListener) = 0;
     virtual void addJoystickListener    () = 0;
 
     // Remove Listener
-    virtual void removeKeyListener      (KeyListener*   keyListener) = 0;
-    virtual void removeMouseListener    (MouseListener* mouseListener) = 0;
+    virtual void removeKeyListener      (Caelum::KeyListener*   keyListener) = 0;
+    virtual void removeMouseListener    (Caelum::MouseListener* mouseListener) = 0;
     virtual void removeJoystickListener () = 0;
-
-    // MouseEvents
-    virtual bool mouseMoved    (const MouseEvent& evt) = 0;
-    virtual bool mousePressed  (const MouseEvent& evt, MouseButtonID id) = 0;
-    virtual bool mouseReleased (const MouseEvent& evt, MouseButtonID id) = 0;
-    virtual bool mouseClicked  (const MouseEvent& evt, MouseButtonID id) = 0;
-
-    // KeyEvents
-    virtual bool keyPressed  (const KeyEvent &evt) = 0;
-    virtual bool keyReleased (const KeyEvent &evt) = 0;
-    virtual bool keyTap      (const KeyEvent &evt) = 0;
 
     // Update()
     virtual void update() = 0;
+
+    /// Window Handling
+    /// We may need these events to recalculate the mouse clip space
+    virtual void windowResized(RenderWindow* rw) = 0;
+    virtual void windowClosed(RenderWindow *rw) = 0;
+
+  protected:
+    Log *mLog;
 };
 
 }

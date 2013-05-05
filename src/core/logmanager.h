@@ -55,7 +55,7 @@ class LogManager : public Singleton<LogManager> {
 
     virtual void deleteConcreteLog(Log* log) = 0;
 
-    typedef std::map<const char*, Log*> LogMap;
+    typedef std::map<String, Log*> LogMap;
     LogMap logs;
     Log* mainLog;
 };

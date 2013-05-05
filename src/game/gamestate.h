@@ -41,6 +41,7 @@ class GameState : public EventListener {
     // ***************************
     virtual void enter() = 0;
     virtual void exit() = 0;
+
     virtual void pause() = 0;
     virtual void resume() = 0;
 

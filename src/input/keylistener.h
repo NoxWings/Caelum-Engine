@@ -15,8 +15,7 @@
 namespace Caelum {
 
 //! Keyboard scan codes
-enum KeyCode
-{
+enum KeyCode {
     KC_UNASSIGNED  = 0x00,
     KC_ESCAPE      = 0x01,
     KC_1           = 0x02,
@@ -166,18 +165,19 @@ enum KeyCode
 
 class KeyEvent {
   public:
+    KeyEvent() : key(KC_UNASSIGNED), text(0) {}
     KeyEvent(KeyCode kc, unsigned int txt) : key(kc), text(txt) {}
     virtual ~KeyEvent() {}
 
     //! KeyCode of event
-    const KeyCode key;
+    KeyCode key;
     //! Text character, depends on current TextTranslationMode
     unsigned int text;
 };
 
 class KeyListener {
   public:
-    KeyListener();
+    KeyListener() {}
     virtual ~KeyListener() {}
 
     /// OIS KeyListeners

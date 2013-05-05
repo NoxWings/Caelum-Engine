@@ -18,6 +18,7 @@
 #include "core/resourcemanager.h"
 #include "core/preferencemanager.h"
 #include "render/rendermanager.h"
+#include "input/inputmanager.h"
 #include "game/gamemanager.h"
 
 namespace Caelum {
@@ -37,6 +38,7 @@ class GameEngine : public Singleton<GameEngine> {
     ResourceManager*   getResourceManager()   { return mResourceMan;}
     PreferenceManager* getPreferenceManager() { return mPreferenceMan;}
     RenderManager*     getRenderManager()     { return mRenderMan;}
+    InputManager*      getInputManager()      { return mInputMan;}
     GameManager*       getGameManager()       { return mGameMan;}
 
   private:
@@ -65,8 +67,9 @@ class GameEngine : public Singleton<GameEngine> {
     PluginManager *mPluginMan;
     ResourceManager *mResourceMan;
     PreferenceManager *mPreferenceMan;
+
     RenderManager *mRenderMan;
-    //InputManager *mInputMan;
+    InputManager *mInputMan;
     GameManager *mGameMan;
 };
 

@@ -21,11 +21,36 @@ enum MouseButtonID {
     NUM_MOUSE_BUTTONS // THIS ONE IS EXTRA ADDED FOR TIMER ALLOC COUNT
 };
 
+
+class Axis {
+  public:
+    Axis() {}
+    ~Axis() {}
+
+    //! Absoulte and Relative value components
+    int abs, rel;
+
+    //! Indicates if this Axis only supports Absoulte (ie JoyStick)
+    bool absOnly;
+};
+
 /** Mouse Events */
 class MouseEvent {
   public:
     MouseEvent() {}
     virtual ~MouseEvent() {}
+
+    int width, height;
+    Axis X,Y,Z;
+
+    //! represents all buttons - bit position indicates button down
+    int buttons;
+
+    //! Button down test
+    inline bool buttonDown( MouseButtonID button ) const
+    {
+        return ((buttons & ( 1L << button )) == 0) ? false : true;
+    }
 };
 
 /** MouseListener Class

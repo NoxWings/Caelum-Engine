@@ -66,6 +66,10 @@ class GameObject {
     void setOrientation(const Quaternion &q); // TS_PARENT
     void setOrientation(Real w, Real x, Real y, Real z); // TS_PARENT
     void setDerivedOrientation(const Quaternion &q); // TS_WORLD
+    void setDirection(Real x, Real y, Real z, TransformSpace ts, const Vector3 &localDirectionVector = Vector3::NEGATIVE_UNIT_Z);
+    void setDirection(const Vector3 &vec, TransformSpace ts, const Vector3 &localDirectionVector = Vector3::NEGATIVE_UNIT_Z);
+    void lookAt(const Vector3 &point, TransformSpace ts = TS_LOCAL, const Vector3 &localDirectionVector = Vector3::NEGATIVE_UNIT_Z);
+    void lookAt(GameObject *object, const Vector3 &localDirectionVector = Vector3::NEGATIVE_UNIT_Z);
     void resetOrientation();
 
     void roll(const Radian &angle, TransformSpace ts = TS_LOCAL);

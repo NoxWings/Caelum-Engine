@@ -15,6 +15,7 @@
 #include "patterns/Singleton.h"
 #include "patterns/AssociativeCollection.h"
 #include "game/scene.h"
+#include "core/log.h"
 
 namespace Caelum {
 
@@ -37,6 +38,7 @@ class SceneManager : public Singleton<SceneManager> {
 
     GameEngine *mEngine;
     AssociativeCollection<String, Scene*> mScenes;
+    Log *mLog;
 };
 
 }

@@ -101,3 +101,9 @@
 ../src/render/rendercomponent.cpp
 ../src/render/entity.h
 ../src/render/entity.cpp
+../src/render/colourvalue.h
+../src/render/colourvalue.cpp
+../src/render/light.h
+../src/render/light.cpp
+../src/render/terrain.h
+../src/render/terrain.cpp

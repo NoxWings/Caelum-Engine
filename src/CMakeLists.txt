@@ -47,6 +47,12 @@ set (
   game/scenemanager.cpp
   game/scenemanager.h
 
+  input/inputmanager.h
+  input/keylistener.h
+  input/mouselistener.h
+  input/oisinputmanager.cpp
+  input/oisinputmanager.h
+
   math/matrix3.cpp
   math/matrix3.h
   math/quaternion.cpp
@@ -68,8 +74,12 @@ set (
   render/ogre/ogrerenderwindow.h
   render/cameracomponent.cpp
   render/cameracomponent.h
+  render/colourvalue.cpp
+  render/colourvalue.h
   render/entity.cpp
   render/entity.h
+  render/light.cpp
+  render/light.h
   render/rendercomponent.cpp
   render/rendercomponent.h
   render/renderlayer.cpp

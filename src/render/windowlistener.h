@@ -12,9 +12,10 @@
 
 #include "EnginePrerequisites.h"
 
-#include "render/renderwindow.h"
-
 namespace Caelum {
+
+/** Forward declaration */
+class RenderWindow;
 
 class WindowListener {
   public:

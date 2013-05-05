@@ -10,6 +10,8 @@
 #include "game/scenemanager.h"
 
 #include "core/gameengine.h"
+#include "core/logmanager.h"
+
 
 using namespace Caelum;
 
@@ -23,15 +25,19 @@ SceneManager::SceneManager(GameEngine *engine) {
 
 void SceneManager::_init(GameEngine *engine) {
     mEngine = engine;
+    mLog = mEngine->getLogManager()->getLog("GameManager.log");
+    mLog->logMessage("GAMEMANAGER: Creating Scene Manager");
 }
 
 SceneManager::~SceneManager() {
+    mLog->logMessage("GAMEMANAGER: Destroying Scene Manager");
     Scene* scene;
     String name;
 
     while ( !(mScenes.empty()) ) {
         scene = mScenes.getFirstItem();
         name = scene->getName();
+        mLog->logMessage("GAMEMANAGER: Destroying Scene: "+name);
         delete scene;
         mScenes.removeItem(name);
     }
@@ -44,6 +50,7 @@ Scene* SceneManager::createScene(const String &sceneName, const String &typeName
         scene = new Scene(sceneName, typeName);
         // Add the scene to the dictionary
         mScenes.addItem(sceneName, scene);
+        mLog->logMessage("GAMEMANAGER: New Scene Created: "+sceneName);
     }
     return scene;
 }

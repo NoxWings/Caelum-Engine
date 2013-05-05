@@ -56,9 +56,20 @@ class GameManager : public Singleton<GameManager>, public EventListener {
     void windowFocusChange(RenderWindow* rw) { mCurrentState->windowFocusChange(rw);}
 
     // Rendering Listener Interface
-    bool preRenderUpdate(const RenderEvent& evt)  { return mCurrentState->preRenderUpdate(evt);}
+    bool preRenderUpdate(const RenderEvent& evt);
     bool renderingUpdate(const RenderEvent& evt)  { return mCurrentState->renderingUpdate(evt);}
     bool postRenderUpdate(const RenderEvent& evt) { return mCurrentState->postRenderUpdate(evt);}
+
+    // Mouse Listener
+    bool mouseMoved    (const MouseEvent& evt) { if (mCurrentState) mCurrentState->mouseMoved(evt); return true;}
+    bool mousePressed  (const MouseEvent& evt, MouseButtonID id) { if (mCurrentState) mCurrentState->mousePressed(evt, id); return true;}
+    bool mouseReleased (const MouseEvent& evt, MouseButtonID id) { if (mCurrentState) mCurrentState->mouseReleased(evt, id); return true;}
+    bool mouseClicked  (const MouseEvent& evt, MouseButtonID id) { if (mCurrentState) mCurrentState->mouseClicked(evt, id); return true;}
+
+    // Keyboard
+    bool keyPressed  (const KeyEvent &evt) { if (mCurrentState) mCurrentState->keyPressed(evt); return true;}
+    bool keyReleased (const KeyEvent &evt) { if (mCurrentState) mCurrentState->keyReleased(evt); return true;}
+    bool keyTap      (const KeyEvent &evt) { if (mCurrentState) mCurrentState->keyTap(evt); return true;}
 
   private:
     void _init(GameEngine *engine);

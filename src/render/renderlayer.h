@@ -4,16 +4,43 @@
 #include "EnginePrerequisites.h"
 
 #include "game/gamelayer.h"
+#include "render/colourvalue.h"
 #include "render/cameracomponent.h"
 #include "render/entity.h"
+#include "render/light.h"
 #include "core/resourcemanager.h"
 
 // Forward declaration of ogrescenemanager
 namespace Ogre {
 class SceneManager;
+class ShadowCameraSetup;
 }
 
 namespace Caelum {
+
+enum ShadowProjectionType {
+    SHADOW_PROJECTION_DEFAULT,
+    SHADOW_PROJECTION_FOCUSED,
+    SHADOW_PROJECTION_LISPSM,
+    SHADOW_PROJECTION_PSSM
+};
+
+enum ShadowTechnique {
+    SHADOWTYPE_NONE = 0x00,
+    SHADOWDETAILTYPE_ADDITIVE = 0x01,
+    SHADOWDETAILTYPE_MODULATIVE = 0x02,
+    SHADOWDETAILTYPE_INTEGRATED = 0x04,
+    SHADOWDETAILTYPE_STENCIL = 0x10,
+    SHADOWDETAILTYPE_TEXTURE = 0x20,
+
+    SHADOWTYPE_STENCIL_MODULATIVE = 0x12,
+    SHADOWTYPE_STENCIL_ADDITIVE = 0x11,
+    SHADOWTYPE_TEXTURE_MODULATIVE = 0x22,
+    SHADOWTYPE_TEXTURE_ADDITIVE = 0x21,
+
+    SHADOWTYPE_TEXTURE_ADDITIVE_INTEGRATED = 0x25,
+    SHADOWTYPE_TEXTURE_MODULATIVE_INTEGRATED = 0x26
+};
 
 class RenderLayer : public GameLayer {
   public:
@@ -25,7 +52,7 @@ class RenderLayer : public GameLayer {
     /// MOVABLE COMPONENTS
     // TODO
     CameraComponent* createCamera(const String& name);
-    // createLight
+    Light* createLight(const String& name, Light::LightType type = Light::LT_POINT);
     Entity* createEntity(const String& name, const String& mesh);
 
     /// FIXED COMPONENTS
@@ -43,13 +70,35 @@ class RenderLayer : public GameLayer {
     // createOceanSimulator
     // createSimpleWater // for pools etc
 
-    void update(Real deltaTime);
+    /// RENDER SHADOWING
+    void setAmbientLight(const ColourValue &color);
+    const ColourValue& getAmbientLight();
+    void setShadowTechnique(ShadowTechnique technique);
+    ShadowTechnique getShadowTechnique();
+    void setShadowColour (const ColourValue &colour);
+    const ColourValue& getShadowColour();
+    void setShadowDirectionalLightExtrusionDistance(Real dist);
+    const Real getShadowDirectionalLightExtrusionDistance();
+    void setShadowFarDistance(Real distance);
+    const Real getShadowFarDistance();
+    //void setShadowTextureCountPerLightType();
+    //int getShadowTextureCountPerLightType();
+    void setShadowTextureSettings(unsigned short size, unsigned short count=1);
+    void setShadowCasterRenderBackFaces(bool bf);
+    const bool getShadowCasterRenderBackFaces();
+    void setShadowProjectionType (ShadowProjectionType type=SHADOW_PROJECTION_DEFAULT);
+    const ShadowProjectionType getShadowProjectionType ();
 
+    /// LAYER UPDATE
+    void update(Real deltaTime);
     Ogre::SceneManager* _getSceneManager() {return _mScene;}
 
   private:
     // remember to use addComponent(Component* component); to register a new component
     Ogre::SceneManager *_mScene;
+    ColourValue mAmbientColour, mShadowColour;
+    ShadowProjectionType mShadowCameraType;
+    Ogre::ShadowCameraSetup *_mShadowCamera;
 };
 
 }

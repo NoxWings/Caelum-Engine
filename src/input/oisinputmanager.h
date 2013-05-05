@@ -7,8 +7,8 @@
  *  This file is part of Project-Caelum.
  */
 
-#ifndef SRC_INPUT_INPUTMANAGER_H_
-#define SRC_INPUT_INPUTMANAGER_H_
+#ifndef SRC_INPUT_OISINPUTMANAGER_H_
+#define SRC_INPUT_OISINPUTMANAGER_H_
 
 // OIS
 // Use this define to signify OIS will be used as a DLL
@@ -19,19 +19,14 @@
 // Lib
 #include "EnginePrerequisites.h"
 
-// Patterns
-#include "patterns/Singleton.h"
+// InputManager
+#include "input/inputmanager.h"
 
-// Input Listeners
-#include "keylistener.h"
-#include "mouselistener.h"
-
-// Ogre
-#include <OGRE/Ogre.h>
-#include <OGRE/OgreFrameListener.h>
-#include <OGRE/OgreTimer.h>
+// RenderManager
+#include "render/rendermanager.h"
 
 // C++
+#include <vector>
 #include <list>
 #include <map>
 
@@ -45,21 +40,28 @@ namespace Caelum {
 
 /**
   */
-class OISInputManager : public Singleton<OISInputManager>,  // Inheritance
+class OISInputManager : public InputManager,// Inheritance
         // Listener Interfaces
-        public OIS::KeyListener, public OIS::MouseListener, public OIS::JoyStickListener,
-        public Ogre::WindowEventListener, public Ogre::FrameListener {
+        public OIS::KeyListener, public OIS::MouseListener, public OIS::JoyStickListener {
   public:
-    OISInputManager();
-    ~OISInputManager();
+    typedef std::vector<OIS::JoyStick*> JoyStickVector;
 
-    void addKeyListener      (KeyListener *keyListener)     {mKeyListeners.push_back(keyListener);}
-    void addMouseListener    (MouseListener *mouseListener) {mMouseListeners.push_back(mouseListener);}
-    void removeKeyListener   (KeyListener *keyListener)     {mKeyListeners.remove(keyListener);}
-    void removeMouseListener (MouseListener *mouseListener) {mMouseListeners.remove(mouseListener);}
+    OISInputManager();
+    virtual ~OISInputManager();
+
+    void addKeyListener      (Caelum::KeyListener *keyListener)     {mKeyListeners.push_back(keyListener);}
+    void addMouseListener    (Caelum::MouseListener *mouseListener) {mMouseListeners.push_back(mouseListener);}
+    void addJoystickListener () {}
+    void removeKeyListener   (Caelum::KeyListener *keyListener)     {mKeyListeners.remove(keyListener);}
+    void removeMouseListener (Caelum::MouseListener *mouseListener) {mMouseListeners.remove(mouseListener);}
+    void removeJoystickListener () {}
 
     /// Update
     virtual void update();
+
+    /// Window Modification Handle
+    void windowResized(RenderWindow* rw);
+    void windowClosed(RenderWindow *rw);
 
   protected:
     /// SETUP & SHUTDOWN
@@ -68,63 +70,52 @@ class OISInputManager : public Singleton<OISInputManager>,  // Inheritance
     // fallback emergency method
     static inline void _emergency_shutdown();
 
-    /// Utility
-    Ogre::RenderWindow* getDefaultWindow();
-    void registerRenderListeners();
-    void unregisterRenderListeners();
-
     /// Input system
-    OIS::InputManager* createInputSystem();
+    OIS::InputManager* createInputSystem(bool grabInput);
     OIS::Mouse*    createMouse   (bool buffered);
     OIS::Keyboard* createKeyboard(bool buffered);
-    OIS::JoyStick* createJoyStick(bool buffered);
+    const JoyStickVector& createJoySticks(bool buffered);
     void destroyInputSystem();
     void destroyMouse();
     void destroyKeyBoard();
-    void destroyJoyStick();
-
-    /// Window Event Listener
-    virtual void windowResized(Ogre::RenderWindow *rw);
-    virtual void windowClosed (Ogre::RenderWindow *rw);
-
-    /// Render Listeners
-    virtual bool frameStarted(const Ogre::FrameEvent &evt);
-    virtual bool frameEnded  (const Ogre::FrameEvent &evt);
+    void destroyJoySticks();
 
     /// Input Listeners
     virtual bool mouseMoved       (const OIS::MouseEvent &arg);  // basic
     virtual bool mousePressed     (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // basic
     virtual bool mouseReleased    (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // basic
     virtual bool mouseClick       (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // extended
-    virtual bool mouseDoubleClick (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // extended
+    //virtual bool mouseDoubleClick (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // extended
 
     virtual bool keyPressed   (const OIS::KeyEvent &arg);  // basic
     virtual bool keyReleased  (const OIS::KeyEvent &arg);  // basic
     virtual bool keyTap       (const OIS::KeyEvent &arg);  // extended
-    virtual bool keyDoubleTap (const OIS::KeyEvent &arg);  // extended
+    //virtual bool keyDoubleTap (const OIS::KeyEvent &arg);  // extended
 
     virtual bool buttonPressed  (const OIS::JoyStickEvent &arg, int button);  // basic
     virtual bool buttonReleased (const OIS::JoyStickEvent &arg, int button);  // basic
     virtual bool axisMoved      (const OIS::JoyStickEvent &arg, int axis);    // basic
 
+    void loadMouseEvent(const OIS::MouseEvent &arg);
+    void loadKeyEvent(const OIS::KeyEvent &arg);
+    void loadJoystickEvent(const OIS::JoyStickEvent &arg);
 
-    Ogre::RenderWindow *mWindow;
+
+    RenderWindow *mWindow;
     OIS::InputManager *mInputManager;
     OIS::Mouse    *mMouse;
     OIS::Keyboard *mKeyboard;
-    OIS::JoyStick *mJoy;
+    //JoyStickVector mJoysticks;
 
-    std::list<KeyListener*> mKeyListeners;
-    std::list<MouseListener*> mMouseListeners;
-    std::list<OIS::JoyStickListener*> mJoyListeners;
-
-    enum MouseButtonID {
-        MB_Left = 0, MB_Right, MB_Middle,
-        MB_Button3, MB_Button4, MB_Button5, MB_Button6, MB_Button7,
-        NUM_MOUSE_BUTTONS
-    };
-    Ogre::Timer *mMouseTimer[NUM_MOUSE_BUTTONS];
+    std::list<Caelum::KeyListener*> mKeyListeners;
+    std::list<Caelum::MouseListener*> mMouseListeners;
+    //std::list<OIS::JoyStickListener*> mJoyListeners;
+    Caelum::KeyEvent mKeyEvent;
+    Caelum::MouseEvent mMouseEvent;
+    //JoystickEvent mJoystickEvent;
+    //Ogre::Timer *mMouseTimer[NUM_MOUSE_BUTTONS];
 };
+
 }  // namespace NAGE
 
 #endif  // SRC_INPUT_INPUTMANAGER_H_

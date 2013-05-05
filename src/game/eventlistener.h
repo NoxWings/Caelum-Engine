@@ -14,12 +14,16 @@
 
 #include "render/renderlistener.h"
 #include "render/windowlistener.h"
+#include "input/mouselistener.h"
+#include "input/keylistener.h"
 
 namespace Caelum {
 
 class EventListener :
         public RenderListener,
-        public WindowListener {
+        public WindowListener,
+        public MouseListener,
+        public KeyListener {
   public:
     virtual ~EventListener() {}
 };

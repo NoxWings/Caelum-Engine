@@ -36,12 +36,19 @@ void GameManager::_init(GameEngine *engine) {
     renderMan->addWindowEventListener(this);
     renderMan->addRenderListener(this);
     //   * Input events
+    InputManager* inputMan = mEngine->getInputManager();
+    inputMan->addMouseListener(this);
+    inputMan->addKeyListener(this);
 }
 
 GameManager::~GameManager() {
     mLog->logMessage("GAMEMANAGER: Shutting down game manager");
 
     // Unregister listeners
+    InputManager* inputMan = mEngine->getInputManager();
+    inputMan->removeMouseListener(this);
+    inputMan->removeKeyListener(this);
+
     RenderManager* renderMan = mEngine->getRenderManager();
     renderMan->removeRenderListener(this);
     renderMan->removeWindowEventListener(this);
@@ -49,6 +56,7 @@ GameManager::~GameManager() {
     // destroy de scene manager
     delete mSceneMan;
 
+    mLog->logMessage("GAMEMANAGER: Shut down complete!");
     // destroy log
     GameEngine::getSingletonPtr()->getLogManager()->destroyLog(mLog);
     mLog = 0;
@@ -115,4 +123,8 @@ void GameManager::transitionBack() {
     }
 }
 
+bool GameManager::preRenderUpdate(const RenderEvent &evt) {
+    mEngine->getInputManager()->update();
+    return mCurrentState->preRenderUpdate(evt);
+}
 
