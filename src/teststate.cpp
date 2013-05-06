@@ -26,7 +26,7 @@ void TestState::enter() {
     cam->setAsActiveCamera(); // Set active camera
 
     /// SHADOW CONFIG
-    mScene->getRenderLayer()->setAmbientLight(ColourValue(0.5f, 0.5f, 0.5f));
+    mScene->getRenderLayer()->setAmbientLight(ColourValue(0.2, 0.2, 0.2));
     mScene->getRenderLayer()->setShadowTechnique(Caelum::SHADOWTYPE_TEXTURE_MODULATIVE);
     mScene->getRenderLayer()->setShadowProjectionType(Caelum::SHADOW_PROJECTION_DEFAULT);
     mScene->getRenderLayer()->setShadowFarDistance(400);
@@ -37,6 +37,8 @@ void TestState::enter() {
     Light* sunLight = mScene->getRenderLayer()->createLight("SunLight", Light::LT_DIRECTIONAL);
     sunObj->attachComponent(sunLight);
     sunObj->setDirection(-1, -2, -1, GameObject::TS_WORLD);
+    sunLight->setDiffuseColour(ColourValue::White);
+    sunLight->setSpecularColour(ColourValue(0.4, 0.4, 0.4));
     // Create Sky
     mScene->getRenderLayer()->setSkyDome(true, "Examples/CloudySky", 10, 8, 400);
 

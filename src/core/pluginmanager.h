@@ -24,8 +24,8 @@ class PluginManager : public Singleton<PluginManager> {
 
     /// Plugin loaders
     bool registerPluginLoader(const String& groupName, PluginLoader* loader);
-    bool unregisterPluginLoader(const String& groupName);
-    bool unregisterPluginLoader(PluginLoader* loader);
+    bool unregisterPluginLoader(const String& groupName, bool unload = true);
+    bool unregisterPluginLoader(PluginLoader* loader, bool unload = true);
 
     PluginLoader* getPluginLoader(const String& groupName);
 

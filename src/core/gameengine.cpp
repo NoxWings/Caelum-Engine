@@ -138,6 +138,7 @@ void GameEngine::destroyRenderManager() {
 
 void GameEngine::destroyInputManager() {
     delete mInputMan;
+    mInputMan = 0;
 }
 
 void GameEngine::destroyGameManager() {

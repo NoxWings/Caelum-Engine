@@ -38,7 +38,7 @@ RenderManager::RenderManager()
 }
 
 RenderManager::~RenderManager() {
-    mLog->logMessage("*RENDER: Rendering Engine Shutdown");
+    mLog->logMessage("*RENDER: Rendering Engine Shutting down");
     // Destroy the render window
     destroyRenderWindow();
 
@@ -46,12 +46,14 @@ RenderManager::~RenderManager() {
     Ogre::Root::getSingletonPtr()->shutdown();
 
     // unregister plugin loader
-    mEngine->getPluginManager()->unregisterPluginLoader(this);
+    mEngine->getPluginManager()->unregisterPluginLoader(this, false);
 
+    mLog->logMessage("*RENDER: Rendering Engine Completely Shutdown!");
     // Destroy the rendering log
     mEngine->getLogManager()->destroyLog(mLog);
     mLog = 0;
     mEngine = 0;
+
 }
 
 bool RenderManager::setRenderSystem(const String &renderSystem) {

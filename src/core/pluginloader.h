@@ -23,7 +23,7 @@ namespace Caelum {
  */
 class PluginLoader {
   public:
-    virtual ~PluginLoader() {unloadAllPlugins();}
+    virtual ~PluginLoader() {mPluginsLoaded.clear();}
 
     virtual void loadPlugin(const String& pluginPath) = 0;
     virtual void unloadPlugin(const String& pluginPath) = 0;

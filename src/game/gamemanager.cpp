@@ -56,7 +56,7 @@ GameManager::~GameManager() {
     // destroy de scene manager
     delete mSceneMan;
 
-    mLog->logMessage("GAMEMANAGER: Shut down complete!");
+    mLog->logMessage("GAMEMANAGER: Shutdown complete!");
     // destroy log
     GameEngine::getSingletonPtr()->getLogManager()->destroyLog(mLog);
     mLog = 0;

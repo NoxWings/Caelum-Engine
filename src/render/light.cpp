@@ -17,6 +17,14 @@ Light::~Light() {
     mLayer->_getSceneManager()->destroyLight(mLight);
 }
 
+void Light::setDiffuseColour(const ColourValue &diffuse) {
+    mLight->setDiffuseColour(diffuse.r, diffuse.g, diffuse.b);
+}
+
+void Light::setSpecularColour(const ColourValue &specular) {
+    mLight->setSpecularColour(specular.r, specular.g, specular.b);
+}
+
 void Light::setType(LightType lt) {
     mLightType = lt;
     mLight->setType(Ogre::Light::LightTypes(lt));

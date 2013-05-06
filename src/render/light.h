@@ -4,13 +4,13 @@
 #include "EnginePrerequisites.h"
 
 #include "render/rendercomponent.h"
+#include "render/colourvalue.h"
 
 namespace Ogre {
 class Light;
 }
 
 namespace Caelum {
-
 
 
 class Light : public RenderComponent {
@@ -27,6 +27,9 @@ class Light : public RenderComponent {
   public:
     Light(const String& name, RenderLayer* renderlayer, LightType type = LT_POINT);
     virtual ~Light();
+
+    void setDiffuseColour(const ColourValue& diffuse);
+    void setSpecularColour(const ColourValue& specular);
 
     void setType(LightType lt);
     const LightType getType();

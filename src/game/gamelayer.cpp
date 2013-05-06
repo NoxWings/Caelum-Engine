@@ -1,4 +1,3 @@
-
 #include "game/gamelayer.h"
 
 using namespace Caelum;

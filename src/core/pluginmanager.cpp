@@ -44,10 +44,10 @@ bool PluginManager::registerPluginLoader(const String& groupName, PluginLoader* 
     }
 }
 
-bool PluginManager::unregisterPluginLoader(const String &groupName) {
+bool PluginManager::unregisterPluginLoader(const String &groupName, bool unload) {
     PluginLoader *loader = getPluginLoader(groupName);
     if ( loader ) {
-        loader->unloadAllPlugins();
+        if (unload) loader->unloadAllPlugins();
         mPluginLoaders.erase(groupName);
         return true;
     } else {
@@ -56,25 +56,25 @@ bool PluginManager::unregisterPluginLoader(const String &groupName) {
     }
 }
 
+bool PluginManager::unregisterPluginLoader(PluginLoader *loader, bool unload) {
+    for ( PluginLoaders::iterator it = mPluginLoaders.begin();
+          it != mPluginLoaders.end();
+          ++it ) {
+        if (it->second == loader) {
+            if (unload) loader->unloadAllPlugins();
+            mPluginLoaders.erase(it);
+            return true;
+        }
+    }
+    return false;
+}
+
 void PluginManager::setPluginFolder(const String &folder) {
     mPluginFolder = folder + "/";
 }
 
 const String& PluginManager::getPluginFolder() {
     return mPluginFolder;
-}
-
-bool PluginManager::unregisterPluginLoader(PluginLoader *loader) {
-    for ( PluginLoaders::iterator it = mPluginLoaders.begin();
-          it != mPluginLoaders.end();
-          ++it ) {
-        if (it->second == loader) {
-            loader->unloadAllPlugins();
-            mPluginLoaders.erase(it);
-            return true;
-        }
-    }
-    return false;
 }
 
 PluginLoader* PluginManager::getPluginLoader(const String &groupName) {

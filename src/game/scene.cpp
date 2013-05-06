@@ -18,6 +18,8 @@ Scene::Scene(const String &sceneName, const String& typeName) {
     mName = sceneName;
     mTypeName = typeName;
 
+    mLog = LogManager::getSingletonPtr()->getLog("GameManager.log");
+
     /// Create the default layers
     // Render Layer
     mRenderLayer = RenderManager::getSingletonPtr()->createRenderLayer(sceneName, typeName);

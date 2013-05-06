@@ -25,6 +25,13 @@ RenderLayer::RenderLayer(const String &name, const String typeName)
 }
 
 RenderLayer::~RenderLayer() {
+    Component *comp;
+    while (!mComponents.empty()) {
+        comp = mComponents.getFirstItem();
+        mComponents.removeItem(comp);
+        delete comp;
+    }
+
     Ogre::Root *root = Ogre::Root::getSingletonPtr();
     root->destroySceneManager(_mScene);
 }

@@ -13,6 +13,7 @@
 #include "EnginePrerequisites.h"
 #include "game/gameobject.h"
 #include "render/renderlayer.h"
+#include "core/log.h"
 
 
 namespace Caelum {
@@ -48,6 +49,7 @@ class Scene {
   private:
     // Dereferenced opaque pointer
     Ogre::SceneManager *_mScene;
+    Log *mLog;
 };
 
 }
