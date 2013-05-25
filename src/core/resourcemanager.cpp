@@ -72,6 +72,10 @@ void ResourceManager::setupResources(const String &resourcesFileName) {
     }
 }
 
+bool ResourceManager::resourceExists(const String &resourceGroupName, const String &fileName) {
+    return Ogre::ResourceGroupManager::getSingletonPtr()->resourceExists(resourceGroupName, fileName);
+}
+
 void ResourceManager::initialiseAllResources() {
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 }

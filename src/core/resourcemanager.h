@@ -11,11 +11,13 @@
 #define SRC_CORE_RESOURCEMANAGER_H_
 
 #include "EnginePrerequisites.h"
+
+#include "patterns/Singleton.h"
 #include "core/log.h"
 
 namespace  Caelum {
 
-class ResourceManager {
+class ResourceManager : public Singleton<ResourceManager> {
   public:
     static String DEFAULT_RESOURCE_GROUP_NAME;
     static String INTERNAL_RESOURCE_GROUP_NAME;
@@ -33,6 +35,9 @@ class ResourceManager {
                              bool recursive = false);
     void setupResources(const String &resourcesFileName = "resources.cfg");
 
+    ///
+
+    bool resourceExists(const String &resourceGroupName, const String &fileName);
 
     /// INITIALISE RESOURCES
     void initialiseAllResources();

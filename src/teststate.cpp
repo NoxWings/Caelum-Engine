@@ -5,8 +5,10 @@
 #include <OGRE/OgreSceneManager.h>
 #include <OGRE/OgreCamera.h>
 #include <OGRE/OgreShadowCameraSetup.h>
+#include <OGRE/OgreLight.h>
 
 #include "render/rendermanager.h"
+#include <sstream>
 
 using namespace Caelum;
 
@@ -20,9 +22,10 @@ void TestState::enter() {
     camobj = mScene->createGameObject("CameraObject");
     cam = mScene->getRenderLayer()->createCamera("MainCamera");
     camobj->attachComponent(cam);
-    camobj->setPosition(-115,80,300);
-    movSpeed = 30;
-    rotateSpeed = 3;
+    camobj->setPosition(-115,400,300);
+    camobj->setFixedYawAxis(true);
+    movSpeed = 700;
+    rotateSpeed = 30;
     cam->setAsActiveCamera(); // Set active camera
 
     /// SHADOW CONFIG
@@ -35,42 +38,65 @@ void TestState::enter() {
     /// LIGHT
     GameObject *sunObj = mScene->createGameObject("SunObj");
     Light* sunLight = mScene->getRenderLayer()->createLight("SunLight", Light::LT_DIRECTIONAL);
+    sunLight->_getActualLight()->setDirection(0.55, -1.5, -0.75);
     sunObj->attachComponent(sunLight);
-    sunObj->setDirection(-1, -2, -1, GameObject::TS_WORLD);
+    //Vector3 lightdir(0.55, -0.3, 0.75);
+    //sunObj->setDirection(lightdir, GameObject::TS_WORLD);
     sunLight->setDiffuseColour(ColourValue::White);
     sunLight->setSpecularColour(ColourValue(0.4, 0.4, 0.4));
-    // Create Sky
-    mScene->getRenderLayer()->setSkyDome(true, "Examples/CloudySky", 10, 8, 400);
+
+    /// SKY
+    //mScene->getRenderLayer()->setSkyDome(true, "Examples/CloudySky", 10, 8, 400);
+    /*Caelum::RealisticSky *sky = mScene->getRenderLayer()->createRealisticSky("Sky");
+    sky->setPreset(Caelum::RealisticSky::SKY_THUNDER1);*/
+
+    /// TERRAIN
+    terrain = mScene->getRenderLayer()->createTerrain("terrain", 257, 5000);
+    // Initial terrain group configuration
+    terrain->configureImport(5000, 3, 8, 3000, 20);
+    terrain->configureLight(sunLight);
+    // Texture setting
+    terrain->setTexture(0, 100, "dirt_grayrocky_diffusespecular.dds", "dirt_grayrocky_normalheight.dds");
+    terrain->setTextureHeightBlend(0, 0, 0);
+    terrain->setTexture(1, 30, "grass_green-01_diffusespecular.dds", "grass_green-01_normalheight.dds");
+    terrain->setTextureHeightBlend(1, 40, 40);
+    terrain->setTexture(2, 200, "growth_weirdfungus-03_diffusespecular.dds", "growth_weirdfungus-03_normalheight.dds");
+    terrain->setTextureHeightBlend(2, 120, 20);
+    // Terrain tiles settings
+    terrain->setTile(0,0, "terrain_height.png", false);
+    terrain->loadAllTiles();
+    // Terrain texture blending
+    terrain->blendTerrain();
+    mScene->getPhysicsLayer()->createStaticTerrain(terrain);
 
     /// SCENE OBJECTS
     // Create House
-    GameObject *houseObj = mScene->createGameObject("HouseObject");
+    /*GameObject *houseObj = mScene->createGameObject("HouseObject");
     Entity *houseEnt = mScene->getRenderLayer()->createEntity("House", "tudorhouse.mesh");
+    RigidBody *housePhy = mScene->getPhysicsLayer()->createRigidBody("HousePhy", houseEnt, Vector3::UNIT_SCALE, 0, PhysicsLayer::PHY_SHAPE_TRIMESH);
     houseObj->attachComponent(houseEnt);
-    houseObj->setPosition(-110,-10,-50);
+    houseObj->attachComponent(housePhy);
+    houseObj->setPosition(-110,0,-50);
     houseObj->scale(0.085,0.085,0.085);
-    houseObj->move(0,50,0);
-
+    houseObj->move(0,340,0);
+    houseObj->notifyOrientation();
+    houseObj->notifyPosition();
+    houseObj->notifyScale();*/
+/*
     GameObject *dojoObj = mScene->createGameObject("DojoObject");
     Entity *dojoEnt = mScene->getRenderLayer()->createEntity("Dojo", "ts_dojo.mesh");
+    RigidBody *dojoPhy = mScene->getPhysicsLayer()->createRigidBody("DojoPhy", dojoEnt, Vector3::UNIT_SCALE, 0, PhysicsLayer::PHY_SHAPE_TRIMESH);
     dojoObj->attachComponent(dojoEnt);
+    dojoObj->attachComponent(dojoPhy);
     dojoObj->pitch(Degree(-90));
-    dojoObj->setPosition(20, 5, 20);
-    //camobj->lookAt(dojoObj); // the camera is looking at the dojo
+    dojoObj->setPosition(50, 340, -130);
+    dojoObj->notifyOrientation();
+    dojoObj->notifyPosition();
 
+    camobj->lookAt(dojoObj); // the camera is looking at the dojo
+    */
 
-    /// SHADOW TEST
-    /*Ogre::SceneManager* sceneMgr = mScene->getSceneMgr();
-    Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
-    Ogre::MeshManager::getSingleton().createPlane("ground",
-                                            Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-                                            plane,1500,1500,200,200,true,1,5,5,Ogre::Vector3::UNIT_Z);
-    // create anentity with that plane
-    Ogre::Entity *ent = sceneMgr->createEntity("GroundEntity", "ground");
-    ent->setMaterialName("Examples/GrassFloor");
-    // deactivate its shadows
-    ent->setCastShadows(false);
-    sceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(ent);*/
+    //camobj->lookAt(houseObj);
 }
 
 void TestState::exit() {
@@ -96,11 +122,17 @@ bool TestState::preRenderUpdate(const Caelum::RenderEvent &evt) {
     camobj->pitch(Degree(rotateSpeed * pitchRot * evt.timeSinceLastRender), GameObject::TS_LOCAL);
     yawRot = 0;
     pitchRot = 0;
+
+    mScene->getPhysicsLayer()->update(evt.timeSinceLastRender*3);
     return mContinue;
 }
 
-bool TestState::renderingUpdate(const Caelum::RenderEvent &evt) { return mContinue;}
-bool TestState::postRenderUpdate(const Caelum::RenderEvent &evt) { return mContinue;}
+bool TestState::renderingUpdate(const Caelum::RenderEvent &evt) {
+    return mContinue;
+}
+bool TestState::postRenderUpdate(const Caelum::RenderEvent &evt) {
+    return mContinue;
+}
 
 bool TestState::mouseMoved(const Caelum::MouseEvent& evt) {
     yawRot = -evt.X.rel;
@@ -109,6 +141,21 @@ bool TestState::mouseMoved(const Caelum::MouseEvent& evt) {
 }
 
 bool TestState::mousePressed(const Caelum::MouseEvent& evt, Caelum::MouseButtonID id) {
+    static int barrelcount = 0;       // number to be converted to a string
+    static String count;          // string which will contain the result
+
+    std::ostringstream convert;   // stream used for the conversion
+    convert << barrelcount++;      // insert the textual representation of 'Number' in the characters in the stream
+    count = convert.str(); // set 'Result' to the contents of the stream
+
+    GameObject *barrelObj = mScene->createGameObject(String("barrelobj")+count);
+    Entity *barrelEnt = mScene->getRenderLayer()->createEntity(String("barrel")+count, "Barrel.mesh");
+    RigidBody *barrelPhy = mScene->getPhysicsLayer()->createRigidBody(String("barrelphy")+count, barrelEnt, Vector3::UNIT_SCALE, 1, PhysicsLayer::PHY_SHAPE_CONVEX);
+    barrelObj->attachComponent(barrelEnt);
+    barrelObj->attachComponent(barrelPhy);
+    barrelObj->setPosition(camobj->getPosition());
+    barrelObj->notifyPosition();
+    barrelPhy->applyImpulse(camobj->getOrientation().zAxis() * -50);
     return true;
 }
 
@@ -128,7 +175,25 @@ bool TestState::keyPressed(const Caelum::KeyEvent &evt) {
     else if (evt.key == KC_D) { mov.x = 1;}
     else if (evt.key == KC_SPACE) { mov.y = 1;}
     else if (evt.key == KC_LCONTROL) { mov.y =-1;}
-    else if (evt.key == KC_LSHIFT) { movSpeed = 60;}
+    else if (evt.key == KC_LSHIFT) { movSpeed*=2;}
+    else if (evt.key == KC_1) {mScene->getPhysicsLayer()->setDebugMode(!mScene->getPhysicsLayer()->getDebugMode());}
+    else if (evt.key == KC_2) {
+        POLYGON_MODE newMode;
+        switch (cam->getPolygonMode()) {
+        case PM_POINTS:
+            newMode = PM_WIREFRAME;
+            break;
+        case PM_WIREFRAME:
+            newMode = PM_SOLID;
+            break;
+        case PM_SOLID:
+            newMode = PM_POINTS;
+            break;
+        default:
+            newMode = PM_SOLID;
+        }
+        cam->setPolygonMode( newMode );
+    }
     return true;
 }
 
@@ -139,7 +204,7 @@ bool TestState::keyReleased (const Caelum::KeyEvent &evt) {
     else if (evt.key == KC_D) { mov.x = 0;}
     else if (evt.key == KC_SPACE) { mov.y = 0;}
     else if (evt.key == KC_LCONTROL) { mov.y = 0;}
-    else if (evt.key == KC_LSHIFT) { movSpeed = 30;}
+    else if (evt.key == KC_LSHIFT) { movSpeed/=2;}
     return true;
 }
 

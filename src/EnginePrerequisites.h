@@ -25,9 +25,10 @@
 //--------COMMON-TYPEDEF--------------------------
 
 namespace Caelum {
-#ifdef CAELUM_USE_DOUBLE
+#ifndef CAELUM_USE_DOUBLE
   typedef float Real;
 #else
+  #define BT_USE_DOUBLE_PRECISION
   typedef double Real;
 #endif
   typedef std::string String;
@@ -71,6 +72,9 @@ typedef char int8;
 //--------MACROS-----------------------------------
 
 /// USEFUL MACROS
+
+#define BIT(x) (1<<(x))
+
 #define DISALLOW_COPY_AND_ASSIGN(TypeName) \
   TypeName(const TypeName&);   \
   void operator=(const TypeName&)

@@ -27,10 +27,11 @@ class GameLayer {
     //virtual Component* createComponentByTypeName(const String& name, const String& typeName) = 0;
     void destroyComponent(const String& name);
     void destroyComponent(Component *component);
+    void destroyAllComponents();
 
     virtual void update(Real deltaTime) = 0;
 
-  protected:
+protected:
     void addComponent(Component* component);
 
     String mName;

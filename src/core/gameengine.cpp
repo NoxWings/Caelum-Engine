@@ -42,6 +42,7 @@ void GameEngine::setup() {
     createPreferenceManager();
     createRenderManager();
     createInputManager();
+    createPhysicsManager();
 
     createGameManager();
     // TODO remove the following line
@@ -51,6 +52,7 @@ void GameEngine::setup() {
 void GameEngine::shutdown() {
     destroyGameManager();
 
+    destroyPhysicsManager();
     destroyInputManager();
     destroyRenderManager();
     destroyPreferenceManager();
@@ -96,6 +98,10 @@ void GameEngine::createInputManager() {
     mInputMan = new OISInputManager();
 }
 
+void GameEngine::createPhysicsManager() {
+    mPhyManager = new PhysicsManager();
+}
+
 void GameEngine::createGameManager() {
     mGameMan = new GameManager(this);
 }
@@ -139,6 +145,11 @@ void GameEngine::destroyRenderManager() {
 void GameEngine::destroyInputManager() {
     delete mInputMan;
     mInputMan = 0;
+}
+
+void GameEngine::destroyPhysicsManager() {
+    delete mPhyManager;
+    mPhyManager = 0;
 }
 
 void GameEngine::destroyGameManager() {

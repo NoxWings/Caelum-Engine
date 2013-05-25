@@ -24,7 +24,9 @@ Scene::Scene(const String &sceneName, const String& typeName) {
     // Render Layer
     mRenderLayer = RenderManager::getSingletonPtr()->createRenderLayer(sceneName, typeName);
     // Sound layer
-    // Physis layer
+    // Physics layer
+    mPhysicsLayer = PhysicsManager::getSingletonPtr()->createPhysicsLayer(sceneName, typeName);
+    mPhysicsLayer->setDebugDrawer(mRenderLayer);
     // Net layer
 
     // Create the root object
@@ -39,7 +41,8 @@ Scene::~Scene() {
 
     /// Delete layers
     // Net layer
-    // Physis layer
+    // Physics layer
+    PhysicsManager::getSingletonPtr()->destroyLayer(mPhysicsLayer);
     // Sound layer
     RenderManager::getSingletonPtr()->destroyLayer(mRenderLayer);
 }

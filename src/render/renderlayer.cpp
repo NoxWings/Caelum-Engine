@@ -62,6 +62,17 @@ Entity* RenderLayer::createEntity(const String &name, const String &mesh) {
     return ent;
 }
 
+Terrain* RenderLayer::createTerrain(const String &name, uint16 terrainTileSize, Real terrainWorldSize, Vector3 origin) {
+    Terrain *terrain = new Terrain(name, this, terrainTileSize, terrainWorldSize, origin);
+    this->addComponent(terrain);
+    return terrain;
+}
+
+RealisticSky* RenderLayer::createRealisticSky(const String &name) {
+    RealisticSky *sky = new RealisticSky(name, this);
+    this->addComponent(sky);
+    return sky;
+}
 
 void RenderLayer::setSkyBox(bool enable, const String& materialName, Real distance,
                             bool drawFirst, const Quaternion &orientation, const String& groupName) {

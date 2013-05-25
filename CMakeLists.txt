@@ -5,42 +5,40 @@ cmake_minimum_required(VERSION 2.6)
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake) #cmake find modules location
 
 # REQUIRED LIBRARIES
-message ( STATUS "*CHECKING PKG-CONFIG...")
-find_package(PkgConfig REQUIRED) #Enable PKG-CONFIG suport
+#message ( STATUS "*CHECKING PKG-CONFIG...")
+#find_package(PkgConfig REQUIRED) #Enable PKG-CONFIG suport
 
 message ( STATUS "*CHECKING REQUIRED LIBRARIES...")
-PKG_CHECK_MODULES(OGRE    OGRE-Terrain>=1.7)
+set(OGRE_LIBRARIES OgreMain OgrePaging OgreTerrain OgreRTShaderSystem cg)
+set(OGRE_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/include/OGRE)
 #set(PG_LIBRARIES PagedGeometry)
-#set(SKYX_LIBRARIES SkyX_01)
-PKG_CHECK_MODULES(OIS     OIS)
-PKG_CHECK_MODULES(PSMOVE  psmoveapi)
-#PKG_CHECK_MODULES(MYGUI   MYGUI)
-#PKG_CHECK_MODULES(ENET    libenet)
-#PKG_CHECK_MODULES(BULLET  bullet>=2.7)
-#PKG_CHECK_MODULES(OPENAL  openal>=1.0)
-#PKG_CHECK_MODULES(VORBIS  vorbisfile)
-#PKG_CHECK_MODULES(LUA     lua5.1)
-#PKG_CHECK_MODULES(LUABIND luabind)
+#set(PG_INCLUDE_DIRS )
+set(SKYX_LIBRARIES SkyX)
+set(SKYX_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/include/SKYX)
+#set(MYGUI_LIBRARIES )
+#set(MYGUI_INCLUDE_DIRS )
+set(OIS_LIBRARIES OIS)
+set(OIS_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/include/OIS)
+#set(PSMOVE_LIBRARIES)
+set(BULLET_LIBRARIES BulletSoftBody BulletDynamics BulletCollision LinearMath)
+set(BULLET_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/include/bullet)
+#set(ENET_LIBRARIES)
+#set(OPENAL_LIBRARIES)
+#set(VORBIS_LIBRARIES)
+
 
 # LIBRARY INCLUDES & LINK DIRECTORIES
 include_directories (
   ${PROJECT_SOURCE_DIR}/src
-  ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_SOURCE_DIR}/external/include
   ${OGRE_INCLUDE_DIRS}
-  #${PROJECT_SOURCE_DIR}/include/PagedGeometry
-  #${PROJECT_SOURCE_DIR}/include/SkyX
+  ${SKYX_INCLUDE_DIRS}
   ${OIS_INCLUDE_DIRS}
-  ${PSMOVE_INCLUDE_DIRS}
-  #${MYGUI_INCLUDE_DIRS}
-  #${ENET_INCLUDE_DIRS}
-  #${BULLET_INCLUDE_DIRS}
-  #${OPENAL_INCLUDE_DIRS}
-  #${VORBIS_INCLUDE_DIRS}
-  #${LUA_INCLUDE_DIRS}
-  #${LUABIND_INCLUDE_DIRS}
+  ${BULLET_INCLUDE_DIRS}
   )
 
 link_directories (
+  ${PROJECT_SOURCE_DIR}/external/bin/
   ${PROJECT_SOURCE_DIR}/external/lib/
   )
 

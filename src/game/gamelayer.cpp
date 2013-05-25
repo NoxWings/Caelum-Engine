@@ -3,12 +3,7 @@
 using namespace Caelum;
 
 GameLayer::~GameLayer() {
-    Component *comp;
-    while (!mComponents.empty()) {
-        comp = mComponents.getFirstItem();
-        mComponents.removeItem(comp);
-        delete comp;
-    }
+    destroyAllComponents();
 }
 
 void GameLayer::destroyComponent(const String& name) {
@@ -19,6 +14,15 @@ void GameLayer::destroyComponent(const String& name) {
 void GameLayer::destroyComponent(Component *component) {
     if (mComponents.removeItem(component)) {
         delete component;
+    }
+}
+
+void GameLayer::destroyAllComponents() {
+    Component *comp;
+    while (!mComponents.empty()) {
+        comp = mComponents.getFirstItem();
+        mComponents.removeItem(comp);
+        delete comp;
     }
 }
 

@@ -152,6 +152,10 @@ void GameObject::setDirection(const Vector3 &vec, TransformSpace ts, const Vecto
     this->setDirection(vec.x, vec.y, vec.z, ts, localDirectionVector);
 }
 
+void GameObject::setFixedYawAxis(bool enable) {
+    _mNode->setFixedYawAxis(enable);
+}
+
 void GameObject::lookAt(const Vector3 &point, TransformSpace ts, const Vector3 &localDirectionVector) {
     Vector3 origin;
     switch (ts) {

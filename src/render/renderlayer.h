@@ -8,6 +8,8 @@
 #include "render/cameracomponent.h"
 #include "render/entity.h"
 #include "render/light.h"
+#include "render/realisticsky.h"
+#include "render/terrain.h"
 #include "core/resourcemanager.h"
 
 // Forward declaration of ogrescenemanager
@@ -50,15 +52,16 @@ class RenderLayer : public GameLayer {
     Component* createComponentByTypeName(const String& name, const String& typeName);
 
     /// MOVABLE COMPONENTS
-    // TODO
     CameraComponent* createCamera(const String& name);
     Light* createLight(const String& name, Light::LightType type = Light::LT_POINT);
     Entity* createEntity(const String& name, const String& mesh);
 
     /// FIXED COMPONENTS
-    // TODO
-    // createTerrain
-    // createSkySimulator
+    Terrain* createTerrain(const String& name,
+                           uint16 terrainTileSize, Real terrainWorldSize,
+                           Vector3 origin = Vector3::ZERO);
+    RealisticSky* createRealisticSky(const String& name);
+
     void setSkyBox(bool enable, const String& materialName, Real distance=5000,
                    bool drawFirst=true, const Quaternion &orientation=Quaternion::IDENTITY,
                    const String& groupName=ResourceManager::DEFAULT_RESOURCE_GROUP_NAME);

@@ -1,6 +1,7 @@
 #include "render/ogre/ogrerenderwindow.h"
 
 #include <OGRE/Ogre.h>
+#include <OGRE/OgreCamera.h>
 #include "render/windowlistener.h"
 #include "render/cameracomponent.h"
 
@@ -10,7 +11,7 @@ OgreRenderWindow::OgreRenderWindow(const String& windowName,
                                    unsigned int resolutionW,
                                    unsigned int resolutionH,
                                    bool fullscreen,
-                                   VideoOptions* videoOpts) {
+                                   VideoOptions* videoOpts) : mCamera(0) {
     // Conversion from VideoOptions to NameValuePairList
     // implicit conversion is not posible due to NameValuePairList has custom allocators
     Ogre::NameValuePairList nvp;
@@ -44,6 +45,7 @@ OgreRenderWindow::~OgreRenderWindow() {
 }
 
 void OgreRenderWindow::setViewportCamera(CameraComponent *camera) {
+    mCamera = camera->_getCamera();
     if (!mViewport) {
         mViewport = mRenderWindow->addViewport(camera->_getCamera());
     } else {

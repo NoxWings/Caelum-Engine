@@ -34,6 +34,8 @@ class Light : public RenderComponent {
     void setType(LightType lt);
     const LightType getType();
 
+    Ogre::Light* _getActualLight() { return mLight;}
+
   private:
     Ogre::MovableObject* _getMovableObject();
     Ogre::Light* mLight;

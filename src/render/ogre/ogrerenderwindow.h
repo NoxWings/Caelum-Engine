@@ -59,8 +59,9 @@ class OgreRenderWindow : public RenderWindow, public Ogre::WindowEventListener {
     virtual void windowFocusChange(Ogre::RenderWindow* rw);
 
     Ogre::RenderWindow* getActualWindow() {return mRenderWindow;}
-
+    Ogre::Camera* getActualCamera() {return mCamera;}
   private:
+    Ogre::Camera* mCamera;
     Ogre::RenderWindow* mRenderWindow;
     Ogre::Viewport* mViewport;
 };

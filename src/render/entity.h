@@ -22,7 +22,9 @@ enum SkeletonAnimationBlendMode {
 
 class Entity : public RenderComponent {
   public:
+    /** Default entity constructor */
     Entity(const String& name, const String& mesh, RenderLayer* renderlayer);
+    //Entity(const String &name, RenderLayer* renderlayer, Vector3 planeNormal);
     virtual ~Entity();
 
     // Animation
@@ -35,7 +37,7 @@ class Entity : public RenderComponent {
     void setShadowCast(bool enable);
     bool getShadowCast();
 
-
+    Ogre::Entity* _getEntity();
   private:
     Ogre::MovableObject* _getMovableObject();
 

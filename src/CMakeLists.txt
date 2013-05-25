@@ -3,7 +3,6 @@ set (
   main.cpp
   teststate.cpp
   teststate.h
-
   EnginePrerequisites.h
 
   core/ogre/ogrelog.cpp
@@ -68,6 +67,19 @@ set (
   patterns/SimpleCollection.h
   patterns/Singleton.h
 
+  physics/btogre/BtOgre.cpp
+  physics/btogre/BtOgreExtras.h
+  physics/btogre/BtOgreGP.h
+  physics/btogre/BtOgrePG.h
+  physics/btogre/bulletrigidbody.cpp
+  physics/btogre/bulletrigidbody.h
+  physics/physicslayer.cpp
+  physics/physicslayer.h
+  physics/physicsmanager.cpp
+  physics/physicsmanager.h
+  physics/rigidbody.cpp
+  physics/rigidbody.h
+
   render/ogre/ogrerendermanager.cpp
   render/ogre/ogrerendermanager.h
   render/ogre/ogrerenderwindow.cpp
@@ -80,6 +92,8 @@ set (
   render/entity.h
   render/light.cpp
   render/light.h
+  render/realisticsky.cpp
+  render/realisticsky.h
   render/rendercomponent.cpp
   render/rendercomponent.h
   render/renderlayer.cpp
@@ -89,6 +103,8 @@ set (
   render/rendermanager.h
   render/renderwindow.cpp
   render/renderwindow.h
+  render/terrain.cpp
+  render/terrain.h
   render/windowlistener.h
   )
 
@@ -97,15 +113,13 @@ set_target_properties(Caelum PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURC
 target_link_libraries(
   Caelum
   ${OGRE_LIBRARIES}
+  ${SKYX_LIBRARIES}
   #${PG_LIBRARIES}
-  #${SKYX_LIBRARIES}
   ${OIS_LIBRARIES}
   ${PSMOVE_LIBRARIES}
   #${MYGUI_LIBRARIES}
   #${ENET_LIBRARIES}
-  #${BULLET_LIBRARIES}
+  ${BULLET_LIBRARIES}
   #${OPENAL_LIBRARIES}
   #${VORBIS_LIBRARIES}
-  #${LUA_LIBRARIES}
-  #${LUABIND_LIBRARIES}
   )

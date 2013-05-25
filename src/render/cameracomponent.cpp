@@ -13,7 +13,7 @@ CameraComponent::CameraComponent(const String& name, RenderLayer *renderlayer)
     mCam = mLayer->_getSceneManager()->createCamera(name);
 
     // Frustum Clip
-    mCam->setFarClipDistance(300000);
+    mCam->setFarClipDistance(30000);
     mCam->setNearClipDistance(0.25);
 
     // Reset Position & Orientation
@@ -48,11 +48,19 @@ void CameraComponent::setOrtographicProjection() {
 }
 
 void CameraComponent::setNearClipDistance(Real near) {
-    mCam->setNearClipDistance(near);
+    mCam->setNearClipDistance(Ogre::Real(near));
 }
 
 void CameraComponent::setFarClipDistance(Real far) {
-    mCam->setFarClipDistance(far);
+    mCam->setFarClipDistance(Ogre::Real(far));
+}
+
+void CameraComponent::setPolygonMode(POLYGON_MODE mode) {
+    mCam->setPolygonMode(Ogre::PolygonMode(mode));
+}
+
+POLYGON_MODE CameraComponent::getPolygonMode() {
+    return POLYGON_MODE(mCam->getPolygonMode());
 }
 
 void CameraComponent::setAsActiveCamera() {

@@ -13,6 +13,7 @@
 #include "EnginePrerequisites.h"
 #include "game/gameobject.h"
 #include "render/renderlayer.h"
+#include "physics/physicslayer.h"
 #include "core/log.h"
 
 
@@ -33,7 +34,7 @@ class Scene {
 
     // TODO Default component manager getFunctions
     RenderLayer* getRenderLayer() {return mRenderLayer;}
-    //void getPhysicsLayer();
+    PhysicsLayer* getPhysicsLayer() {return mPhysicsLayer;}
     //void getNetWorkLayer();
 
     Ogre::SceneManager* getSceneMgr() {return _mScene;}
@@ -45,6 +46,7 @@ class Scene {
 
     // provisional
     RenderLayer *mRenderLayer;
+    PhysicsLayer *mPhysicsLayer;
 
   private:
     // Dereferenced opaque pointer

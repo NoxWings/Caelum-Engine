@@ -11,6 +11,12 @@ class Camera;
 
 namespace Caelum {
 
+enum POLYGON_MODE {
+    PM_POINTS = 1, /// Only points are rendered.
+    PM_WIREFRAME = 2, /// Wireframe models are rendered.
+    PM_SOLID = 3 /// Solid polygons are rendered.
+};
+
 class CameraComponent : public RenderComponent {
   public:
     CameraComponent(const String& name, RenderLayer* renderlayer);
@@ -24,6 +30,9 @@ class CameraComponent : public RenderComponent {
 
     void setNearClipDistance(Real near);
     void setFarClipDistance(Real far);
+
+    void setPolygonMode(POLYGON_MODE mode);
+    POLYGON_MODE getPolygonMode();
 
     void setAsActiveCamera();
 

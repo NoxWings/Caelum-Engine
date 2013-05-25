@@ -11,6 +11,7 @@ Light::Light(const String &name, RenderLayer *renderlayer, LightType type)
     : RenderComponent(name, renderlayer) {
     mLight = mLayer->_getSceneManager()->createLight(name);
     this->setType(type);
+    this->setDiffuseColour(ColourValue::White);
 }
 
 Light::~Light() {

@@ -19,6 +19,7 @@
 
 namespace Ogre {
 class RenderWindow;
+class Camera;
 }
 
 namespace Caelum {
@@ -38,6 +39,7 @@ class RenderWindow  : public SimpleCollection<WindowListener*>{
     virtual void setViewportCamera(CameraComponent *camera) = 0;
 
     virtual Ogre::RenderWindow* getActualWindow() = 0;
+    virtual Ogre::Camera* getActualCamera() = 0;
 };
 
 }

@@ -37,6 +37,7 @@ class TestState : public Caelum::GameState {
     bool mContinue;
     Caelum::GameObject *camobj;
     Caelum::CameraComponent *cam;
+    Caelum::Terrain *terrain;
 
     Caelum::Vector3 mov;
     Caelum::Degree yawRot, pitchRot;

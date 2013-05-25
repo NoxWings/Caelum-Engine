@@ -1,4 +1,5 @@
-/usr/include/OGRE
-/usr/include/OIS
-/usr/local/include/psmoveapi
 ../src/
+../external/include/
+../external/include/OGRE/
+../external/include/OIS/
+../external/include/bullet/

@@ -9,6 +9,7 @@
 #include <OGRE/OgreQuaternion.h>
 #include "math/vector3.h"
 #include <OGRE/OgreVector3.h>
+#include <bullet/btBulletCollisionCommon.h>
 
 namespace Caelum {
 
@@ -46,6 +47,22 @@ class UnitConversor {
         dest.x = src.x;
         dest.y = src.y;
         dest.z = src.z;
+    }
+
+    static inline Ogre::Vector3 toOgre(const Vector3 &v) {
+        return Ogre::Vector3(v.x, v.y, v.z);
+    }
+
+    static inline Ogre::Quaternion toOgre(const Quaternion &q) {
+        return Ogre::Quaternion(q.w, q.x, q.y, q.z);
+    }
+
+    static inline btVector3 toBullet(const Vector3 &v) {
+        return btVector3(v.x, v.y, v.z);
+    }
+
+    static inline btQuaternion toBullet(const Quaternion &q) {
+        return btQuaternion(q.x, q.y, q.z, q.w);
     }
 
   private:
