@@ -67,6 +67,7 @@ class Terrain : public FixedComponent {
                                   Real blendMinHeight, Real blendFadeDistance);
 
     // TERRAIN TILE
+    void loadTile(long x, long y, const String &terrainFile);
     void setTile(long x, long y, const String &terrainTexture, bool forcedLoad = false);
     void loadAllTiles();
 

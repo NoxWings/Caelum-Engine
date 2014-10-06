@@ -34,12 +34,16 @@ class Light : public RenderComponent {
     void setType(LightType lt);
     const LightType getType();
 
+    void setDirection(const Vector3& dir);
+    const Vector3 &getDirection();
+
     Ogre::Light* _getActualLight() { return mLight;}
 
   private:
     Ogre::MovableObject* _getMovableObject();
     Ogre::Light* mLight;
     LightType mLightType;
+    Vector3 mDirection;
 };
 
 }

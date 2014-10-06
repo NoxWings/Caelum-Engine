@@ -20,12 +20,13 @@
 namespace Ogre {
 class RenderWindow;
 class Camera;
+class Viewport;
 }
 
 namespace Caelum {
 
 /** Fordward declaration **/
-class CameraComponent;
+class Camera;
 typedef std::map<String, String> VideoOptions;
 
 class RenderWindow  : public SimpleCollection<WindowListener*>{
@@ -36,10 +37,11 @@ class RenderWindow  : public SimpleCollection<WindowListener*>{
     void addListener(WindowListener* listener) {this->addItem(listener);}
     void removeListener(WindowListener* listener) {this->removeItem(listener);}
 
-    virtual void setViewportCamera(CameraComponent *camera) = 0;
+    virtual void setViewportCamera(Camera *camera) = 0;
 
     virtual Ogre::RenderWindow* getActualWindow() = 0;
     virtual Ogre::Camera* getActualCamera() = 0;
+    virtual Ogre::Viewport* getActualViewport() = 0;
 };
 
 }

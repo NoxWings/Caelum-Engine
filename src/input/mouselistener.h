@@ -12,6 +12,8 @@
 
 #include "EnginePrerequisites.h"
 
+#include "input/inputcommon.h"
+
 namespace Caelum {
 
 //! Button ID for mouse devices
@@ -19,19 +21,6 @@ enum MouseButtonID {
     MB_Left = 0, MB_Right, MB_Middle,
     MB_Button3, MB_Button4,	MB_Button5, MB_Button6,	MB_Button7,
     NUM_MOUSE_BUTTONS // THIS ONE IS EXTRA ADDED FOR TIMER ALLOC COUNT
-};
-
-
-class Axis {
-  public:
-    Axis() {}
-    ~Axis() {}
-
-    //! Absoulte and Relative value components
-    int abs, rel;
-
-    //! Indicates if this Axis only supports Absoulte (ie JoyStick)
-    bool absOnly;
 };
 
 /** Mouse Events */
@@ -47,8 +36,7 @@ class MouseEvent {
     int buttons;
 
     //! Button down test
-    inline bool buttonDown( MouseButtonID button ) const
-    {
+    inline bool buttonDown( MouseButtonID button ) const {
         return ((buttons & ( 1L << button )) == 0) ? false : true;
     }
 };

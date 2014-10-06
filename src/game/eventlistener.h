@@ -16,6 +16,7 @@
 #include "render/windowlistener.h"
 #include "input/mouselistener.h"
 #include "input/keylistener.h"
+#include "input/joylistener.h"
 
 namespace Caelum {
 
@@ -23,7 +24,8 @@ class EventListener :
         public RenderListener,
         public WindowListener,
         public MouseListener,
-        public KeyListener {
+        public KeyListener,
+        public JoyStickListener {
   public:
     virtual ~EventListener() {}
 };

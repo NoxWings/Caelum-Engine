@@ -6,6 +6,10 @@ GameLayer::~GameLayer() {
     destroyAllComponents();
 }
 
+Component *GameLayer::getComponentByName(const String &name) {
+    return mComponents.findItem(name);
+}
+
 void GameLayer::destroyComponent(const String& name) {
     delete mComponents.findItem(name);
     mComponents.removeItem(name);
@@ -18,9 +22,8 @@ void GameLayer::destroyComponent(Component *component) {
 }
 
 void GameLayer::destroyAllComponents() {
-    Component *comp;
     while (!mComponents.empty()) {
-        comp = mComponents.getFirstItem();
+        Component *comp = mComponents.getFirstItem();
         mComponents.removeItem(comp);
         delete comp;
     }

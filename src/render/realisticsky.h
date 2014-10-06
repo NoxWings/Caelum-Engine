@@ -14,6 +14,7 @@ class BasicController;
 namespace Caelum {
 
 class RenderLayer;
+class Camera;
 
 // ********************************
 // Vector2 and Vector 4 Workaround
@@ -184,15 +185,16 @@ struct SkySettings {
 };
 
 static SkySettings mPresets[] = {
-    // Sunset
-    SkySettings(Vector3(8.85f, 7.5f, 20.5f),  -0.08f, 0, AtmosphereOptions(9.77501f, 10.2963f, 0.01f, 0.0022f, 0.000675f, 30, Vector3(0.57f, 0.52f, 0.44f), -0.991f, 3, 4), false, true, 300, false, Radian(270), Vector3(0.63f,0.63f,0.7f), Vector4(0.35, 0.2, 0.92, 0.1), Vector4(0.4, 0.7, 0, 0), Vector2(0.8,1)),
+    // Desert
+//    SkySettings(Vector3(8.85f, 7.5f, 20.5f),  -0.08f, 0, AtmosphereOptions(9.77501f, 10.2963f, 0.01f, 0.0022f, 0.000675f, 30, Vector3(0.57f, 0.52f, 0.44f), -0.991f, 3, 4), false, true, 300, false, Radian(270), Vector3(0.63f,0.63f,0.7f), Vector4(0.35, 0.2, 0.92, 0.1), Vector4(0.4, 0.7, 0, 0), Vector2(0.8,1)),
+    SkySettings(Vector3(9.5f, 7.5f, 20.5f),  -0.08f, 0, AtmosphereOptions(9.77501f, 10.2963f, 0.01f, 0.0022f, 0.000675f, 30, Vector3(0.57f, 0.52f, 0.44f), -0.991f, 3, 4), false, true, 300, false, Radian(270), Vector3(0.63f,0.63f,0.7f), Vector4(0.35, 0.2, 0.92, 0.1), Vector4(0.4, 0.7, 0, 0), Vector2(0.2, 0.8)),
     // Clear
     SkySettings(Vector3(17.16f, 7.5f, 20.5f), 0, 0, AtmosphereOptions(9.77501f, 10.2963f, 0.01f, 0.0017f, 0.000675f, 30, Vector3(0.57f, 0.54f, 0.44f), -0.991f, 2.5f, 4), false),
     // Thunderstorm 1
     SkySettings(Vector3(12.23, 7.5f, 20.5f),  0, 0, AtmosphereOptions(9.77501f, 10.2963f, 0.01f, 0.00545f, 0.000375f, 30, Vector3(0.55f, 0.54f, 0.52f), -0.991f, 1, 4), false, true, 300, false, Radian(0), Vector3(0.63f,0.63f,0.7f), Vector4(0.25, 0.4, 0.5, 0.1), Vector4(0.45, 0.3, 0.6, 0.1), Vector2(1,1), true, 0.5, Vector3(1,0.976,0.92), 2),
     // Thunderstorm 2
     SkySettings(Vector3(10.23, 7.5f, 20.5f),  0, 0, AtmosphereOptions(9.77501f, 10.2963f, 0.01f, 0.00545f, 0.000375f, 30, Vector3(0.55f, 0.54f, 0.52f), -0.991f, 0.5, 4), false, true, 300, false, Radian(0), Vector3(0.63f,0.63f,0.7f), Vector4(0, 0.02, 0.34, 0.24), Vector4(0.29, 0.3, 0.6, 1), Vector2(1,1), true, 0.5, Vector3(0.95,1,1), 2),
-    // Desert
+    // Sunset
     SkySettings(Vector3(7.59f, 7.5f, 20.5f), 0, -0.8f, AtmosphereOptions(9.77501f, 10.2963f, 0.01f, 0.0072f, 0.000925f, 30, Vector3(0.71f, 0.59f, 0.53f), -0.997f, 2.5f, 1), true),
     // Night
     SkySettings(Vector3(21.5f, 7.5, 20.5), 0.03, -0.25, AtmosphereOptions(), true)
@@ -201,11 +203,11 @@ static SkySettings mPresets[] = {
 class RealisticSky : public FixedComponent {
   public:
     enum SKY_PRESET_ENUM {
-        SKY_SUNSET = 0,
+        SKY_DESERT = 0,
         SKY_CLEAR,
         SKY_THUNDER1,
         SKY_THUNDER2,
-        SKY_DESERT,
+        SKY_SUNSET,
         SKY_NIGHT,
         SKY_NUM_PRESETS
     };
@@ -215,9 +217,13 @@ class RealisticSky : public FixedComponent {
     virtual ~RealisticSky();
 
     void setTimeMultiplier(Real timeMul);
+    Real getTimeMultiplier();
     void setPreset(SKY_PRESET_ENUM presetIndex);
     void setSettings(const SkySettings& settings);
 
+    void unregisterCamera(Camera *c);
+
+    SkyX::SkyX* getSkyX() {return mSky;}
   private:
     RenderLayer* mLayer;
     SkyX::SkyX* mSky;

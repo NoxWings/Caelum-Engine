@@ -2,6 +2,7 @@
 
 #include "render/renderlayer.h"
 #include "render/rendermanager.h"
+#include "render/cameracomponent.h"
 #include "math/unitconversor.h"
 #include <OGRE/Ogre.h>
 #include <SKYX/SkyX.h>
@@ -13,9 +14,11 @@ RealisticSky::RealisticSky(const String &name, RenderLayer *renderLayer)
     mLayer = renderLayer;
 
     // Sky creation
-    mBasicController = new SkyX::BasicController();
+    mBasicController = new SkyX::BasicController(false);
     mSky = new SkyX::SkyX(mLayer->_getSceneManager(), mBasicController);
     mSky->create();
+    mSky->setLightingMode(SkyX::SkyX::LM_LDR);
+
     mBasicController->setMoonPhase(0.75f);
 
     // Adding clouds
@@ -33,14 +36,36 @@ RealisticSky::RealisticSky(const String &name, RenderLayer *renderLayer)
 }
 
 RealisticSky::~RealisticSky() {
+    LogManager::getSingleton().logMessage("SKY COMPONENT: Removing Volumetric Clouds");
+    // Remove VClouds
+    if (mSky->getVCloudsManager()->isCreated()) {
+        mSky->getVCloudsManager()->remove();
+    }
+    LogManager::getSingleton().logMessage("SKY COMPONENT: Removing Regular Clouds");
+    // Remove cloud layers
+    if (!mSky->getCloudsManager()->getCloudLayers().empty()) {
+        mSky->getCloudsManager()->removeAll();
+    }
+    LogManager::getSingleton().logMessage("SKY COMPONENT: Freeing resources VClouds");
+    // Free SkyX Resources
+    mSky->remove();
+    LogManager::getSingleton().logMessage("SKY COMPONENT: unregistering window listener");
     RenderManager::getSingletonPtr()->getRenderWindow()->getActualWindow()->removeListener(mSky);
+    LogManager::getSingleton().logMessage("SKY COMPONENT: unregistering frame listener");
     Ogre::Root::getSingletonPtr()->removeFrameListener(mSky);
+    LogManager::getSingleton().logMessage("SKY COMPONENT: deleting skyx");
     delete mSky;
+    LogManager::getSingleton().logMessage("SKY COMPONENT: deleting controller");
     delete mBasicController;
+    LogManager::getSingleton().logMessage("SKY COMPONENT: Everything deleted");
 }
 
 void RealisticSky::setTimeMultiplier(Real timeMul) {
     mSky->setTimeMultiplier(timeMul);
+}
+
+Real RealisticSky::getTimeMultiplier() {
+    return mSky->getTimeMultiplier();
 }
 
 void RealisticSky::setPreset(SKY_PRESET_ENUM presetIndex) {
@@ -147,4 +172,8 @@ void RealisticSky::setSettings(const SkySettings& settings) {
     }
 
     mSky->update(0);
+}
+
+void RealisticSky::unregisterCamera(Camera *c) {
+    mSky->getVCloudsManager()->getVClouds()->unregisterCamera(c->_getCamera());
 }

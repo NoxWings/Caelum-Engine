@@ -186,6 +186,6 @@ class KeyListener {
     virtual bool keyTap      (const KeyEvent &evt) = 0;
 };
 
-}  // namespace NAGE
+}  // namespace Caelum
 
 #endif  // SRC_INPUT_KEYLISTENER_H_

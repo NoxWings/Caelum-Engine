@@ -45,16 +45,19 @@ class OISInputManager : public InputManager,// Inheritance
         public OIS::KeyListener, public OIS::MouseListener, public OIS::JoyStickListener {
   public:
     typedef std::vector<OIS::JoyStick*> JoyStickVector;
+    typedef std::map<int, Caelum::JoyStickEvent*> JoyStickEventMap;
 
     OISInputManager();
     virtual ~OISInputManager();
 
-    void addKeyListener      (Caelum::KeyListener *keyListener)     {mKeyListeners.push_back(keyListener);}
-    void addMouseListener    (Caelum::MouseListener *mouseListener) {mMouseListeners.push_back(mouseListener);}
-    void addJoystickListener () {}
-    void removeKeyListener   (Caelum::KeyListener *keyListener)     {mKeyListeners.remove(keyListener);}
-    void removeMouseListener (Caelum::MouseListener *mouseListener) {mMouseListeners.remove(mouseListener);}
-    void removeJoystickListener () {}
+    // Add Listener
+    void addKeyListener         (Caelum::KeyListener *keyListener)     {mKeyListeners.push_back(keyListener);}
+    void addMouseListener       (Caelum::MouseListener *mouseListener) {mMouseListeners.push_back(mouseListener);}
+    void addJoystickListener    (Caelum::JoyStickListener* joyStickListener) {mJoyListeners.push_back(joyStickListener);}
+    // Remove Listener
+    void removeKeyListener      (Caelum::KeyListener *keyListener)     {mKeyListeners.remove(keyListener);}
+    void removeMouseListener    (Caelum::MouseListener *mouseListener) {mMouseListeners.remove(mouseListener);}
+    void removeJoystickListener (Caelum::JoyStickListener* joyStickListener) {mJoyListeners.remove(joyStickListener);}
 
     /// Update
     virtual void update();
@@ -72,47 +75,51 @@ class OISInputManager : public InputManager,// Inheritance
 
     /// Input system
     OIS::InputManager* createInputSystem(bool grabInput);
-    OIS::Mouse*    createMouse   (bool buffered);
-    OIS::Keyboard* createKeyboard(bool buffered);
+    OIS::Mouse*           createMouse    (bool buffered);
+    OIS::Keyboard*        createKeyboard (bool buffered);
     const JoyStickVector& createJoySticks(bool buffered);
     void destroyInputSystem();
     void destroyMouse();
     void destroyKeyBoard();
     void destroyJoySticks();
 
-    /// Input Listeners
-    virtual bool mouseMoved       (const OIS::MouseEvent &arg);  // basic
-    virtual bool mousePressed     (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // basic
-    virtual bool mouseReleased    (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // basic
-    virtual bool mouseClick       (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // extended
+    /// Mouse Listeners
+    virtual bool mouseMoved   (const OIS::MouseEvent &arg);  // basic
+    virtual bool mousePressed (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // basic
+    virtual bool mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // basic
+    virtual bool mouseClick   (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // extended
     //virtual bool mouseDoubleClick (const OIS::MouseEvent &arg, OIS::MouseButtonID id);  // extended
 
-    virtual bool keyPressed   (const OIS::KeyEvent &arg);  // basic
-    virtual bool keyReleased  (const OIS::KeyEvent &arg);  // basic
-    virtual bool keyTap       (const OIS::KeyEvent &arg);  // extended
+    /// Keyboard Listeners
+    virtual bool keyPressed (const OIS::KeyEvent &arg);  // basic
+    virtual bool keyReleased(const OIS::KeyEvent &arg);  // basic
+    virtual bool keyTap     (const OIS::KeyEvent &arg);  // extended
     //virtual bool keyDoubleTap (const OIS::KeyEvent &arg);  // extended
 
-    virtual bool buttonPressed  (const OIS::JoyStickEvent &arg, int button);  // basic
-    virtual bool buttonReleased (const OIS::JoyStickEvent &arg, int button);  // basic
-    virtual bool axisMoved      (const OIS::JoyStickEvent &arg, int axis);    // basic
+    /// Gamepad Listeners
+    virtual bool buttonPressed (const OIS::JoyStickEvent &arg, int button);  // basic
+    virtual bool buttonReleased(const OIS::JoyStickEvent &arg, int button);  // basic
+    virtual bool axisMoved     (const OIS::JoyStickEvent &arg, int axis);    // basic
+    virtual bool sliderMoved (const OIS::JoyStickEvent &arg, int index);  // advanced
+    virtual bool povMoved    (const OIS::JoyStickEvent &arg, int index);  // advanced
+    virtual bool vector3Moved(const OIS::JoyStickEvent &arg, int index);  // advanced
 
     void loadMouseEvent(const OIS::MouseEvent &arg);
     void loadKeyEvent(const OIS::KeyEvent &arg);
-    void loadJoystickEvent(const OIS::JoyStickEvent &arg);
-
+    JoyStickEvent* loadJoyStickEvent(const OIS::JoyStickEvent &arg, InputType mod, int index);
 
     RenderWindow *mWindow;
     OIS::InputManager *mInputManager;
     OIS::Mouse    *mMouse;
     OIS::Keyboard *mKeyboard;
-    //JoyStickVector mJoysticks;
+    JoyStickVector mJoysticks;
 
     std::list<Caelum::KeyListener*> mKeyListeners;
     std::list<Caelum::MouseListener*> mMouseListeners;
-    //std::list<OIS::JoyStickListener*> mJoyListeners;
+    std::list<Caelum::JoyStickListener*> mJoyListeners;
     Caelum::KeyEvent mKeyEvent;
     Caelum::MouseEvent mMouseEvent;
-    //JoystickEvent mJoystickEvent;
+    JoyStickEventMap mJoyStickEvents;
     //Ogre::Timer *mMouseTimer[NUM_MOUSE_BUTTONS];
 };
 

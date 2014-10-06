@@ -9,22 +9,42 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake) #cmake find modules location
 #find_package(PkgConfig REQUIRED) #Enable PKG-CONFIG suport
 
 message ( STATUS "*CHECKING REQUIRED LIBRARIES...")
+# 1.- OGRE3D
 set(OGRE_LIBRARIES OgreMain OgrePaging OgreTerrain OgreRTShaderSystem cg)
 set(OGRE_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/include/OGRE)
+# 2.- PAGED GEOMETRY
 #set(PG_LIBRARIES PagedGeometry)
 #set(PG_INCLUDE_DIRS )
+# 3.- SKYX
 set(SKYX_LIBRARIES SkyX)
 set(SKYX_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/include/SKYX)
-#set(MYGUI_LIBRARIES )
-#set(MYGUI_INCLUDE_DIRS )
+# 4.- HYDRAX
+set(HYDRAX_LIBRARIES Hydrax)
+set(HYDRAX_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/include/Hydrax)
+# 5.- MYGUI
+set(MYGUI_LIBRARIES MyGUIEngine MyGUI.OgrePlatform)
+set(MYGUI_INCLUDE_DIRS
+    ${PROJECT_SOURCE_DIR}/external/include/MyGUI
+    ${PROJECT_SOURCE_DIR}/external/include/MyGUIOgrePlatform)
+# 6.- OIS
 set(OIS_LIBRARIES OIS)
 set(OIS_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/include/OIS)
-#set(PSMOVE_LIBRARIES)
+# 7.- PSMOVE
+# 8.- BULLET
 set(BULLET_LIBRARIES BulletSoftBody BulletDynamics BulletCollision LinearMath)
 set(BULLET_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/include/bullet)
-#set(ENET_LIBRARIES)
-#set(OPENAL_LIBRARIES)
-#set(VORBIS_LIBRARIES)
+# 9.- ENET
+set(ENET_LIBRARIES enet ws2_32 winmm)
+set(ENET_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/include/enet)
+# 10.- OPENAL
+set(OPENAL_LIBRARIES OpenAL)
+set(OPENAL_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/include/AL)
+# 11.- Ogg-VORBIS
+set(VORBIS_LIBRARIES vorbisfile vorbis ogg)
+set(VORBIS_INCLUDE_DIRS
+    ${PROJECT_SOURCE_DIR}/external/include/ogg
+    ${PROJECT_SOURCE_DIR}/external/include/vorbis
+)
 
 
 # LIBRARY INCLUDES & LINK DIRECTORIES
@@ -33,8 +53,13 @@ include_directories (
   ${PROJECT_SOURCE_DIR}/external/include
   ${OGRE_INCLUDE_DIRS}
   ${SKYX_INCLUDE_DIRS}
+  ${HYDRAX_INCLUDE_DIRS}
+  ${MYGUI_INCLUDE_DIRS}
   ${OIS_INCLUDE_DIRS}
   ${BULLET_INCLUDE_DIRS}
+  ${OPENAL_INCLUDE_DIRS}
+  ${VORBIS_INCLUDE_DIRS}
+  #${ENET_INCLUDE_DIRS}
   )
 
 link_directories (
@@ -42,7 +67,10 @@ link_directories (
   ${PROJECT_SOURCE_DIR}/external/lib/
   )
 
-set(CMAKE_CXX_FLAGS "-g -Wall")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -flto") # Link time optimization
+#set(CXX_COVERAGE_LINK_FLAGS "-optl-static -static-libgcc -static-libstdc++")
+#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${CXX_COVERAGE_LINK_FLAGS}")
 
 add_subdirectory(src)
 

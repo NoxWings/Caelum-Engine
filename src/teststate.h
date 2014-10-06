@@ -2,6 +2,7 @@
 #define TESTSTATE_H
 
 #include "game/gamestate.h"
+#include "render/entity.h"
 
 class TestState : public Caelum::GameState {
   public:
@@ -33,15 +34,26 @@ class TestState : public Caelum::GameState {
     bool keyReleased (const Caelum::KeyEvent &evt);
     bool keyTap      (const Caelum::KeyEvent &evt);
 
+    // JoyStick
+    bool buttonPressed(const Caelum::JoyStickEvent &arg, int button);
+    bool buttonReleased(const Caelum::JoyStickEvent &arg, int button);
+    bool axisMoved(const Caelum::JoyStickEvent &arg, int axis);
+    bool sliderMoved(const Caelum::JoyStickEvent &arg, int index);
+    bool povMoved(const Caelum::JoyStickEvent &arg, int index);
+    bool vector3Moved(const Caelum::JoyStickEvent &arg, int index);
+
   protected:
     bool mContinue;
     Caelum::GameObject *camobj;
-    Caelum::CameraComponent *cam;
+    Caelum::Camera *cam;
     Caelum::Terrain *terrain;
 
     Caelum::Vector3 mov;
     Caelum::Degree yawRot, pitchRot;
+    Caelum::Real axisYaw, axisPitch;
     int movSpeed, rotateSpeed;
+
+    Caelum::Entity *ent;
 };
 
 #endif // TESTSTATE_H

@@ -10,6 +10,8 @@
 #ifndef SRC_CORE_LOGMANAGER_H
 #define SRC_CORE_LOGMANAGER_H
 
+#define QUICKLOG(X) LogManager::getSingleton().logMessage(X);
+
 #include "EnginePrerequisites.h"
 #include "patterns/Singleton.h"
 #include "core/log.h"

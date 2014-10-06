@@ -4,21 +4,13 @@
 #include "EnginePrerequisites.h"
 
 #include "render/rendercomponent.h"
+#include "render/skeleton.h"
 
 namespace Ogre {
 class Entity;
 }
 
 namespace Caelum {
-
-enum SkeletonAnimationBlendMode {
-    /// The Entity does not have an skeleton to set the blend mode
-    ANIMBLEND_ERROR = -1,
-    /// Animations are applied by calculating a weighted average of all animations
-    ANIMBLEND_AVERAGE = 0,
-    /// Animations are applied by calculating a weighted cumulative total
-    ANIMBLEND_CUMULATIVE = 1
-};
 
 class Entity : public RenderComponent {
   public:
@@ -28,20 +20,33 @@ class Entity : public RenderComponent {
     virtual ~Entity();
 
     // Animation
-    void setSkeletonDisplay(bool enable);
-    bool getSkeletonDisplay();
-    void setSkeletonBlending(SkeletonAnimationBlendMode mode);
-    SkeletonAnimationBlendMode getSkeletonBlending();
+    bool hasSkeleton();
+    Skeleton* getSkeleton();
+
+    void addTime(Real deltaTime);
+    void startAnimation(const String& animationName, Real fadeInTime = 0);
+    void stopAnimation(const String& animationName, Real fadeOutTime = 0);
+    bool hasAnimation(const String& animationName);
+    AnimationState* getAnimation(const String& animationName);
 
     // Material
+    void setMaterialName(const String& materialName);
+    void setMaterialName(unsigned int index, const String& materialName);
+    unsigned int getNumMaterials();
+    void setVisible(bool visible);
     void setShadowCast(bool enable);
     bool getShadowCast();
+
+    // Component
+    void update(Real deltaTime);
 
     Ogre::Entity* _getEntity();
   private:
     Ogre::MovableObject* _getMovableObject();
 
     Ogre::Entity *mEntity;
+
+    Skeleton *mSkeleton;
 };
 
 }

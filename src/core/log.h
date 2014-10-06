@@ -11,6 +11,7 @@
 #define SRC_CORE_LOG_H
 
 #include "EnginePrerequisites.h"
+#include "util/stringutils.h"
 
 namespace Caelum {
 

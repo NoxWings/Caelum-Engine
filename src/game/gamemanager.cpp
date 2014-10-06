@@ -39,6 +39,7 @@ void GameManager::_init(GameEngine *engine) {
     InputManager* inputMan = mEngine->getInputManager();
     inputMan->addMouseListener(this);
     inputMan->addKeyListener(this);
+    inputMan->addJoystickListener(this);
 }
 
 GameManager::~GameManager() {
@@ -46,6 +47,7 @@ GameManager::~GameManager() {
 
     // Unregister listeners
     InputManager* inputMan = mEngine->getInputManager();
+    inputMan->removeJoystickListener(this);
     inputMan->removeMouseListener(this);
     inputMan->removeKeyListener(this);
 
@@ -87,7 +89,7 @@ void GameManager::start() {
         mCurrentState->enter();
         mEngine->getRenderManager()->startRendering();
     } else {
-        mLog->logMessage("GAMEMANAGER: couldn't' start the main loop because there is no initial state!");
+        mLog->logMessage("GAMEMANAGER: couldn't start the main loop because there is no initial state!");
     }
 }
 
@@ -106,7 +108,7 @@ void GameManager::transitionTo(const String &stateName) {
         mCurrentState = newState;
         mCurrentState->enter();
     } else {
-        mLog->logMessage("GAMEMANAGER: couldn't' found \""+stateName+"\" to make a transition.");
+        mLog->logMessage("GAMEMANAGER: couldn't found \""+stateName+"\" to make a transition.");
     }
 }
 

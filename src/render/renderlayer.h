@@ -8,6 +8,7 @@
 #include "render/cameracomponent.h"
 #include "render/entity.h"
 #include "render/light.h"
+#include "render/oceansimulator.h"
 #include "render/realisticsky.h"
 #include "render/terrain.h"
 #include "core/resourcemanager.h"
@@ -52,7 +53,7 @@ class RenderLayer : public GameLayer {
     Component* createComponentByTypeName(const String& name, const String& typeName);
 
     /// MOVABLE COMPONENTS
-    CameraComponent* createCamera(const String& name);
+    Camera* createCamera(const String& name);
     Light* createLight(const String& name, Light::LightType type = Light::LT_POINT);
     Entity* createEntity(const String& name, const String& mesh);
 
@@ -61,7 +62,6 @@ class RenderLayer : public GameLayer {
                            uint16 terrainTileSize, Real terrainWorldSize,
                            Vector3 origin = Vector3::ZERO);
     RealisticSky* createRealisticSky(const String& name);
-
     void setSkyBox(bool enable, const String& materialName, Real distance=5000,
                    bool drawFirst=true, const Quaternion &orientation=Quaternion::IDENTITY,
                    const String& groupName=ResourceManager::DEFAULT_RESOURCE_GROUP_NAME);
@@ -70,11 +70,12 @@ class RenderLayer : public GameLayer {
                     const Quaternion& orientation = Quaternion::IDENTITY,
                     int xsegments = 16, int ysegments = 16, int ysegments_keep = -1,
                     const String& groupName = ResourceManager::DEFAULT_RESOURCE_GROUP_NAME);
-    // createOceanSimulator
+    OceanSimulator* createOcean(const String &name, const String& configFile, RealisticSky *sky);
     // createSimpleWater // for pools etc
 
     /// RENDER SHADOWING
-    void setAmbientLight(const ColourValue &color);
+    void setBackgroundColour(const ColourValue &colour);
+    void setAmbientLight(const ColourValue &colour);
     const ColourValue& getAmbientLight();
     void setShadowTechnique(ShadowTechnique technique);
     ShadowTechnique getShadowTechnique();

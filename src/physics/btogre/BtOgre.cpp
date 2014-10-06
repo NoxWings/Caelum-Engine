@@ -1076,4 +1076,6 @@ namespace BtOgre {
 
 	  mDirty = false;
 	}
+
+    int DebugDrawer::mDebuggers = 0;
 }

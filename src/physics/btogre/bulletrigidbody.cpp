@@ -7,6 +7,7 @@ using namespace Caelum;
 BulletRigidBody::BulletRigidBody(const String &name, Real mass, BtOgre::RigidBodyState* motionState,
                                  btCollisionShape* collisionShape, const btVector3& localInertia)
     : RigidBody(name), btRigidBody(mass, motionState, collisionShape, localInertia), mMotionState(motionState){
+    mMass = mass;
 }
 
 BulletRigidBody::~BulletRigidBody() {
@@ -34,6 +35,10 @@ void BulletRigidBody::updateOrientation(const Quaternion &orientation) {
 void BulletRigidBody::updateScale(const Vector3 &scale) {
     this->activate(true);
     m_collisionShape->setLocalScaling(UnitConversor::toBullet(scale));
+}
+
+void BulletRigidBody::setFixedYaw() {
+    this->setAngularFactor(0);
 }
 
 void BulletRigidBody::_setGameObject(GameObject *obj) {

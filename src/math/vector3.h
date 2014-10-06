@@ -12,7 +12,7 @@ class Vector3 {
     Real x, y, z;
 
   public:
-    inline Vector3() {}
+    inline Vector3() : x(0), y(0), z(0){}
 
     inline Vector3( const Real fX, const Real fY, const Real fZ )
         : x( fX ), y( fY ), z( fZ ) {

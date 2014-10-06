@@ -12,6 +12,7 @@ PhysicsManager::PhysicsManager() {
 }
 
 PhysicsManager::~PhysicsManager() {
+    destroyAllLayers();
     mLog->logMessage("*PHYSICS: Physics Engine Shutting down");
     mEngine->getLogManager()->destroyLog(mLog);
     mLog = 0;
@@ -19,11 +20,11 @@ PhysicsManager::~PhysicsManager() {
 }
 
 GameLayer* PhysicsManager::createLayer(const String &name, const String &typeName) {
-    PhysicsLayer* layer = new PhysicsLayer(name, typeName);
-    this->addLayer(layer);
-    return layer;
+    return createPhysicsLayer(name, typeName);
 }
 
 PhysicsLayer* PhysicsManager::createPhysicsLayer(const String &name, const String &typeName) {
-    return static_cast<PhysicsLayer*>(this->createLayer(name, typeName));
+    PhysicsLayer* layer = new PhysicsLayer(name, typeName);
+    this->addLayer(layer);
+    return layer;
 }

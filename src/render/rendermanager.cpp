@@ -12,6 +12,7 @@
 #include <OGRE/Ogre.h>
 #include "core/gameengine.h"
 #include "render/ogre/ogrerenderwindow.h"
+#include "render/guimanager.h"
 
 using namespace Caelum;
 
@@ -39,6 +40,7 @@ RenderManager::RenderManager()
 
 RenderManager::~RenderManager() {
     mLog->logMessage("*RENDER: Rendering Engine Shutting down");
+
     // Destroy the render window
     destroyRenderWindow();
 

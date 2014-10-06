@@ -38,9 +38,12 @@ SceneManager::~SceneManager() {
         scene = mScenes.getFirstItem();
         name = scene->getName();
         mLog->logMessage("GAMEMANAGER: Destroying Scene: "+name);
-        delete scene;
         mScenes.removeItem(name);
+        mLog->logMessage("GAMEMANAGER: Removed Scene: "+name);
+        delete scene;
+        mLog->logMessage("GAMEMANAGER: Destroyed Scene: "+name);
     }
+    mLog->logMessage("GAMEMANAGER: All scenes are destroyed.");
 }
 
 Scene* SceneManager::createScene(const String &sceneName, const String &typeName) {
@@ -60,15 +63,16 @@ Scene* SceneManager::getScene(const String &sceneName) {
 }
 
 void SceneManager::destroyScene(const String sceneName) {
-    // delete the scene
-    delete getScene(sceneName);
+    Scene *temp = getScene(sceneName);
     // remove the item from the associative ocontainer
     mScenes.removeItem(sceneName);
+    // delete the scene
+    delete temp;
 }
 
 void SceneManager::destroyScene(Scene *scene) {
-    // delete the scene
-    delete scene;
     // remove the item from the dictionary
     mScenes.removeItem(scene);
+    // delete the scene
+    delete scene;
 }

@@ -60,12 +60,12 @@ class RigidBodyState : public btMotionState
             btVector3 pos = transform.getOrigin();
 
             // Using the node directly is much more efficient than using the object
-            mNode->setOrientation(rot.w(), rot.x(), rot.y(), rot.z());
             mNode->setPosition(pos.x(), pos.y(), pos.z());
+            mNode->setOrientation(rot.w(), rot.x(), rot.y(), rot.z());
 
-            // TODO notify changes to gameobject childs
-            //mObject->notifyPosition();
-            //mObject->notifyOrientation();
+            // TODO Notify changes to other
+            //mObject->notifyTransform();
+            //mObject->notifyPosOri();
         }
 
         void setGameObject(Caelum::GameObject *object) {

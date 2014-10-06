@@ -31,9 +31,14 @@ namespace Caelum {
   #define BT_USE_DOUBLE_PRECISION
   typedef double Real;
 #endif
-  typedef std::string String;
+
+// Common types redef
+typedef float CEfloat;
+typedef double CEdouble;
+typedef std::string String;
 
 // Integer formats of fixed bit width
+typedef unsigned int uint;
 typedef unsigned int uint32;
 typedef unsigned short uint16;
 typedef unsigned char uint8;

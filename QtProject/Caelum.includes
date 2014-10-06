@@ -1,5 +1,10 @@
 ../src/
 ../external/include/
 ../external/include/OGRE/
+../external/include/MyGUI/
+../external/include/MyGUIOgrePlatform/
 ../external/include/OIS/
 ../external/include/bullet/
+../external/include/AL/
+../external/include/ogg/
+../external/include/vorbis/

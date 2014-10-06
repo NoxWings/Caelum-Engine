@@ -1,12 +1,16 @@
 #include "renderlayer.h"
 
 #include <OGRE/Ogre.h>
+#include <OGRE/OgreViewport.h>
 #include <OGRE/OgreSceneManager.h>
 #include <OGRE/OgreShadowCameraSetup.h>
 #include <OGRE/OgreShadowCameraSetupPlaneOptimal.h>
 #include <OGRE/OgreShadowCameraSetupFocused.h>
 #include <OGRE/OgreShadowCameraSetupLiSPSM.h>
 #include <OGRE/OgreShadowCameraSetupPSSM.h>
+
+#include "render/rendermanager.h"
+#include "core/logmanager.h"
 
 #include "math/unitconversor.h"
 
@@ -25,15 +29,13 @@ RenderLayer::RenderLayer(const String &name, const String typeName)
 }
 
 RenderLayer::~RenderLayer() {
-    Component *comp;
-    while (!mComponents.empty()) {
-        comp = mComponents.getFirstItem();
-        mComponents.removeItem(comp);
-        delete comp;
-    }
-
+    LogManager::getSingleton().logMessage("***Destroying RenderLayer");
+    this->destroyAllComponents();
+    //delete _mShadowCamera;
+    LogManager::getSingleton().logMessage("***Destroyed RenderLayer components");
     Ogre::Root *root = Ogre::Root::getSingletonPtr();
     root->destroySceneManager(_mScene);
+    LogManager::getSingleton().logMessage("***Destroyed scene");
 }
 
 Component* RenderLayer::createComponentByTypeName(const String &name, const String &typeName) {
@@ -44,8 +46,8 @@ Component* RenderLayer::createComponentByTypeName(const String &name, const Stri
     return comp;
 }
 
-CameraComponent* RenderLayer::createCamera(const String &name) {
-    CameraComponent* camera = new CameraComponent(name, this);
+Camera* RenderLayer::createCamera(const String &name) {
+    Camera* camera = new Camera(name, this);
     this->addComponent(camera);
     return camera;
 }
@@ -92,6 +94,17 @@ void RenderLayer::setSkyDome(bool enable, const String& materialName,
                         ogreOr, xsegments, ysegments, ysegments_keep);
 }
 
+OceanSimulator* RenderLayer::createOcean(const String &name, const String &configFile, RealisticSky* sky = NULL) {
+    OceanSimulator* ocean = new OceanSimulator(name, this, sky);
+    this->addComponent(ocean);
+    return ocean;
+}
+
+void RenderLayer::setBackgroundColour(const ColourValue &colour) {
+    static Ogre::ColourValue oc;
+    oc.r = colour.r; oc.g = colour.g; oc.b = colour.b; oc.a = colour.a;
+    Caelum::RenderManager::getSingletonPtr()->getRenderWindow()->getActualViewport()->setBackgroundColour(oc);
+}
 
 void RenderLayer::setAmbientLight(const ColourValue &colour) {
     static Ogre::ColourValue oc;
@@ -179,4 +192,9 @@ const ShadowProjectionType RenderLayer::getShadowProjectionType() {
 }
 
 void RenderLayer::update(Real deltaTime) {
+    for (AssociativeCollection<String, Component*>::ItemMap::iterator it = mComponents.mItems.begin();
+         it != mComponents.mItems.end();
+         ++it) {
+        it->second->update(deltaTime);
+    }
 }

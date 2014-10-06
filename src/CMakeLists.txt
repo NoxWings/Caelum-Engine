@@ -1,9 +1,22 @@
-set (
+set(
   SRC
   main.cpp
   teststate.cpp
   teststate.h
   EnginePrerequisites.h
+
+  audio/audiobuffer.cpp
+  audio/audiobuffer.h
+  audio/audiodecoder.cpp
+  audio/audiodecoder.h
+  audio/audiolayer.cpp
+  audio/audiolayer.h
+  audio/audiomanager.cpp
+  audio/audiomanager.h
+  audio/audioreceptor.cpp
+  audio/audioreceptor.h
+  audio/audiosource.cpp
+  audio/audiosource.h
 
   core/ogre/ogrelog.cpp
   core/ogre/ogrelog.h
@@ -47,6 +60,7 @@ set (
   game/scenemanager.h
 
   input/inputmanager.h
+  input/joylistener.h
   input/keylistener.h
   input/mouselistener.h
   input/oisinputmanager.cpp
@@ -80,6 +94,8 @@ set (
   physics/rigidbody.cpp
   physics/rigidbody.h
 
+  render/ogre/oceanlistener.cpp
+  render/ogre/oceanlistener.h
   render/ogre/ogrerendermanager.cpp
   render/ogre/ogrerendermanager.h
   render/ogre/ogrerenderwindow.cpp
@@ -92,6 +108,8 @@ set (
   render/entity.h
   render/light.cpp
   render/light.h
+  render/oceansimulator.cpp
+  render/oceansimulator.h
   render/realisticsky.cpp
   render/realisticsky.h
   render/rendercomponent.cpp
@@ -103,23 +121,52 @@ set (
   render/rendermanager.h
   render/renderwindow.cpp
   render/renderwindow.h
+  render/skeleton.cpp
+  render/skeleton.h
   render/terrain.cpp
   render/terrain.h
   render/windowlistener.h
+  render/guimanager.cpp
+  render/guimanager.h
+
+  net/nethost.cpp
+  net/nethost.h
+  net/netobject.cpp
+  net/netobject.h
+
+  demos/demo.cpp
+  demos/demo.h
+  demos/demomain.cpp
+  demos/demomain.h
+  demos/demointro.cpp
+  demos/demointro.h
+  demos/demodesign.cpp
+  demos/demodesign.h
+  demos/demomesh.cpp
+  demos/demomesh.h
+  demos/demophysics.cpp
+  demos/demophysics.h
+  demos/demoadvanced.cpp
+  demos/demoadvanced.h
+  demos/demonetserver.cpp
+  demos/demonetserver.h
+  demos/demonetclient.cpp
+  demos/demonetclient.h
   )
 
 add_executable(Caelum ${SRC})
 set_target_properties(Caelum PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 target_link_libraries(
   Caelum
+  ${ENET_LIBRARIES}
   ${OGRE_LIBRARIES}
   ${SKYX_LIBRARIES}
+  ${HYDRAX_LIBRARIES}
   #${PG_LIBRARIES}
   ${OIS_LIBRARIES}
-  ${PSMOVE_LIBRARIES}
-  #${MYGUI_LIBRARIES}
-  #${ENET_LIBRARIES}
+  ${MYGUI_LIBRARIES}
+  #${PSMOVE_LIBRARIES}
   ${BULLET_LIBRARIES}
-  #${OPENAL_LIBRARIES}
-  #${VORBIS_LIBRARIES}
+  ${OPENAL_LIBRARIES}
+  ${VORBIS_LIBRARIES}
   )

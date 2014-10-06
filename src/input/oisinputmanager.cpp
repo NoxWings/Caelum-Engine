@@ -39,9 +39,11 @@ void OISInputManager::update() {
     // Capturing Devices
     if (mMouse)    mMouse->capture();
     if (mKeyboard) mKeyboard->capture();
-    //if (mJoysticks.size() > 0) {
-        //mJoy->capture();
-    //}
+    for (JoyStickVector::iterator it = mJoysticks.begin();
+         it != mJoysticks.end();
+         ++it) {
+        (*it)->capture();
+    }
 }
 
 void OISInputManager::windowResized(RenderWindow *rw) {
@@ -75,7 +77,7 @@ void OISInputManager::setup() {
     bool buffered = true;
     createMouse(buffered);
     createKeyboard(buffered);
-    //createJoySticks(buffered);
+    createJoySticks(buffered);
     // 4.- Register as a window listener
     RenderManager::getSingletonPtr()->getRenderWindow()->addListener(this);
 }
@@ -86,7 +88,7 @@ void OISInputManager::shutdown() {
         // 4.- Remove as a window listener
         RenderManager::getSingletonPtr()->getRenderWindow()->removeListener(this);
         // 3. Remove the OIS devices
-        //destroyJoySticks();
+        destroyJoySticks();
         destroyKeyBoard();
         destroyMouse();
         // 2. Destroy OIS InputManager
@@ -99,7 +101,6 @@ void OISInputManager::shutdown() {
 void OISInputManager::_emergency_shutdown() {
     //if (ms_Singleton) static_cast<OISInputManager>(InputManager::getSingleton()).shutdown();
 }
-
 
 /***********************************************
      INPUT SYSTEM
@@ -167,24 +168,40 @@ OIS::Keyboard* OISInputManager::createKeyboard(bool buffered) {
     return mKeyboard;
 }
 
-/*
+
 const OISInputManager::JoyStickVector&
 OISInputManager::createJoySticks(bool buffered) {
     int numJoysticks = mInputManager->getNumberOfDevices(OIS::OISJoyStick);
     if (numJoysticks > 0) {
+        mLog->logMessage("*INPUT: JOYSTICKS FOUND.");
         mJoysticks.resize(numJoysticks);
         for(JoyStickVector::iterator it = mJoysticks.begin();
             it != mJoysticks.end();
             ++it) {
+            mLog->logMessage("*INPUT: Creating joystick");
             // 1. Create device
-            (*it) = static_cast<OIS::JoyStick*>(mInputManager->createInputObject(OIS::OISJoyStick, buffered));
-            // 2. Set event callback
-            (*it)->setEventCallback(this);
+            OIS::JoyStick *joystick = static_cast<OIS::JoyStick*>(mInputManager->createInputObject(OIS::OISJoyStick, buffered));
+            // 2. Create state
+            OIS::JoyStickState st = joystick->getJoyStickState();
+            mLog->logMessage(String("*JOYSTICK CREADO CON ")+
+                             StringUtils::to_string(float(st.mAxes.size()))+String(" AXIS ")+
+                             StringUtils::to_string(float(st.mButtons.size()))+String(" BUTTONS Y ")+
+                             StringUtils::to_string(float(st.mAxes.size()))+String(" VECTORS")
+                             );
+            mJoyStickEvents[joystick->getID()] = new Caelum::JoyStickEvent(joystick->getID(),
+                                                                           st.mButtons.size(),
+                                                                           st.mAxes.size(),
+                                                                           st.mVectors.size());
+            // 3. Set event callback
+            joystick->setEventCallback(this);
+            // 4. Save device
+            (*it) = joystick;
         }
+    } else {
+        mLog->logMessage("*INPUT: NO JOYSTICKS FOUND.");
     }
     return mJoysticks;
 }
-*/
 
 void OISInputManager::destroyInputSystem() {
     OIS::InputManager::destroyInputSystem(mInputManager);
@@ -211,10 +228,18 @@ void OISInputManager::destroyKeyBoard() {
     mKeyboard = NULL;
 }
 
-/*
 void OISInputManager::destroyJoySticks() {
     if (!mJoysticks.empty()) {
-        //mJoyListeners.clear();
+        // Clear listeners
+        mJoyListeners.clear();
+        // Delete and clear events
+        for (JoyStickEventMap::iterator it = mJoyStickEvents.begin();
+             it != mJoyStickEvents.end();
+             ++it) {
+            delete it->second;
+        }
+        mJoyStickEvents.clear();
+        // Delete and clear JoySticks
         for (JoyStickVector::iterator it = mJoysticks.begin();
              it != mJoysticks.end();
              ++it) {
@@ -223,7 +248,6 @@ void OISInputManager::destroyJoySticks() {
         mJoysticks.clear();
     }
 }
-*/
 
 
 /***********************************************
@@ -305,29 +329,72 @@ bool OISInputManager::keyTap(const OIS::KeyEvent &arg) {
     return true;
 }
 
-
 /***********************************************
      JOYSTICK LISTENERS
 ************************************************/
 
 bool OISInputManager::buttonPressed(const OIS::JoyStickEvent &arg, int button) {
-    // TODO
-    /* not implemented yet */
+    JoyStickEvent *evt = loadJoyStickEvent(arg, INP_Button, button);
+    std::list<Caelum::JoyStickListener*>::iterator iter = mJoyListeners.begin();
+    while (iter != mJoyListeners.end()) {
+        (*iter)->buttonPressed(*evt, button);
+        iter++;
+    }
     return true;
 }
 
 bool OISInputManager::buttonReleased(const OIS::JoyStickEvent &arg, int button) {
-    // TODO
-    /* not implemented yet */
+    JoyStickEvent *evt = loadJoyStickEvent(arg, INP_Button, button);
+    std::list<Caelum::JoyStickListener*>::iterator iter = mJoyListeners.begin();
+    while (iter != mJoyListeners.end()) {
+        (*iter)->buttonReleased(*evt, button);
+        iter++;
+    }
     return true;
 }
 
 bool OISInputManager::axisMoved(const OIS::JoyStickEvent &arg, int axis) {
-    // TODO
-    /* not implemented yet */
+    //mLog->logMessage(String("*HAY ")+StringUtils::to_string(float(arg.state.mAxes.size()))+String(" AXIS "));
+    //mLog->logMessage(String("ACCEDIENDO A AXIS: ")+StringUtils::to_string(float(axis)));
+    JoyStickEvent *evt = loadJoyStickEvent(arg, INP_Axis, axis);
+    int realAxis = axis % arg.state.mAxes.size(); // bug workaround
+    std::list<Caelum::JoyStickListener*>::iterator iter = mJoyListeners.begin();
+    while (iter != mJoyListeners.end()) {
+        (*iter)->axisMoved(*evt, realAxis);
+        iter++;
+    }
     return true;
 }
 
+bool OISInputManager::sliderMoved(const OIS::JoyStickEvent &arg, int index) {
+    JoyStickEvent *evt = loadJoyStickEvent(arg, INP_Slider, index);
+    std::list<Caelum::JoyStickListener*>::iterator iter = mJoyListeners.begin();
+    while (iter != mJoyListeners.end()) {
+        (*iter)->sliderMoved(*evt, index);
+        iter++;
+    }
+    return true;
+}
+
+bool OISInputManager::povMoved(const OIS::JoyStickEvent &arg, int index) {
+    JoyStickEvent *evt = loadJoyStickEvent(arg, INP_POV, index);
+    std::list<Caelum::JoyStickListener*>::iterator iter = mJoyListeners.begin();
+    while (iter != mJoyListeners.end()) {
+        (*iter)->povMoved(*evt, index);
+        iter++;
+    }
+    return true;
+}
+
+bool OISInputManager::vector3Moved(const OIS::JoyStickEvent &arg, int index) {
+    JoyStickEvent *evt = loadJoyStickEvent(arg, INP_Vector3, index);
+    std::list<Caelum::JoyStickListener*>::iterator iter = mJoyListeners.begin();
+    while (iter != mJoyListeners.end()) {
+        (*iter)->vector3Moved(*evt, index);
+        iter++;
+    }
+    return true;
+}
 
 /***********************************************
      EVENT CONVERSION
@@ -349,5 +416,41 @@ void OISInputManager::loadKeyEvent(const OIS::KeyEvent &arg) {
     mKeyEvent.text = arg.text;
 }
 
-void OISInputManager::loadJoystickEvent(const OIS::JoyStickEvent &arg) {
+JoyStickEvent* OISInputManager::loadJoyStickEvent(const OIS::JoyStickEvent &arg, InputType mod, int index) {
+    // Determinate JoyStick
+    JoyStickEventMap::iterator it = mJoyStickEvents.find(arg.device->getID());
+    if (it == mJoyStickEvents.end()) {
+        mLog->logMessage("ERROR: Joystick that launched the event was not found!!");
+        exit(1);
+    }
+    JoyStickEvent* evt = mJoyStickEvents.find(arg.device->getID())->second;
+    // Modify JoyStick state
+    switch (mod) {
+    case INP_Button:
+        evt->mState.mButtons[index] = arg.state.mButtons[index];
+        break;
+    case INP_Axis:
+    {
+        int realAxis = index % arg.state.mAxes.size(); // bug workaround
+        evt->mState.mAxes[realAxis].abs = arg.state.mAxes[index].abs;
+        evt->mState.mAxes[realAxis].rel = arg.state.mAxes[index].rel;
+    }
+        break;
+    case INP_POV:
+        evt->mState.mPOV[index].direction = arg.state.mPOV[index].direction;
+        break;
+    case INP_Vector3:
+        evt->mState.mVectors[index].x = arg.state.mVectors[index].x;
+        evt->mState.mVectors[index].y = arg.state.mVectors[index].y;
+        evt->mState.mVectors[index].z = arg.state.mVectors[index].z;
+        break;
+    case INP_Slider:
+        evt->mState.mSliders[index].abX = arg.state.mSliders[index].abX;
+        evt->mState.mSliders[index].abY = arg.state.mSliders[index].abY;
+        break;
+    default:
+        // TODO log error
+        break;
+    }
+    return evt;
 }

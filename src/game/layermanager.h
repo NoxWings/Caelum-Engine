@@ -16,6 +16,7 @@ class LayerManager {
     virtual GameLayer* createLayer(const String& name, const String& typeName) = 0;
     void destroyLayer(const String& name);
     void destroyLayer(GameLayer *layer);
+    void destroyAllLayers();
 
   protected:
     void addLayer(GameLayer* layer);

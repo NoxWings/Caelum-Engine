@@ -71,6 +71,14 @@ class GameManager : public Singleton<GameManager>, public EventListener {
     bool keyReleased (const KeyEvent &evt) { if (mCurrentState) mCurrentState->keyReleased(evt); return true;}
     bool keyTap      (const KeyEvent &evt) { if (mCurrentState) mCurrentState->keyTap(evt); return true;}
 
+    // JoyStick
+    bool buttonPressed(const JoyStickEvent &arg, int button)  { if (mCurrentState) mCurrentState->buttonPressed(arg, button); return true;}
+    bool buttonReleased(const JoyStickEvent &arg, int button) { if (mCurrentState) mCurrentState->buttonReleased(arg, button); return true;}
+    bool axisMoved(const JoyStickEvent &arg, int axis)     { if (mCurrentState) mCurrentState->axisMoved(arg, axis); return true;}
+    bool sliderMoved(const JoyStickEvent &arg, int index)  { if (mCurrentState) mCurrentState->sliderMoved(arg, index); return true;}
+    bool povMoved(const JoyStickEvent &arg, int index)     { if (mCurrentState) mCurrentState->povMoved(arg, index); return true;}
+    bool vector3Moved(const JoyStickEvent &arg, int index) { if (mCurrentState) mCurrentState->vector3Moved(arg, index); return true;}
+
   private:
     void _init(GameEngine *engine);
 

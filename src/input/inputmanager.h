@@ -18,6 +18,7 @@
 #include "render/renderwindow.h"
 #include "input/keylistener.h"
 #include "input/mouselistener.h"
+#include "input/joylistener.h"
 
 namespace Caelum {
 
@@ -29,12 +30,12 @@ class InputManager : public Singleton<InputManager>, public WindowListener {
     // Add Listener
     virtual void addKeyListener         (Caelum::KeyListener*   keyListener) = 0;
     virtual void addMouseListener       (Caelum::MouseListener* mouseListener) = 0;
-    virtual void addJoystickListener    () = 0;
+    virtual void addJoystickListener    (Caelum::JoyStickListener* joyStickListener) = 0;
 
     // Remove Listener
     virtual void removeKeyListener      (Caelum::KeyListener*   keyListener) = 0;
     virtual void removeMouseListener    (Caelum::MouseListener* mouseListener) = 0;
-    virtual void removeJoystickListener () = 0;
+    virtual void removeJoystickListener (Caelum::JoyStickListener* joyStickListener) = 0;
 
     // Update()
     virtual void update() = 0;

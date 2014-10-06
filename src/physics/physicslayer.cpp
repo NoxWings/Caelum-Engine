@@ -39,7 +39,6 @@ PhysicsLayer::PhysicsLayer(const String& name, const String& typeName)
 
 PhysicsLayer::~PhysicsLayer() {
     this->destroyAllComponents();
-
     delete mDebugDrawer;
     delete mWorld;
     delete mSolver;
@@ -136,6 +135,15 @@ void PhysicsLayer::createStaticTerrain(Terrain *terrain) {
     // 6.- Register rigidBody
     mWorld->addRigidBody(rigidBody);
     this->addComponent(rigidBody);
+}
+
+void PhysicsLayer::destroyRigidBody(const String &name) {
+    BulletRigidBody *rb = static_cast<BulletRigidBody*>(mComponents.findItem(name));
+    if (rb) {
+        mComponents.removeItem(name);
+        mWorld->removeRigidBody(rb);
+        delete rb;
+    }
 }
 
 void PhysicsLayer::setDebugDrawer(RenderLayer *renderLayer) {

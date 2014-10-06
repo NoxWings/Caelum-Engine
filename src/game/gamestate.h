@@ -53,13 +53,31 @@ class GameState : public EventListener {
     //virtual bool windowClosing(RenderWindow* rw);
     //virtual void windowClosed(RenderWindow* rw);
     //virtual void windowFocusChange(RenderWindow* rw);
-
     // ****************************
     // Rendering Listener Interface
     // ****************************
     //virtual bool preRenderUpdate(const RenderEvent& evt);
     //virtual bool renderingUpdate(const RenderEvent& evt);
     //virtual bool postRenderUpdate(const RenderEvent& evt);
+    // ****************************
+    // Input Listener Interfaces
+    // ****************************
+    // Mouse Listener
+    //virtual bool mouseMoved    (const Caelum::MouseEvent& evt);
+    //virtual bool mousePressed  (const Caelum::MouseEvent& evt, Caelum::MouseButtonID id);
+    //virtual bool mouseReleased (const Caelum::MouseEvent& evt, Caelum::MouseButtonID id);
+    //virtual bool mouseClicked  (const Caelum::MouseEvent& evt, Caelum::MouseButtonID id);
+    // Keyboard
+    //virtual bool keyPressed  (const Caelum::KeyEvent &evt);
+    //virtual bool keyReleased (const Caelum::KeyEvent &evt);
+    //virtual bool keyTap      (const Caelum::KeyEvent &evt);
+    // JoyStick
+    //virtual bool buttonPressed(const JoyStickEvent &arg, int button);
+    //virtual bool buttonReleased(const JoyStickEvent &arg, int button);
+    //virtual bool axisMoved(const JoyStickEvent &arg, int axis);
+    //virtual bool sliderMoved(const JoyStickEvent &arg, int index);
+    //virtual bool povMoved(const JoyStickEvent &arg, int index);
+    //virtual bool vector3Moved(const JoyStickEvent &arg, int index);
 
   protected:
     GameManager *mGameMan;

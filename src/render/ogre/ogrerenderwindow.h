@@ -20,7 +20,7 @@ class OgreRenderWindow : public RenderWindow, public Ogre::WindowEventListener {
                      VideoOptions* videoOpts);
     virtual ~OgreRenderWindow();
 
-    virtual void setViewportCamera(CameraComponent *camera);
+    virtual void setViewportCamera(Camera *camera);
 
     // ************************************
     // Ogre Window Event Listener Interface
@@ -60,6 +60,7 @@ class OgreRenderWindow : public RenderWindow, public Ogre::WindowEventListener {
 
     Ogre::RenderWindow* getActualWindow() {return mRenderWindow;}
     Ogre::Camera* getActualCamera() {return mCamera;}
+    Ogre::Viewport* getActualViewport() {return mViewport;}
   private:
     Ogre::Camera* mCamera;
     Ogre::RenderWindow* mRenderWindow;

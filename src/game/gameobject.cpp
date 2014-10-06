@@ -9,6 +9,7 @@
 
 #include "gameobject.h"
 
+#include "game/scene.h"
 #include <OGRE/OgreSceneNode.h>
 #include "math/unitconversor.h"
 #include "game/movablecomponent.h"
@@ -16,7 +17,7 @@
 using namespace Caelum;
 
 
-GameObject::GameObject(const String& name, GameObject *parentObject,
+GameObject::GameObject(Scene *scn, const String& name, GameObject *parentObject,
                        const Vector3 &position, const Quaternion &orientation) {
     mName = name;
     mParentObject = parentObject;
@@ -25,15 +26,22 @@ GameObject::GameObject(const String& name, GameObject *parentObject,
     this->rotate(orientation);
     // Optimization: pre-reserve 6 components space (4 native + 2 for custom);
     mComponents.reserve(6);
+
+    mScene = scn;
+    mScene->notifyCreated(this);
 }
 
-GameObject::GameObject(Ogre::SceneNode *node) {
+GameObject::GameObject(Scene *scn, Ogre::SceneNode *node) {
     _mNode = node;
     mName = _mNode->getName();
     mParentObject = 0;
+
+    mScene = scn;
+    mScene->notifyCreated(this);
 }
 
 GameObject::~GameObject() {
+    mScene->notifyDeleted(this);
     // Delete childs on cascade
     for (ObjectMap::iterator it = mChildObjects.begin();
          it != mChildObjects.end();
@@ -50,7 +58,7 @@ GameObject::~GameObject() {
 }
 
 GameObject* GameObject::createChildGameObject(const String &name) {
-    GameObject *child = new GameObject(name, this);
+    GameObject *child = new GameObject(mScene, name, this);
     mChildObjects.insert(ObjectMap::value_type(name, child));
     return child;
 }
@@ -302,27 +310,93 @@ void GameObject::detachComponent(MovableComponent *comp) {
 
 void GameObject::notifyPosition() {
     this->getDerivedPosition();  // update mDerivedPos
+    // Update components
     for(ComponentVector::iterator it = mComponents.begin();
         it != mComponents.end();
         ++it) {
         (*it)->updatePosition(mDerivedPos);
     }
+    // Update child objects
+    for(ObjectMap::iterator it = mChildObjects.begin();
+        it != mChildObjects.end();
+        ++it) {
+        it->second->notifyPosition();
+    }
 }
 
 void GameObject::notifyOrientation() {
     this->getDerivedOrientation();  // update mDerivedOri
+    // Update components
     for(ComponentVector::iterator it = mComponents.begin();
         it != mComponents.end();
         ++it) {
         (*it)->updateOrientation(mDerivedOri);
     }
+    // Update child objects
+    for(ObjectMap::iterator it = mChildObjects.begin();
+        it != mChildObjects.end();
+        ++it) {
+        it->second->notifyPosOri();
+    }
 }
 
 void GameObject::notifyScale() {
     this->getDerivedScale();  // update mDerivedScale
+    // Update components
     for(ComponentVector::iterator it = mComponents.begin();
         it != mComponents.end();
         ++it) {
         (*it)->updateScale(mDerivedScale);
     }
+    // Update child objects
+    for(ObjectMap::iterator it = mChildObjects.begin();
+        it != mChildObjects.end();
+        ++it) {
+        it->second->notifyScale();
+    }
+}
+
+void GameObject::notifyPosOri() {
+    this->getDerivedPosition();  // update mDerivedPos
+    this->getDerivedOrientation();  // update mDerivedOri
+    // Update components
+    for(ComponentVector::iterator it = mComponents.begin();
+        it != mComponents.end();
+        ++it) {
+        (*it)->updatePosition(mDerivedPos);
+        (*it)->updateOrientation(mDerivedOri);
+    }
+    // Update child objects
+    for(ObjectMap::iterator it = mChildObjects.begin();
+        it != mChildObjects.end();
+        ++it) {
+        it->second->notifyPosition();
+        it->second->notifyOrientation();
+    }
+}
+
+void GameObject::notifyTransform() {
+    this->getDerivedPosition();  // update mDerivedPos
+    this->getDerivedOrientation();  // update mDerivedOri
+    this->getDerivedScale();  // update mDerivedScale
+    // Update components
+    for(ComponentVector::iterator it = mComponents.begin();
+        it != mComponents.end();
+        ++it) {
+        (*it)->updatePosition(mDerivedPos);
+        (*it)->updateOrientation(mDerivedOri);
+        (*it)->updateScale(mDerivedScale);
+    }
+    // Update child objects
+    for(ObjectMap::iterator it = mChildObjects.begin();
+        it != mChildObjects.end();
+        ++it) {
+        it->second->notifyPosition();
+        it->second->notifyOrientation();
+        it->second->notifyScale();
+    }
+}
+
+void GameObject::forceUpdate(bool updateChildren, bool updateFromParent) {
+    _mNode->_update(updateChildren, updateFromParent);
 }

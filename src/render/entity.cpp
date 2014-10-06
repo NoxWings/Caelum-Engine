@@ -2,6 +2,7 @@
 
 #include <OGRE/OgreSceneManager.h>
 #include <OGRE/OgreEntity.h>
+#include <OGRE/OgreSubEntity.h>
 #include <OGRE/OgreMeshManager.h>
 #include <OGRE/OgrePlane.h>
 
@@ -13,6 +14,11 @@ using namespace Caelum;
 Entity::Entity(const String& name, const String &mesh, RenderLayer* renderlayer)
     : RenderComponent(name, renderlayer) {
     mEntity = mLayer->_getSceneManager()->createEntity(name,mesh);
+    if (mEntity->hasSkeleton()) {
+        mSkeleton = new Skeleton(this);
+    } else {
+        mSkeleton = NULL;
+    }
 }
 
 /*Entity::Entity(const String &name, RenderLayer *renderlayer, Vector3 planeNormal) {
@@ -39,29 +45,60 @@ Entity::Entity(const String& name, const String &mesh, RenderLayer* renderlayer)
 }*/
 
 Entity::~Entity() {
+    if (mSkeleton) delete mSkeleton;
     mLayer->_getSceneManager()->destroyEntity(mEntity);
 }
 
-void Entity::setSkeletonDisplay(bool enable) {
-    mEntity->setDisplaySkeleton(enable);
+bool Entity::hasSkeleton() {
+    return (mSkeleton != NULL);
 }
 
-bool Entity::getSkeletonDisplay() {
-    return mEntity->getDisplaySkeleton();
+Skeleton* Entity::getSkeleton() {
+    return mSkeleton;
 }
 
-void Entity::setSkeletonBlending(SkeletonAnimationBlendMode mode) {
-    if (mEntity->hasSkeleton()) {
-        mEntity->getSkeleton()->setBlendMode(Ogre::SkeletonAnimationBlendMode(mode));
-    }
+void Entity::addTime(Real deltaTime) {
+    if (mSkeleton)
+        mSkeleton->addTime(deltaTime);
 }
 
-SkeletonAnimationBlendMode Entity::getSkeletonBlending() {
-    if (mEntity->hasSkeleton()) {
-        Ogre::SkeletonAnimationBlendMode mode = mEntity->getSkeleton()->getBlendMode();
-        return SkeletonAnimationBlendMode(mode);
-    }
-    return ANIMBLEND_ERROR;
+void Entity::startAnimation(const String &animationName, Real fadeInTime) {
+    if (mSkeleton)
+        mSkeleton->startAnimation(animationName, fadeInTime);
+}
+
+void Entity::stopAnimation(const String &animationName, Real fadeOutTime) {
+    if (mSkeleton)
+        mSkeleton->stopAnimation(animationName, fadeOutTime);
+}
+
+bool Entity::hasAnimation(const String &animationName) {
+    if (mSkeleton)
+        return mSkeleton->hasAnimation(animationName);
+    return false;
+}
+
+AnimationState* Entity::getAnimation(const String &animationName) {
+    if (mSkeleton)
+        return mSkeleton->getAnimation(animationName);
+    return NULL;
+}
+
+void Entity::setMaterialName(const String &materialName) {
+    mEntity->setMaterialName(materialName);
+}
+
+void Entity::setMaterialName(unsigned int index, const String &materialName) {
+    if (index < getNumMaterials())
+        mEntity->getSubEntity(index)->setMaterialName(materialName);
+}
+
+unsigned int Entity::getNumMaterials() {
+    return mEntity->getNumSubEntities();
+}
+
+void Entity::setVisible(bool visible) {
+    mEntity->setVisible(visible);
 }
 
 void Entity::setShadowCast(bool enable) {
@@ -70,6 +107,10 @@ void Entity::setShadowCast(bool enable) {
 
 bool Entity::getShadowCast() {
     return mEntity->getCastShadows();
+}
+
+void Entity::update(Real deltaTime) {
+    this->addTime(deltaTime);
 }
 
 Ogre::MovableObject* Entity::_getMovableObject() {

@@ -8,12 +8,12 @@
 
 using namespace Caelum;
 
-CameraComponent::CameraComponent(const String& name, RenderLayer *renderlayer)
+Camera::Camera(const String& name, RenderLayer *renderlayer)
     : RenderComponent(name, renderlayer) {
     mCam = mLayer->_getSceneManager()->createCamera(name);
 
     // Frustum Clip
-    mCam->setFarClipDistance(30000);
+    mCam->setFarClipDistance(50000);
     mCam->setNearClipDistance(0.25);
 
     // Reset Position & Orientation
@@ -22,55 +22,55 @@ CameraComponent::CameraComponent(const String& name, RenderLayer *renderlayer)
 
 }
 
-CameraComponent::~CameraComponent() {
+Camera::~Camera() {
     mLayer->_getSceneManager()->destroyCamera(mCam);
     mCam = 0;
 }
 
-const Radian& CameraComponent::getFOVy() {
+const Radian& Camera::getFOVy() {
     static Radian fov;
     UnitConversor::OgreRadianToRadian(mCam->getFOVy(), fov);
     return fov;
 }
 
-void CameraComponent::setFOVy(const Radian &fov) {
+void Camera::setFOVy(const Radian &fov) {
     static Ogre::Radian oFov;
     UnitConversor::RadianToOgreRadian(fov, oFov);
     mCam->setFOVy(oFov);
 }
 
-void CameraComponent::setPerspectiveProjection() {
+void Camera::setPerspectiveProjection() {
     mCam->setProjectionType(Ogre::PT_PERSPECTIVE);
 }
 
-void CameraComponent::setOrtographicProjection() {
+void Camera::setOrtographicProjection() {
     mCam->setProjectionType(Ogre::PT_ORTHOGRAPHIC);
 }
 
-void CameraComponent::setNearClipDistance(Real near) {
+void Camera::setNearClipDistance(Real near) {
     mCam->setNearClipDistance(Ogre::Real(near));
 }
 
-void CameraComponent::setFarClipDistance(Real far) {
+void Camera::setFarClipDistance(Real far) {
     mCam->setFarClipDistance(Ogre::Real(far));
 }
 
-void CameraComponent::setPolygonMode(POLYGON_MODE mode) {
+void Camera::setPolygonMode(POLYGON_MODE mode) {
     mCam->setPolygonMode(Ogre::PolygonMode(mode));
 }
 
-POLYGON_MODE CameraComponent::getPolygonMode() {
+POLYGON_MODE Camera::getPolygonMode() {
     return POLYGON_MODE(mCam->getPolygonMode());
 }
 
-void CameraComponent::setAsActiveCamera() {
+void Camera::setAsActiveCamera() {
     RenderManager::getSingletonPtr()->getRenderWindow()->setViewportCamera(this);
 }
 
-Ogre::MovableObject* CameraComponent::_getMovableObject() {
+Ogre::Camera* Camera::_getCamera() {
     return mCam;
 }
 
-Ogre::Camera* CameraComponent::_getCamera() {
+Ogre::MovableObject* Camera::_getMovableObject() {
     return mCam;
 }

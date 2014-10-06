@@ -61,7 +61,6 @@ template <typename S, typename T> class AssociativeCollection {
         return mItems.empty();
     }
 
-  protected:
     typedef std::map<S,T> ItemMap;
     ItemMap mItems;
 };

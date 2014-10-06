@@ -44,7 +44,7 @@ OgreRenderWindow::~OgreRenderWindow() {
     root->destroyRenderTarget(mRenderWindow);
 }
 
-void OgreRenderWindow::setViewportCamera(CameraComponent *camera) {
+void OgreRenderWindow::setViewportCamera(Camera *camera) {
     mCamera = camera->_getCamera();
     if (!mViewport) {
         mViewport = mRenderWindow->addViewport(camera->_getCamera());

@@ -19,6 +19,8 @@ class RigidBody : public MovableComponent {
     virtual void updateOrientation(const Quaternion& orientation) = 0;
     virtual void updateScale(const Vector3& scale) = 0;
 
+    virtual void setFixedYaw() = 0;
+
   protected:
     virtual void _setGameObject(GameObject* obj) = 0;
 };

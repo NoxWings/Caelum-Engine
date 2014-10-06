@@ -25,10 +25,13 @@ class BulletRigidBody :
     void updateOrientation(const Quaternion& orientation);
     void updateScale(const Vector3& scale);
 
+    void setFixedYaw();
+
 protected:
     virtual void _setGameObject(GameObject* obj);
 
     BtOgre::RigidBodyState* mMotionState;
+    Real mMass;
 };
 
 }

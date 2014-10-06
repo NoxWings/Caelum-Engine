@@ -186,6 +186,7 @@ protected:
 	btDynamicsWorld *mWorld;
 	DynamicLines *mLineDrawer;
 	bool mDebugOn;
+    static int mDebuggers;
 
 public:
 
@@ -194,9 +195,9 @@ public:
 		  mWorld(world),
 		  mDebugOn(true)
 	{
+        mDebuggers++;
 		mLineDrawer = new DynamicLines(Ogre::RenderOperation::OT_LINE_LIST);
 		mNode->attachObject(mLineDrawer);
-
                 if (!Ogre::ResourceGroupManager::getSingleton().resourceGroupExists("BtOgre"))
                     Ogre::ResourceGroupManager::getSingleton().createResourceGroup("BtOgre");
                 if (!Ogre::MaterialManager::getSingleton().resourceExists("BtOgre/DebugLines"))
@@ -212,8 +213,11 @@ public:
 
 	~DebugDrawer()
 	{
-                Ogre::MaterialManager::getSingleton().remove("BtOgre/DebugLines");
-                Ogre::ResourceGroupManager::getSingleton().destroyResourceGroup("BtOgre");
+        mDebuggers--;
+        Ogre::MaterialManager::getSingleton().remove("BtOgre/DebugLines");
+        if (mDebuggers == 0 && Ogre::ResourceGroupManager::getSingleton().resourceGroupExists("BtOgre")) {
+            Ogre::ResourceGroupManager::getSingleton().destroyResourceGroup("BtOgre");
+        }
 		delete mLineDrawer;
 	}
 

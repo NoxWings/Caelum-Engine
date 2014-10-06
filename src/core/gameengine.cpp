@@ -43,6 +43,7 @@ void GameEngine::setup() {
     createRenderManager();
     createInputManager();
     createPhysicsManager();
+    createAudioManager();
 
     createGameManager();
     // TODO remove the following line
@@ -52,6 +53,7 @@ void GameEngine::setup() {
 void GameEngine::shutdown() {
     destroyGameManager();
 
+    destroyAudioManager();
     destroyPhysicsManager();
     destroyInputManager();
     destroyRenderManager();
@@ -102,6 +104,10 @@ void GameEngine::createPhysicsManager() {
     mPhyManager = new PhysicsManager();
 }
 
+void GameEngine::createAudioManager() {
+    mAudioManager = new AudioManager();
+}
+
 void GameEngine::createGameManager() {
     mGameMan = new GameManager(this);
 }
@@ -150,6 +156,11 @@ void GameEngine::destroyInputManager() {
 void GameEngine::destroyPhysicsManager() {
     delete mPhyManager;
     mPhyManager = 0;
+}
+
+void GameEngine::destroyAudioManager() {
+    delete mAudioManager;
+    mAudioManager = 0;
 }
 
 void GameEngine::destroyGameManager() {

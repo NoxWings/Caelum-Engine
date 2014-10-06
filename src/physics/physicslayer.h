@@ -46,6 +46,8 @@ class PhysicsLayer : public GameLayer {
     RigidBody* createRigidBody(const String& name, Entity *ent, const Vector3& scale, Real mass, PHY_SHAPE_TYPE shapeType);
     void createStaticTerrain(Terrain *terrain);
 
+    void destroyRigidBody(const String &name);
+
     /// Getters setters
     void setDebugDrawer(RenderLayer *renderLayer);
     void setDebugMode(bool activate);

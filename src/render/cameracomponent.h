@@ -17,10 +17,10 @@ enum POLYGON_MODE {
     PM_SOLID = 3 /// Solid polygons are rendered.
 };
 
-class CameraComponent : public RenderComponent {
+class Camera : public RenderComponent {
   public:
-    CameraComponent(const String& name, RenderLayer* renderlayer);
-    virtual ~CameraComponent();
+    Camera(const String& name, RenderLayer* renderlayer);
+    virtual ~Camera();
 
     const Radian& getFOVy();
     void setFOVy(const Radian &fov);
@@ -36,10 +36,11 @@ class CameraComponent : public RenderComponent {
 
     void setAsActiveCamera();
 
+    Ogre::Camera* _getCamera();
+
     friend class OgreRenderWindow;
   private:
     Ogre::MovableObject* _getMovableObject();
-    Ogre::Camera* _getCamera();
 
     Ogre::Camera *mCam;
 };

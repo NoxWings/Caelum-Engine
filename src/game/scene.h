@@ -14,7 +14,10 @@
 #include "game/gameobject.h"
 #include "render/renderlayer.h"
 #include "physics/physicslayer.h"
+#include "audio/audiolayer.h"
 #include "core/log.h"
+
+#include <map>
 
 
 namespace Caelum {
@@ -29,24 +32,33 @@ class Scene {
     const String& getTypeName() {return mTypeName;}
 
     // GameObject related functions
+    GameObject* findObject(const String &name);
     GameObject* getRootObject() {return mRootObject;}
     GameObject* createGameObject(const String& name);
 
     // TODO Default component manager getFunctions
     RenderLayer* getRenderLayer() {return mRenderLayer;}
     PhysicsLayer* getPhysicsLayer() {return mPhysicsLayer;}
+    AudioLayer* getAudioLayer() {return mAudioLayer;}
     //void getNetWorkLayer();
 
     Ogre::SceneManager* getSceneMgr() {return _mScene;}
+    Ogre::SceneManager* addObject();
 
+    friend class GameObject;
   protected:
+    void notifyCreated(GameObject *obj);
+    void notifyDeleted(GameObject *obj);
+
     String mName;
     String mTypeName;
     GameObject *mRootObject;
+    std::map<String, GameObject*> mObjectMap;
 
     // provisional
     RenderLayer *mRenderLayer;
     PhysicsLayer *mPhysicsLayer;
+    AudioLayer *mAudioLayer;
 
   private:
     // Dereferenced opaque pointer

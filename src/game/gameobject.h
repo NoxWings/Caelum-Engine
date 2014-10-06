@@ -26,6 +26,7 @@ namespace Caelum {
 
 /// Fordward declarations
 class MovableComponent;
+class Scene;
 
 class GameObject {
   public:
@@ -38,9 +39,9 @@ class GameObject {
     typedef std::vector<MovableComponent*> ComponentVector;
 
   public:
-    GameObject(const String& name, GameObject *parentObject,
+    GameObject(Scene *scn, const String& name, GameObject *parentObject,
                const Vector3 &position = Vector3::ZERO, const Quaternion &orientation = Quaternion::IDENTITY); // normal constructor
-    GameObject(Ogre::SceneNode *node); // direct constructor for the root gameobject creation
+    GameObject(Scene *scn, Ogre::SceneNode *node); // direct constructor for the root gameobject creation
     virtual ~GameObject();
 
     const String& getName() {return mName;}
@@ -107,6 +108,10 @@ class GameObject {
     void notifyPosition();
     void notifyOrientation();
     void notifyScale();
+    void notifyPosOri();
+    void notifyTransform();
+
+    void forceUpdate(bool updateChildren = true, bool updateFromParent = false);
     Ogre::SceneNode* getNode() {return _mNode;}
 
   protected:
@@ -122,6 +127,7 @@ class GameObject {
     ComponentVector mComponents;
   private:
     Ogre::SceneNode *_mNode;
+    Caelum::Scene *mScene;
 
 };
 

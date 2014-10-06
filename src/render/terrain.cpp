@@ -96,6 +96,10 @@ void Terrain::setTextureAndHeightBlend(uint8 index, Real splatWorldSize,
     this->setTextureHeightBlend(index, blendMinHeight, blendFadeDistance);
 }
 
+void Terrain::loadTile(long x, long y, const String &terrainFile) {
+    mTerrainGroup->defineTerrain(x, y, terrainFile);
+}
+
 void Terrain::setTile(long x, long y, const String &terrainTexture, bool forcedLoad) {
     String filename = mTerrainGroup->generateFilename(x, y);
     if(!forcedLoad && Ogre::ResourceGroupManager::getSingleton().resourceExists(mTerrainGroup->getResourceGroup(),
@@ -137,7 +141,7 @@ Ogre::Terrain* Terrain::getTile(long x, long y) {
 }
 
 void Terrain::blendTileWithHeight(Ogre::Terrain *terrain) {
-    for(uint32 i = 1; i < terrain->getLayerCount();i++) {    
+    for(uint32 i = 1; i < terrain->getLayerCount();i++) {
         LogManager::getSingletonPtr()->logMessage("Fundiendo capa");
         Ogre::TerrainLayerBlendMap *blendMap = terrain->getLayerBlendMap(i);
         // Load Texture blending info

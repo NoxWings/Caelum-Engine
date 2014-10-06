@@ -23,17 +23,19 @@ void TestState::enter() {
     cam = mScene->getRenderLayer()->createCamera("MainCamera");
     camobj->attachComponent(cam);
     camobj->setPosition(-115,400,300);
+    //camobj->setPosition(0, 7, 12);
     camobj->setFixedYawAxis(true);
-    movSpeed = 700;
+    movSpeed = 300;
     rotateSpeed = 30;
     cam->setAsActiveCamera(); // Set active camera
 
     /// SHADOW CONFIG
     mScene->getRenderLayer()->setAmbientLight(ColourValue(0.2, 0.2, 0.2));
     mScene->getRenderLayer()->setShadowTechnique(Caelum::SHADOWTYPE_TEXTURE_MODULATIVE);
-    mScene->getRenderLayer()->setShadowProjectionType(Caelum::SHADOW_PROJECTION_DEFAULT);
+    mScene->getRenderLayer()->setShadowProjectionType(Caelum::SHADOW_PROJECTION_LISPSM);
     mScene->getRenderLayer()->setShadowFarDistance(400);
-    mScene->getRenderLayer()->setShadowTextureSettings(512, 1); // size of texture shadow + number of shadow buffers
+    mScene->getRenderLayer()->setShadowTextureSettings(1024, 1); // size of texture shadow + number of shadow buffers
+
 
     /// LIGHT
     GameObject *sunObj = mScene->createGameObject("SunObj");
@@ -45,25 +47,37 @@ void TestState::enter() {
     sunLight->setDiffuseColour(ColourValue::White);
     sunLight->setSpecularColour(ColourValue(0.4, 0.4, 0.4));
 
+    /// ANIMATED ENTITY
+    /*GameObject *charObj = mScene->createGameObject("CharObject");
+    Entity *charEnt = mScene->getRenderLayer()->createEntity("CharEnt", "Sinbad.mesh");
+    charObj->attachComponent(charEnt);
+    AnimationState* anim = charEnt->getAnimation("Dance");
+    anim->setLoop(true);
+    anim->start(0.5);
+    ent = charEnt;
+
+    camobj->lookAt(charObj);*/
+
     /// SKY
     //mScene->getRenderLayer()->setSkyDome(true, "Examples/CloudySky", 10, 8, 400);
-    /*Caelum::RealisticSky *sky = mScene->getRenderLayer()->createRealisticSky("Sky");
-    sky->setPreset(Caelum::RealisticSky::SKY_THUNDER1);*/
+    Caelum::RealisticSky *sky = mScene->getRenderLayer()->createRealisticSky("Sky");
+    sky->setPreset(Caelum::RealisticSky::SKY_DESERT);
+    sky->setTimeMultiplier(0.5);
 
     /// TERRAIN
-    terrain = mScene->getRenderLayer()->createTerrain("terrain", 257, 5000);
+    terrain = mScene->getRenderLayer()->createTerrain("terrain", 513, 4000);
     // Initial terrain group configuration
-    terrain->configureImport(5000, 3, 8, 3000, 20);
+    terrain->configureImport(500, 3, 8, 3000, 20);
     terrain->configureLight(sunLight);
     // Texture setting
     terrain->setTexture(0, 100, "dirt_grayrocky_diffusespecular.dds", "dirt_grayrocky_normalheight.dds");
     terrain->setTextureHeightBlend(0, 0, 0);
     terrain->setTexture(1, 30, "grass_green-01_diffusespecular.dds", "grass_green-01_normalheight.dds");
-    terrain->setTextureHeightBlend(1, 40, 40);
+    terrain->setTextureHeightBlend(1, 500, 200);
     terrain->setTexture(2, 200, "growth_weirdfungus-03_diffusespecular.dds", "growth_weirdfungus-03_normalheight.dds");
-    terrain->setTextureHeightBlend(2, 120, 20);
+    terrain->setTextureHeightBlend(2, 2500, 150);
     // Terrain tiles settings
-    terrain->setTile(0,0, "terrain_height.png", false);
+    terrain->setTile(0,0, "terrain.png", false);
     terrain->loadAllTiles();
     // Terrain texture blending
     terrain->blendTerrain();
@@ -71,7 +85,7 @@ void TestState::enter() {
 
     /// SCENE OBJECTS
     // Create House
-    /*GameObject *houseObj = mScene->createGameObject("HouseObject");
+    GameObject *houseObj = mScene->createGameObject("HouseObject");
     Entity *houseEnt = mScene->getRenderLayer()->createEntity("House", "tudorhouse.mesh");
     RigidBody *housePhy = mScene->getPhysicsLayer()->createRigidBody("HousePhy", houseEnt, Vector3::UNIT_SCALE, 0, PhysicsLayer::PHY_SHAPE_TRIMESH);
     houseObj->attachComponent(houseEnt);
@@ -81,9 +95,9 @@ void TestState::enter() {
     houseObj->move(0,340,0);
     houseObj->notifyOrientation();
     houseObj->notifyPosition();
-    houseObj->notifyScale();*/
-/*
-    GameObject *dojoObj = mScene->createGameObject("DojoObject");
+    houseObj->notifyScale();
+
+    /*GameObject *dojoObj = mScene->createGameObject("DojoObject");
     Entity *dojoEnt = mScene->getRenderLayer()->createEntity("Dojo", "ts_dojo.mesh");
     RigidBody *dojoPhy = mScene->getPhysicsLayer()->createRigidBody("DojoPhy", dojoEnt, Vector3::UNIT_SCALE, 0, PhysicsLayer::PHY_SHAPE_TRIMESH);
     dojoObj->attachComponent(dojoEnt);
@@ -91,12 +105,14 @@ void TestState::enter() {
     dojoObj->pitch(Degree(-90));
     dojoObj->setPosition(50, 340, -130);
     dojoObj->notifyOrientation();
-    dojoObj->notifyPosition();
+    dojoObj->notifyPosition();*/
 
-    camobj->lookAt(dojoObj); // the camera is looking at the dojo
-    */
+    //camobj->lookAt(dojoObj); // the camera is looking at the dojo
 
-    //camobj->lookAt(houseObj);
+    camobj->lookAt(houseObj);
+
+    axisPitch = 0.0f;
+    axisYaw = 0.0f;
 }
 
 void TestState::exit() {
@@ -123,6 +139,11 @@ bool TestState::preRenderUpdate(const Caelum::RenderEvent &evt) {
     yawRot = 0;
     pitchRot = 0;
 
+    camobj->yaw(Degree(rotateSpeed * axisYaw * evt.timeSinceLastRender), GameObject::TS_WORLD);
+    camobj->pitch(Degree(rotateSpeed * axisPitch * evt.timeSinceLastRender), GameObject::TS_LOCAL);
+
+
+    //ent->addTime(evt.timeSinceLastRender);
     mScene->getPhysicsLayer()->update(evt.timeSinceLastRender*3);
     return mContinue;
 }
@@ -209,5 +230,59 @@ bool TestState::keyReleased (const Caelum::KeyEvent &evt) {
 }
 
 bool TestState::keyTap(const Caelum::KeyEvent &evt) {
+    return true;
+}
+
+bool TestState::buttonPressed(const JoyStickEvent &arg, int button) {
+    if (button == 7) {
+        static int barrelJoyCount = 0;       // number to be converted to a string
+        static String count;          // string which will contain the result
+
+        std::ostringstream convert;   // stream used for the conversion
+        convert << barrelJoyCount++;      // insert the textual representation of 'Number' in the characters in the stream
+        count = convert.str(); // set 'Result' to the contents of the stream
+
+        GameObject *barrelObj = mScene->createGameObject(String("barreljoyobj")+count);
+        Entity *barrelEnt = mScene->getRenderLayer()->createEntity(String("barreljoy")+count, "Barrel.mesh");
+        RigidBody *barrelPhy = mScene->getPhysicsLayer()->createRigidBody(String("barreljoyphy")+count, barrelEnt, Vector3::UNIT_SCALE, 1, PhysicsLayer::PHY_SHAPE_CONVEX);
+        barrelObj->attachComponent(barrelEnt);
+        barrelObj->attachComponent(barrelPhy);
+        barrelObj->setPosition(camobj->getPosition());
+        barrelObj->notifyPosition();
+        barrelPhy->applyImpulse(camobj->getOrientation().zAxis() * -70);
+    }
+    return true;
+}
+
+bool TestState::buttonReleased(const JoyStickEvent &arg, int button) {
+    return true;
+}
+
+bool TestState::axisMoved(const JoyStickEvent &arg, int axis) {
+    // Calculate percentage
+    Real percentage = Caelum::Real(arg.mState.mAxes[axis].abs) / (Caelum::Real(MAX_AXIS));
+    if (percentage < 0.1f && percentage > -0.1f) percentage = 0.0f;
+    // Rotate
+    if (axis == 2) { // pitch
+        axisPitch = 5 * -percentage;
+    } else if (axis == 5) { // yaw
+        axisYaw = 5 * -percentage;
+    } else if (axis == 0) {
+        mov.z = percentage;
+    } else if (axis == 1) {
+        mov.x = percentage;
+    }
+    return true;
+}
+
+bool TestState::sliderMoved(const JoyStickEvent &arg, int index) {
+    return true;
+}
+
+bool TestState::povMoved(const JoyStickEvent &arg, int index) {
+    return true;
+}
+
+bool TestState::vector3Moved(const JoyStickEvent &arg, int index) {
     return true;
 }

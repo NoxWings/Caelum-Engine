@@ -21,6 +21,7 @@
 #include "input/inputmanager.h"
 #include "game/gamemanager.h"
 #include "physics/physicsmanager.h"
+#include "audio/audiomanager.h"
 
 namespace Caelum {
 
@@ -41,6 +42,7 @@ class GameEngine : public Singleton<GameEngine> {
     RenderManager*     getRenderManager()     { return mRenderMan;}
     InputManager*      getInputManager()      { return mInputMan;}
     PhysicsManager*    getPhysicsManager()    { return mPhyManager;}
+    AudioManager*      getAudioManager()      { return mAudioManager;}
     GameManager*       getGameManager()       { return mGameMan;}
 
   private:
@@ -53,6 +55,7 @@ class GameEngine : public Singleton<GameEngine> {
     void createRenderManager();
     void createInputManager();
     void createPhysicsManager();
+    void createAudioManager();
     void createGameManager();
 
     /// DESTROY SUBSYSTEM
@@ -64,6 +67,7 @@ class GameEngine : public Singleton<GameEngine> {
     void destroyRenderManager();
     void destroyInputManager();
     void destroyPhysicsManager();
+    void destroyAudioManager();
     void destroyGameManager();
 
     /// ATRIBUTES
@@ -75,6 +79,7 @@ class GameEngine : public Singleton<GameEngine> {
     RenderManager *mRenderMan;
     InputManager *mInputMan;
     PhysicsManager *mPhyManager;
+    AudioManager *mAudioManager;
     GameManager *mGameMan;
 };
 

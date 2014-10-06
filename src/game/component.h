@@ -12,15 +12,20 @@
 
 #include "EnginePrerequisites.h"
 
+#include "core/logmanager.h"
+
 namespace Caelum {
 
 class Component {
   public:
     Component() {mName = "";}
     Component(const String& name) {mName = name;}
-    virtual ~Component() {}
+    virtual ~Component() {
+        LogManager::getSingleton().logMessage("Component destroyed: "+mName);
+    }
 
     const String& getName() {return mName;}
+    virtual void update(Real deltaTime) {}
 
   protected:
     String mName;
