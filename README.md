@@ -4,7 +4,6 @@ Caelum-Engine is a 3D multiplatform game-engine for Windows &amp; Linux. (3D Ren
 
 I developed this as my Final Year Computer Science Project in order to dive into the world of game development and understand game engines from its design perspective.
 
-[![Caelum Engine Video](http://share.gifyoutube.com/yxb23e.gif)]()  
 <p align="center">
   <a href="https://www.youtube.com/watch?v=p2J55SvzNNE">
     <img alt="Caelum Engine Video" src="http://share.gifyoutube.com/yxb23e.gif">
